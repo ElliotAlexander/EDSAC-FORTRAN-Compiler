@@ -1,0 +1,1 @@
+LOGICAL FUNCTION - not parsing correctly, can't find a reference to them in the FORTRAN II spec.
