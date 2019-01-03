@@ -1,1 +1,11 @@
 LOGICAL FUNCTION - not parsing correctly, can't find a reference to them in the FORTRAN II spec.
+PROGRAM <name> - Does this exist in F2? 
+
+
+New fortran 2 statements>
+CALL
+RETURN
+END
+SUBROUTINE
+FUNCTION
+COMMON
