@@ -9,7 +9,8 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
         ("x,allextensions", "Allow all file extension", cxxopts::value<bool>()->default_value("false"))
         ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
-        ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"));
+        ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"))
+        ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
 
@@ -27,6 +28,11 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     if(result["dump"].as<bool>()){
         std::cout << "+dump data structures" << std::endl;
         Globals::dump_data_structures = true;
+    }
+
+    if(result["tokens"].as<bool>()){
+        std::cout << "+dump tokens" << std::endl;
+        Globals::dump_tokens = true;
     }
 
     // Handle positional file arguments.

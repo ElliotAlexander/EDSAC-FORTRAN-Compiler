@@ -3,6 +3,7 @@
 bool FileVerification::verify(std::string str) {
 
 
+    std::cout << "Verifying..." << std::endl;    
     bool return_val = true;
     /**
      *      Error Cases

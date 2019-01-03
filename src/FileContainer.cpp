@@ -8,28 +8,28 @@ FileContainer::FileContainer(std::string file_input){
     int line_counter = 1;
     // Build full text string.
     while( std::getline( input, line ) ) {
-
-        if(line == "" || !(line.find_first_not_of(' ') != std::string::npos)){
-            continue;
-        }
+        // We comment out lines that are too short to be actual statements. 
+        line = removeShortLines(line, line_counter);
+        line = removeNewlines(line);
 
         // Add to vector
         file_text.push_back(line);
 
-        // If line length warnings are enabled, warn the user on lines < 5 chars long.
-        if((line.length() < 7) && !(Globals::disable_line_length_warnings) && !(::lineIsComment(line))) {
-            std::cerr << StringConstants::WARN_TAG << "Line {'" << line << "'}[" << line_counter << "] has an unusually short length." << std::endl;
-        }
         // Keep track.
         line_counter++;
     }
 
-    // +filename[linecount]
-    std::cout << "+" << file_name << "[" << file_text.size() << "]" << std::endl;    
-    
+    std::cout << "Loaded " << file_name << "[" << file_text.size() << "] successfully. " << std::endl;    
     if(Globals::dump_data_structures){
         dumpFileText();
     }
+}
+
+void FileContainer::dumpFileText(){
+    std::cout << "Begin File Dump(Name=" << file_name << "):\n";
+    for (std::vector<std::string>::const_iterator i = file_text.begin(); i != file_text.end(); ++i)
+        std::cout << *i << ' ' << std::endl;
+    std::cout << "\nEnd File Dump\n";
 }
 
 bool FileContainer::expandContinuations(){
@@ -80,18 +80,47 @@ bool FileContainer::expandContinuations(){
     return true;
 }
 
+std::string FileContainer::removeShortLines(std::string line, int line_counter){
+        // If line length warnings are enabled, warn the user on lines < 5 chars long.
+        if((line.length() < 7) && !(Globals::disable_line_length_warnings) && !(::lineIsComment(line))) {
+            std::cerr << StringConstants::WARN_TAG << "Line {'" << line << "'}[" << line_counter << "] has an unusually short length. It will be marked as a comment and ignored." << std::endl;
+            line.insert(0, "C");
+        }
+        return line;
+}
+
+std::string FileContainer::removeNewlines(std::string line){
+    std::string::size_type pos = 0; 
+
+    // Some of these files have a single CR ending the line.
+    while ( ( pos = line.find ("\r",pos) ) != std::string::npos )
+    {
+        line.erase ( pos, 2 );
+    } 
+
+    pos = 0;
+    while ( ( pos = line.find ("\r\n",pos) ) != std::string::npos )
+    {
+        line.erase ( pos, 2 );
+    } 
+    return line;
+}
+
 std::vector<Segment> FileContainer::dissectSegments(){
     
     bool in_segment_block = false; 
     SEGMENT_TYPE current_type; 
     int start_line = 0;
+
+
     for(std::vector<std::string>::size_type i = 0; i != file_text.size(); i++) {
+
         // Check line is not a comment.
         if(!::lineIsComment(file_text[i])){
+
+            // Get line from file.
             std::string useful_statement = file_text[i].substr(6, file_text[i].length());
-            //std::cout << "Useful Statement = " << useful_statement << std::endl;
-            //std::cout << "Useful Statment for a PROGRAM = " << useful_statement.substr(0,7) << std::endl;
-            //std::cout << "Useful Statment for a SUBROUTINE = " << useful_statement.substr(0,10) << std::endl;
+
             if(useful_statement.substr(0,7) == "PROGRAM"){
                 if(!in_segment_block) {
                     current_type = SEGMENT_TYPE::PROGRAM;
@@ -102,16 +131,13 @@ std::vector<Segment> FileContainer::dissectSegments(){
                 }
             } else if(useful_statement.substr(0,3) == "END"){
                 if(in_segment_block){
-                    std::cout << "+" << ::getEnumString(current_type) << " [" << start_line + 1 << "," << i + 1 << "]."<< std::endl;
+                    std::vector<std::string> segment_text;
+                    for(int x = start_line; x < ( i+1 ); x++){
+                        segment_text.push_back(file_text.at(x));
+                    }
 
-                    // Create Sub Vector
-                    // Slow
-                    auto first = file_text.cbegin() + start_line;
-                    auto last = file_text.cbegin() + i + 1;
-
-                    std::vector<std::string> sub_vec(first, last);
-
-                    segment_arr.push_back(Segment(current_type, start_line, i, sub_vec));
+                    std::cout << "+" << ::getEnumString(current_type) << " [" << start_line + 1 << "," << i + 1 << "]{" << ::stripWhitespaceString(segment_text.at(0))  << "}." << std::endl;
+                    segment_arr.push_back(Segment(current_type, start_line, i, segment_text));
                     in_segment_block = false;
                     current_type = {};
 
@@ -149,11 +175,4 @@ std::vector<Segment> FileContainer::dissectSegments(){
     };
 
     return segment_arr;
-}
-
-void FileContainer::dumpFileText(){
-    std::cout << "\n:: Begin File Dump :: (Name=" << file_name << ") ::\n\n";
-    for (std::vector<std::string>::const_iterator i = file_text.begin(); i != file_text.end(); ++i)
-        std::cout << *i << ' ' << std::endl;
-    std::cout << ":: End File Dump :: \n" << std::endl;
 }

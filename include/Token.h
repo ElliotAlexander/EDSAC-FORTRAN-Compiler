@@ -6,6 +6,7 @@
 class Token{
     public:
         virtual bool isValid(std::string input) = 0;
+        virtual std::string getTokenName() = 0;
     private:
 };
 

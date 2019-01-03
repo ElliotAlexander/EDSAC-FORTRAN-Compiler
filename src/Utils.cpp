@@ -23,3 +23,8 @@ std::string getEnumString(int i){
             return "UNKNOWN";
     }
 }
+
+std::string stripWhitespaceString(std::string input){
+    for(int i=0; i < input.length(); i++) { if(input[i] == ' ') { (input.erase(i,1)); } };
+    return input;
+}

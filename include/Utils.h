@@ -6,5 +6,6 @@
 
 bool lineIsComment(std::string line);
 std::string getEnumString(int i);
+std::string stripWhitespaceString(std::string input);
 
 #endif

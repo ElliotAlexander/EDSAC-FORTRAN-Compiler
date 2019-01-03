@@ -23,7 +23,6 @@ int main(int argc, char* argv[]){
     // Iterate input files, 
     for(int i = 0; i < Globals::file_list.size(); i++){
         std::cout << " --- " << Globals::file_list[i] << " ---" << std::endl;
-
         // Verify their properties.
         if(fv.verify(Globals::file_list[i])){
 
@@ -39,9 +38,18 @@ int main(int argc, char* argv[]){
 
     // Mutate files
     for(std::vector<FileContainer>::size_type i = 0; i != input_files.size(); i++){ 
-        std::cout << " --- " << Globals::file_list[i] << " ---" << std::endl;
+        std::cout << " --- " << Globals::file_list[i] << " ---\n";
+
         input_files[i].expandContinuations();
+
+        std::cout << "File Segment breakdown: \n";
         std::vector<Segment> segs = input_files[i].dissectSegments();
+
+        std::cout << "Beginning Tokenization: \n";
+        for(int i = 0; i < segs.size(); i++){
+            std::vector<Statement> stmts = segs.at(i).buildStatements();
+        };
+        std::cout << "\n --- End --- \n\n\n";
     }
     print_footer();
 }
