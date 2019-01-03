@@ -1,5 +1,5 @@
-#ifndef __PROGRAM_H_INCLUDED
-#define __PROGRAM_H_INCLUDED
+#ifndef __STOP_H_INCLUDED
+#define __STOP_H_INCLUDED
 
 #include <string>
 #include <regex>
@@ -8,12 +8,12 @@
 #include "Utils.h"
 #include "Constants.h"
 
-class PROGRAM : public Token {
+class STOP : public Token {
     public:
         bool isValid(std::string input);
         std::string getTokenName();
     private:
-        std::string TO_MATCH = "PROGRAM";
+        std::string TO_MATCH = "(STOP)";
 };
 
 

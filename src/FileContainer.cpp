@@ -109,9 +109,9 @@ std::string FileContainer::removeNewlines(std::string line){
 std::vector<Segment> FileContainer::dissectSegments(){
     
     bool in_segment_block = false; 
+    bool in_main_block = true;
     SEGMENT_TYPE current_type; 
     int start_line = 0;
-
 
     for(std::vector<std::string>::size_type i = 0; i != file_text.size(); i++) {
 
@@ -121,15 +121,25 @@ std::vector<Segment> FileContainer::dissectSegments(){
             // Get line from file.
             std::string useful_statement = file_text[i].substr(6, file_text[i].length());
 
-            if(useful_statement.substr(0,7) == "PROGRAM"){
-                if(!in_segment_block) {
-                    current_type = SEGMENT_TYPE::PROGRAM;
-                    in_segment_block = true;
-                    start_line = i;
+            if(useful_statement.substr(0,3) == "END"){
+                if(in_segment_block){
+                    std::cout << StringConstants::ERROR_TAG << "END statement found inside a segment block. Are you missing a return? [" << i << "].\n";
+                } else if(in_main_block){
+                    in_main_block = false;
+
+                    // Build segment
+                    std::vector<std::string> segment_text;
+                    for(int x = start_line; x < ( i+1 ); x++){
+                        segment_text.push_back(file_text.at(x));
+                    }
+
+                    std::cout << "+" << ::getEnumString(SEGMENT_TYPE::PROGRAM) << " [" << start_line + 1 << "," << i + 1 << "]" << std::endl;
+                    segment_arr.push_back(Segment(current_type, start_line, i, segment_text));
+                    std::cout << "Found end of Program [" << i + 1 << "].\n";
                 } else {
-                    std::cerr << StringConstants::WARN_TAG << "PROGRAM Block detected inside another segment block [type=" << current_type << ",start=" << start_line+1 << ", end="<< i+1 << "]." << std::endl;
+                    std::cerr << "END detected outside of Main Program Block[" << i << "]\n" << std::endl;
                 }
-            } else if(useful_statement.substr(0,3) == "END"){
+            } else if(useful_statement.substr(0, 6) == "RETURN") {
                 if(in_segment_block){
                     std::vector<std::string> segment_text;
                     for(int x = start_line; x < ( i+1 ); x++){
@@ -139,10 +149,10 @@ std::vector<Segment> FileContainer::dissectSegments(){
                     std::cout << "+" << ::getEnumString(current_type) << " [" << start_line + 1 << "," << i + 1 << "]{" << ::stripWhitespaceString(segment_text.at(0))  << "}." << std::endl;
                     segment_arr.push_back(Segment(current_type, start_line, i, segment_text));
                     in_segment_block = false;
+                    start_line = i;
                     current_type = {};
-
                 } else {
-                    std::cerr << "END detected outside of Segment Block [start=" << start_line + 1 << ", end="<<i + 1<< "]." << std::endl;
+                    std::cerr << "RETURN detected outside of Subroutine Block [start=" << start_line + 1 << ", end="<<i + 1<< "]." << std::endl;
                 }
             } else if(useful_statement.substr(0, 10) == "SUBROUTINE"){
                 if(!in_segment_block){
@@ -160,19 +170,12 @@ std::vector<Segment> FileContainer::dissectSegments(){
                 } else {
                     std::cerr << StringConstants::WARN_TAG << "FUNCTION Block detected inside another segment block [type=" << current_type << ",start=" << start_line+1 << ", end="<< i+1 << "]." << std::endl;
                 }
-            } else {
-                if(!in_segment_block){
-                    std::cerr << StringConstants::WARN_TAG << "Line ["<<i+1<<"] is not contained within a Segment block." << std::endl;
-                } else {
-                    continue;
-                }
+            } else if(!in_main_block) {
+                in_main_block = true;
+                current_type = SEGMENT_TYPE::PROGRAM;
+                std::cout << "Entered main program at line " << i + 1 << std::endl;
             }
         }
     }
-
-    if(in_segment_block){
-        std::cerr << StringConstants::WARN_TAG << "Program Segmentation completed inside a segment block. Are you missing an END statement?" << std::endl;
-    };
-
     return segment_arr;
 }

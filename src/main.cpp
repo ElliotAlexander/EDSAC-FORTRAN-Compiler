@@ -42,10 +42,10 @@ int main(int argc, char* argv[]){
 
         input_files[i].expandContinuations();
 
-        std::cout << "File Segment breakdown: \n";
+        std::cout << "\nFile Segment breakdown: \n";
         std::vector<Segment> segs = input_files[i].dissectSegments();
 
-        std::cout << "Beginning Tokenization: \n";
+        std::cout << "\nBeginning Tokenization: \n";
         for(int i = 0; i < segs.size(); i++){
             std::vector<Statement> stmts = segs.at(i).buildStatements();
         };

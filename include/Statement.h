@@ -12,8 +12,9 @@
 #include "Tokens/END.h"
 #include "Tokens/CALL.h"
 #include "Tokens/RETURN.h"
-#include "Tokens/PROGRAM.h"
 #include "Tokens/ARITH_FUNCTION.h"
+#include "Tokens/VAR_DECLR.h"
+#include "Tokens/STOP.h"
 #include "Token.h"
 
 class Statement {

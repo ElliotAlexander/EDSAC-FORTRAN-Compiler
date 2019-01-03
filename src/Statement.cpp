@@ -6,16 +6,18 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
     SUBROUTINE substmt;
     END endstmt;
     CALL callstmt;
-    PROGRAM programstmt;
     RETURN returnstmt;
     ARITH_FUNCTION arithstmt;
+    STOP stop_stmt;
+    VAR_DECLR var_declr;
     tokens.push_back(&dostmt);
     tokens.push_back(&substmt);
     tokens.push_back(&endstmt);
     tokens.push_back(&callstmt);
-    tokens.push_back(&programstmt);
     tokens.push_back(&returnstmt);
     tokens.push_back(&arithstmt);
+    tokens.push_back(&stop_stmt);
+    tokens.push_back(&var_declr);
     bool found = false;
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
         if(tokens[i]->isValid(statement_body)){
