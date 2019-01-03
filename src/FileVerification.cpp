@@ -1,6 +1,6 @@
 #include "FileVerification.h"
 
-bool FileVerification::verify(std::string str) {
+bool FileVerification::verify(std::string file_input) {
 
 
     std::cout << "Verifying..." << std::endl;    
@@ -8,40 +8,40 @@ bool FileVerification::verify(std::string str) {
     /**
      *      Error Cases
      * */
-    if(!verify_exists(str)){
-        std::cerr << StringConstants::ERROR_TAG << "File not found: [" << str << "] - exiting...\n";
+    if(!verify_exists(file_input)){
+        std::cerr << StringConstants::ERROR_TAG << "File not found: [" << file_input << "] - exiting...\n";
         return_val = false;
     }
 
     // Check the file is accessible.
-    if (!verify_accessible(str)) {
-        std::cerr << StringConstants::ERROR_TAG << "File " << str << " is not accessible, or is empty. Check your file permissions and try again.\n";
+    if (!verify_accessible(file_input)) {
+        std::cerr << StringConstants::ERROR_TAG << "File " << file_input << " is not accessible, or is empty. Check your file permissions and try again.\n";
         return_val = false;
     } 
     
-    if(!verify_regular_file(str)){
-        std::cerr << StringConstants::ERROR_TAG << "File " << str << " does not appear to be a regular file.\n";
+    if(!verify_regular_file(file_input)){
+        std::cerr << StringConstants::ERROR_TAG << "File " << file_input << " does not appear to be a regular file.\n";
         return_val = false;
     }
 
 
-    verify_extension(str);
+    verify_extension(file_input);
     
     // Return
     return return_val;
 }
 
-bool FileVerification::verify_exists(std::string str){
-    if(boost::filesystem::exists(str)){
+bool FileVerification::verify_exists(std::string file_input){
+    if(boost::filesystem::exists(file_input)){
         return true;
     } else {
         return false;
     };
 }
 
-bool FileVerification::verify_accessible(std::string str){
+bool FileVerification::verify_accessible(std::string file_input){
     std::ifstream filestream;
-    filestream.open(str);
+    filestream.open(file_input);
     if(filestream.is_open()){
         filestream.close();
         return true;
@@ -51,21 +51,21 @@ bool FileVerification::verify_accessible(std::string str){
     }
 }
 
-bool FileVerification::verify_regular_file(std::string str){
-    return boost::filesystem::is_regular_file(str);
+bool FileVerification::verify_regular_file(std::string file_input){
+    return boost::filesystem::is_regular_file(file_input);
 }
 
-bool FileVerification::verify_extension(std::string str){
-    size_t i = str.rfind('.', str.length());
+bool FileVerification::verify_extension(std::string file_input){
+    size_t i = file_input.rfind('.', file_input.length());
     if ((i != std::string::npos) && (!(Globals::allow_all_types))) {
-        std::string x = str.substr(i+1, str.length() - i);
+        std::string x = file_input.substr(i+1, file_input.length() - i);
         auto b = MiscConstants::FILE_TYPE_WHITELIST;
         for(int j = 0; j < b->length(); j++){
             if(boost::iequals(x, b[j])) { 
                 return true; 
             };
         }
-        std::cerr << StringConstants::WARN_TAG << " File " << str << " has an unrecognised extension [" << x << "]. Use -x to disable these warnings.\n";
+        std::cerr << StringConstants::WARN_TAG << " File " << file_input << " has an unrecognised extension [" << x << "]. Use -x to disable these warnings.\n";
         return false;
     } else {
         return false;
