@@ -5,12 +5,24 @@
 #include <regex>
 #include <iostream>
 #include "Token.h"
+#include "Utils.h"
+#include "Constants.h"
 
 class DO : public Token {
     public:
         bool isValid(std::string input);
+        std::string getTokenName();
     private:
-        std::string TO_MATCH = "([D][O][1-9]+(((([0-9]+)([a-zA-Z]+)?)+)|([0-9]+))[=](([a-zA-Z]+)(((([0-9]+)([a-zA-Z]+)?)+|[a-zA-Z]+)|([0-9]+))|[0-9]+),(([a-zA-Z]+)(((([0-9]+)([a-zA-Z]+)?)+|[a-zA-Z]+)|([0-9]+))|[0-9]+))\\w+";
+        std::string TO_MATCH = "DO([0-9]+)("
+            + RegexConstants::VARIABLE_NAME + "|"
+            + RegexConstants::INTEGER + 
+            + ")=( "
+            + RegexConstants::VARIABLE_NAME + "|"
+            + RegexConstants::INTEGER + 
+            + "),("
+            + RegexConstants::VARIABLE_NAME + "|"
+            + RegexConstants::INTEGER + 
+            + ")";
 };
 
 
