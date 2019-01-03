@@ -1,6 +1,6 @@
 CC=g++
 
-BASE_FLAGS = -ll -std=c++11
+BASE_FLAGS = -ll -std=c++11 -Wunknown-escape-sequence
 
 LDFLAGS = -I/usr/local/Cellar/boost/1.50.0/include -I/opt/local/include -I include/
 
