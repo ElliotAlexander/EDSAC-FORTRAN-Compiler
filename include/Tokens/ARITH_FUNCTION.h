@@ -11,6 +11,7 @@ class ARITH_FUNCTION : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "ARITH_FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = RegexConstants::SUBROUTINE_NAME + "\\(" + RegexConstants::MULTI_VARIABLE_LIST + "\\)[=]" + RegexConstants::ANY_ARG_LIST;
     };

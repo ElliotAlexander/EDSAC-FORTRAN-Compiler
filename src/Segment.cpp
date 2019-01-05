@@ -16,7 +16,8 @@ std::vector<Statement>  Segment::buildStatements(){
         if(!::lineIsComment(segment_body[i])){
             std::string label = segment_body[i].substr(0,4);
             std::string statement_body = segment_body[i].substr(6, segment_body[i].length());
-            statement_arr.push_back(Statement(statement_body, label, i + start_line));
+            Statement stmt(statement_body, label, i + start_line);
+            statement_arr.push_back(stmt);
         }
     }
 

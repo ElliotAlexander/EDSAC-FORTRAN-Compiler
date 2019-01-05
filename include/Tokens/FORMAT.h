@@ -11,6 +11,7 @@ class FORMAT : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "FORMAT_FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = "FORMAT\\((((I[0-9]+)|((E|F)[0-9]+.[0-9]+)),?)+\\)";
 

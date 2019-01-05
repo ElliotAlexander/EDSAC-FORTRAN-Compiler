@@ -11,6 +11,7 @@ class DIMENSION : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "DIMENSION_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = "DIMENSION(("
         + RegexConstants::VARIABLE_NAME

@@ -57,6 +57,10 @@ int main(int argc, char* argv[]){
         std::cout << "\nBeginning Tokenization: \n";
         for(int i = 0; i < segs.size(); i++){
             std::vector<Statement> stmts = segs.at(i).buildStatements();
+            for(int x = 0; x < stmts.size(); x++){
+                Token* token_type = stmts.at(x).identifyStatement();
+                stmts.at(x).tokenizeStatement(token_type);
+            }
         };
         std::cout << "\n --- End --- \n\n\n";
     }

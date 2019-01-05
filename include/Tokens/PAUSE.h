@@ -9,6 +9,7 @@ class PAUSE : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "PAUSE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = "PAUSE([0-9]+)?";
 

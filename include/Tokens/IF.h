@@ -11,6 +11,7 @@ class IF : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "IF_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = "IF(\\([A-Z0-9\\.]+\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK)([0-9]+)((,[0-9]+)+)?";
 

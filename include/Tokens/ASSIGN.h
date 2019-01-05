@@ -10,7 +10,9 @@ class ASSIGN : public Token {
     public:
         bool isValid(std::string input);
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
-        std::string getRegex(){return TO_MATCH; }    private:
+        std::string getRegex(){return TO_MATCH; }    
+        bool tokenize(std::string input);
+    private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
             + "TO"

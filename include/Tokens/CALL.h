@@ -10,7 +10,8 @@ class CALL : public Token {
     public:
         bool isValid(std::string input);
         std::string getTokenName(){return "CALL_TOKEN"; };
-        std::string getRegex(){return TO_MATCH; }
+        std::string getRegex(){return TO_MATCH; } 
+        bool tokenize(std::string input);
     private:
         std::string TO_MATCH = "CALL"
         + RegexConstants::SUBROUTINE_NAME 
