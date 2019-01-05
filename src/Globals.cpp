@@ -6,4 +6,5 @@ namespace Globals {
     bool disable_line_length_warnings = false;
     bool dump_data_structures = false;
     bool dump_tokens = false;
+    bool lazy_tokens =  false;
 }

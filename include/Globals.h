@@ -10,6 +10,7 @@ namespace Globals {
     extern bool disable_line_length_warnings;
     extern bool dump_data_structures;
     extern bool dump_tokens;
+    extern bool lazy_tokens;
 }
 
 #endif

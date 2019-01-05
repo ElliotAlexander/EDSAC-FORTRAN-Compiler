@@ -10,7 +10,8 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("x,allextensions", "Allow all file extension", cxxopts::value<bool>()->default_value("false"))
         ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
         ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"))
-        ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"));
+        ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"))
+        ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
 
@@ -18,6 +19,12 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     if(result["allextensions"].as<bool>()){
         std::cout << "+all-extensions" << std::endl;
         Globals::allow_all_types = true;
+    }
+    
+        // Handle Boolean Arguments.
+    if(result["lazytokens"].as<bool>()){
+        std::cout << "+lazy tokens" << std::endl;
+        Globals::lazy_tokens = true;
     }
 
     if(result["linelengthwarnings"].as<bool>()){
