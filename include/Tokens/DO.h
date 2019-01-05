@@ -22,7 +22,10 @@ class DO : public Token {
             + "),("
             + RegexConstants::VARIABLE_NAME + "|"
             + RegexConstants::INTEGER + 
-            + ")";
+            + ")(,("
+            + RegexConstants::VARIABLE_NAME + "|"
+            + RegexConstants::INTEGER + 
+            + "))?";
 };
 
 

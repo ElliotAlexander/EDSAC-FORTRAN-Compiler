@@ -10,6 +10,10 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
     ARITH_FUNCTION arithstmt;
     STOP stop_stmt;
     VAR_DECLR var_declr;
+    DIMENSION dimen_stmt;
+    GOTO goto_stmt;
+    ASSIGN assign_stmt;
+    IF if_stmt;
     tokens.push_back(&dostmt);
     tokens.push_back(&substmt);
     tokens.push_back(&endstmt);
@@ -18,6 +22,11 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
     tokens.push_back(&arithstmt);
     tokens.push_back(&stop_stmt);
     tokens.push_back(&var_declr);
+    tokens.push_back(&dimen_stmt);
+    tokens.push_back(&goto_stmt);
+    tokens.push_back(&assign_stmt);
+    tokens.push_back(&if_stmt);
+    
     bool found = false;
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
         if(tokens[i]->isValid(statement_body)){
@@ -25,6 +34,9 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
                 std::cout << "[" << line_number + 1 << "][" << tokens[i]->getTokenName() << "] {" << statement_body << "\t}" << std::endl;
             }
             found = true;
+            if(Globals::lazy_tokens){
+                break;
+            }
         }
     };
 

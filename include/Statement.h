@@ -15,6 +15,10 @@
 #include "Tokens/ARITH_FUNCTION.h"
 #include "Tokens/VAR_DECLR.h"
 #include "Tokens/STOP.h"
+#include "Tokens/DIMENSION.h"
+#include "Tokens/GOTO.h"
+#include "Tokens/ASSIGN.h"
+#include "Tokens/IF.h"
 #include "Token.h"
 
 class Statement {

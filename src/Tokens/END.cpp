@@ -2,7 +2,9 @@
 
 bool END::isValid(std::string input){
     input = ::stripWhitespaceString(input);
-    return (std::regex_match(input, std::regex(END::TO_MATCH)));
+    std::cout << END::TO_MATCH << std::endl;
+    boost::regex expr{END::TO_MATCH};
+    return (boost::regex_match(input, expr));
 }
 
 std::string END::getTokenName(){

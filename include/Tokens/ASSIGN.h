@@ -1,5 +1,5 @@
-#ifndef __STOP_H_INCLUDED
-#define __STOP_H_INCLUDED
+#ifndef __ASSIGN_H_INCLUDED
+#define __ASSIGN_H_INCLUDED
 
 #include <string>
 #include <regex>
@@ -8,12 +8,15 @@
 #include "Utils.h"
 #include "Constants.h"
 
-class STOP : public Token {
+class ASSIGN : public Token {
     public:
         bool isValid(std::string input);
         std::string getTokenName();
     private:
-        std::string TO_MATCH = "STOP([0-9]+)?";
+        std::string TO_MATCH = "ASSIGN"
+            + RegexConstants::ANY_ARG 
+            + "TO"
+            + "([0-9]+)(.[0-9]+)?";
 };
 
 
