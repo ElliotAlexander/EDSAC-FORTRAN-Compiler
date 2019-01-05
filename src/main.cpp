@@ -4,6 +4,7 @@ void print_header();
 void print_footer();
 
 int main(int argc, char* argv[]){
+    clock_t tStart = clock();
     ::print_header();
 
     // parse command arguments.
@@ -59,5 +60,7 @@ int main(int argc, char* argv[]){
         };
         std::cout << "\n --- End --- \n\n\n";
     }
+    // TODO printf is bad
+    printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
     ::print_footer();
 }
