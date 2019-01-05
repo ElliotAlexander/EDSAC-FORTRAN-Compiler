@@ -6,6 +6,8 @@
 #include "Constants.h"
 #include <boost/regex.hpp>
 
+
+
 class Token{
     public:
         bool isValid(std::string input, std::string regex);

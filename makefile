@@ -10,12 +10,10 @@ LINKFLAGS = -lboost_thread -lboost_system -l boost_filesystem -l boost_regex
 
 FLAGS = $(BASE_FLAGS) $(LLIBFLAGS) $(LDFLAGS) $(LINKFLAGS)
 
-
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
-
 
 SRCS := $(call rwildcard,src/,*.cpp)
 
-
 all:
+	./runscripts.sh
 	$(CC) $(FLAGS) -o main.out $(SRCS)
