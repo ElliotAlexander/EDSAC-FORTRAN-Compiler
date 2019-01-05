@@ -14,7 +14,11 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
     GOTO goto_stmt;
     ASSIGN assign_stmt;
     IF if_stmt;
+    EQUIVALENCE eq_stmt;
+    FORMAT format_stmt;
     tokens.push_back(&dostmt);
+    tokens.push_back(&format_stmt);
+    tokens.push_back(&eq_stmt);
     tokens.push_back(&substmt);
     tokens.push_back(&endstmt);
     tokens.push_back(&callstmt);

@@ -19,6 +19,8 @@
 #include "Tokens/GOTO.h"
 #include "Tokens/ASSIGN.h"
 #include "Tokens/IF.h"
+#include "Tokens/FORMAT.h"
+#include "Tokens/EQUIVALENCE.h"
 #include "Token.h"
 
 class Statement {
