@@ -2,8 +2,6 @@
 #define __SUBROUTINE_H_INCLUDED
 
 #include <string>
-#include <regex>
-#include <iostream>
 #include "Utils.h"
 #include "Constants.h"
 #include "Token.h"
@@ -12,7 +10,8 @@
 class SUBROUTINE : public Token {
     public:
         bool isValid(std::string input);
-        std::string getTokenName();
+        std::string getTokenName(){return "SUBROUTINE_TOKEN"; };
+        std::string getRegex(){return TO_MATCH; }
     private:
     // Note that the second section of this regex matches subroutines without arguments
     // i.e. SUBROUTINE HelloWorld 

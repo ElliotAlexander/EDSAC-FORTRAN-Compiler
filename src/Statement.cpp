@@ -29,10 +29,16 @@ Statement::Statement(std::string statement_body, std::string label, int line_num
     
     bool found = false;
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
-        if(tokens[i]->isValid(statement_body)){
+        if(tokens[i]->isValid(statement_body, (tokens[i]->getRegex()))){
+            if(found){
+                std::cerr << StringConstants::ERROR_TAG + "Error parsing line [" << line_number + 1 << "]{" << statement_body << "}" << std::endl;
+                continue; 
+            }
+
             if(Globals::dump_tokens) { 
                 std::cout << "[" << line_number + 1 << "][" << tokens[i]->getTokenName() << "] {" << statement_body << "\t}" << std::endl;
             }
+
             found = true;
             if(Globals::lazy_tokens){
                 break;

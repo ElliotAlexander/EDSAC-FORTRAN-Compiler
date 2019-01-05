@@ -11,7 +11,8 @@
 class VAR_DECLR : public Token {
     public:
         bool isValid(std::string input);
-        std::string getTokenName();
+        std::string getTokenName(){return "VAR_DECL_TOKEN"; };
+        std::string getRegex(){return TO_MATCH; }
     private:
         std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "=" + RegexConstants::ANY_ARG;
     };

@@ -2,8 +2,6 @@
 #define __ASSIGN_H_INCLUDED
 
 #include <string>
-#include <regex>
-#include <iostream>
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -11,8 +9,8 @@
 class ASSIGN : public Token {
     public:
         bool isValid(std::string input);
-        std::string getTokenName();
-    private:
+        std::string getTokenName(){return "ASSIGN_TOKEN"; };
+        std::string getRegex(){return TO_MATCH; }    private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
             + "TO"
