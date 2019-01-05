@@ -6,7 +6,7 @@ LDFLAGS = -I/usr/local/Cellar/boost/1.50.0/include -I/opt/local/include -I inclu
 
 LLIBFLAGS = -L/usr/local/Cellar/boost/1.68.0/
 
-LINKFLAGS = -lboost_thread -lboost_system -l boost_filesystem
+LINKFLAGS = -lboost_thread -lboost_system -l boost_filesystem -l boost_regex
 
 FLAGS = $(BASE_FLAGS) $(LLIBFLAGS) $(LDFLAGS) $(LINKFLAGS)
 
