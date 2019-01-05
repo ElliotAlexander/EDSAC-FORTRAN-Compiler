@@ -28,3 +28,11 @@ std::string stripWhitespaceString(std::string input){
     for(int i=0; i < input.length(); i++) { if(input[i] == ' ') { (input.erase(i,1)); } };
     return input;
 }
+
+void print_header(){
+    std::cout << "\n\n" << "===== " << "EDSAC FORTRAN II Compiler " << " =====" << "\n\n";
+}
+
+void print_footer(){
+    std::cout << "\n\n" << "==== " << "End of runtime " << " ====" << "\n\n"; 
+}

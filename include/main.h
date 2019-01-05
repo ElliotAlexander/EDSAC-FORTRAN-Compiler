@@ -10,5 +10,6 @@
 #include "FileVerification.h"
 #include "FileContainer.h"
 #include "Globals.h"
+#include "Utils.h"
 
 #endif
