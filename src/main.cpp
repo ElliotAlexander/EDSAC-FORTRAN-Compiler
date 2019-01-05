@@ -60,6 +60,7 @@ int main(int argc, char* argv[]){
         };
         std::cout << "\n --- End --- \n\n\n";
     }
+    
     // TODO printf is bad
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
     ::print_footer();

@@ -1,10 +1,9 @@
 #include "CommandArgs.h"
 CommandArgs::CommandArgs(int argc, char* argv[]){
 
-    std::cout << std::endl << ":: Loading Command Arguments ::" << "\n\n";
 
     // Configure Options
-    cxxopts::Options options("EDSAC FORTRAN Compiler", "FORTRAN II Compiler built for the EDSAC Machine.");
+    cxxopts::Options options("./executable", "FORTRAN II Compiler built for the EDSAC Machine.");
     options.add_options()
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
         ("x,allextensions", "Allow all file extension", cxxopts::value<bool>()->default_value("false"))
@@ -15,15 +14,17 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
+    if(result["help"].as<bool>()){
+        std::cout << options.help() << std::endl;
+        exit(1);
+    }
+
+    std::cout << std::endl << ":: Loading Command Arguments ::" << "\n\n";
 
     // Handle Boolean Arguments.
     if(result["allextensions"].as<bool>()){
         std::cout << "+all-extensions" << std::endl;
         Globals::allow_all_types = true;
-    }
-    if(result["help"].as<bool>()){
-        std::cout << options.help() << std::endl;
-        exit;
     }
 
         // Handle Boolean Arguments.
