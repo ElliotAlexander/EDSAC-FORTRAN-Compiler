@@ -13,7 +13,7 @@ class FORMAT : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
     private:
-        std::string TO_MATCH = "FORMAT\\((((I[0-9]+)|((E|F)[0-9]+.[0-9]+)),?)+\\)";
+        std::string TO_MATCH = "FORMAT\\(([0-9]+)?(((I[0-9]+)|((E|F|H)[0-9]+.[0-9]+)),?)+\\)";
 
 };
 

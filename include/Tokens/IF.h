@@ -13,7 +13,7 @@ class IF : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
     private:
-        std::string TO_MATCH = "IF(\\([A-Z0-9\\.]+\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK)([0-9]+)((,[0-9]+)+)?";
+        std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG_LIST + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK)([0-9]+)((,[0-9]+)+)?";
 
 };
 
