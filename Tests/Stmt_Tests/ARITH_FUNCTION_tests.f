@@ -1,4 +1,3 @@
-      PROGRAM
       FffiSTF(X) = A*X + B
       SECONDF(X, B) = A*X + B
       THffiDF(D) = FIRSTF(E)/D
