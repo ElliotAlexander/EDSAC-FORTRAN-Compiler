@@ -2,8 +2,9 @@
 
 
 bool lineIsComment(std::string line){
+    line = stripWhitespaceString(line);
     if(line.length() > 0){
-        return (line.at(0) == 'C' || line.at(0) == 'c') ? true : false;
+        return (line.at(0) == 'C' || line.at(0) == 'c' || line.at(0) == '!') ? true : false;
     } else { return false; }
 }
 
@@ -25,7 +26,7 @@ std::string getEnumString(int i){
 }
 
 std::string stripWhitespaceString(std::string input){
-    for(int i=0; i < input.length(); i++) { if(input[i] == ' ') { (input.erase(i,1)); } };
+    input.erase(remove(input.begin(), input.end(), ' '), input.end());
     return input;
 }
 

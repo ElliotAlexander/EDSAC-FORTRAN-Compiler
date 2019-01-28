@@ -13,7 +13,7 @@ class ARITH_FUNCTION : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
     private:
-        std::string TO_MATCH = RegexConstants::SUBROUTINE_NAME + "\\(" + RegexConstants::MULTI_VARIABLE_LIST + "\\)[=]" + RegexConstants::ANY_ARG_LIST;
+        std::string TO_MATCH = RegexConstants::SUBROUTINE_NAME + "(\\" + RegexConstants::MULTI_VARIABLE_LIST + "\\)[=]" + RegexConstants::ANY_ARG_LIST;
     };
 
 
