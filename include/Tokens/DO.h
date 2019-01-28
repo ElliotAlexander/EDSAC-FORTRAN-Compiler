@@ -6,6 +6,10 @@
 #include "Utils.h"
 #include "Constants.h"
 #include <boost/algorithm/string.hpp>
+#include <stdlib.h>
+#include <boost/regex.hpp>
+#include <boost/lexical_cast.hpp>
+#include <iostream>
 
 class DO : public Token {
     public:
