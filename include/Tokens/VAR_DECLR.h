@@ -12,10 +12,29 @@ class VAR_DECLR : public Token {
     public:
         bool isValid(std::string input);
         std::string getTokenName(){return "VAR_DECL_TOKEN"; };
-        std::string getRegex(){return TO_MATCH; }
+        std::string getRegex(){return TO_MATCH;}
         bool tokenize(std::string input);
     private:
-        std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "[=]" + RegexConstants::ANY_ARG_LIST;
+        std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "[=]" 
+        + "(" 
+        + RegexConstants::FUNCTION_CALL
+        + "|"
+        + RegexConstants::FLOATING_POINT
+        + "|"
+        + RegexConstants::VARIABLE_NAME 
+        + "|"
+        + RegexConstants::DIRECT_VAL
+        + ")((" 
+        + RegexConstants::INLINE_OPERATION 
+        + "("
+        + RegexConstants::VARIABLE_NAME 
+        + "|"
+        + RegexConstants::FLOATING_POINT
+        + "|"
+        + RegexConstants::FUNCTION_CALL
+        + "|"
+        + RegexConstants::DIRECT_VAL
+        + "))+)?";
     };
 
 
