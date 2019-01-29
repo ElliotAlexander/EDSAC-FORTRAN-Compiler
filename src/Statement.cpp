@@ -8,7 +8,7 @@ Statement::Statement(std::string statement_body, std::string label, int line_no)
 }
 
 Token* Statement::identifyStatement(){
-    std::vector<Token*> tokens;
+
     DO dostmt;
     SUBROUTINE substmt;
     END endstmt;
@@ -23,28 +23,37 @@ Token* Statement::identifyStatement(){
     IF if_stmt;
     EQUIVALENCE eq_stmt;
     FORMAT format_stmt;
-    tokens.push_back(&dostmt);
-    tokens.push_back(&format_stmt);
-    tokens.push_back(&eq_stmt);
-    tokens.push_back(&substmt);
-    tokens.push_back(&endstmt);
-    tokens.push_back(&callstmt);
-    tokens.push_back(&returnstmt);
-    tokens.push_back(&arithstmt);
-    tokens.push_back(&stop_stmt);
-    tokens.push_back(&var_declr);
-    tokens.push_back(&dimen_stmt);
-    tokens.push_back(&goto_stmt);
-    tokens.push_back(&assign_stmt);
-    tokens.push_back(&if_stmt);
+
+    std::vector<Token*> tokens{
+        &dostmt,
+        &format_stmt,
+        &eq_stmt,
+        &substmt,
+        &endstmt,
+        &callstmt,
+        &returnstmt,
+        &arithstmt,
+        &stop_stmt,
+        &var_declr,
+        &dimen_stmt,
+        &goto_stmt,
+        &assign_stmt,
+        &if_stmt
+    };
+
     Token* result;
-    
     bool found = false;
+
+    // Iterate through token types.
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
+        
+        // Check token is valud - parse token type. 
         if(tokens[i]->isValid(statement_body_nows, (tokens[i]->getRegex()))){
 
+            //
             if(found){
                 std::cerr << StringConstants::ERROR_TAG + "Error parsing line - line matches two possible tokens [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
+                std::cerr << StringConstants::ERROR_TAG + "Second matching token: " + tokens[i]->getTokenName() << std::endl;
                 continue; 
             }
 
