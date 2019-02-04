@@ -2,6 +2,8 @@
 #define __EQUIVALENCE_H_INCLUDED
 
 #include <string>
+#include <vector>
+#include "TOC.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -12,6 +14,7 @@ class EQUIVALENCE : public Token {
         std::string getTokenName(){return "EQUIVALENCE_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "EQUIVALENCE (\\(" + RegexConstants::MULTI_VARIABLE_LIST + "\\))+";
 };

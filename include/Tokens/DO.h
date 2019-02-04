@@ -5,10 +5,13 @@
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
-#include <boost/algorithm/string.hpp>
+#include "Globals.h"
+#include <vector>
+#include "TOC.h"
 #include <stdlib.h>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp> 
 #include <iostream>
 
 class DO : public Token {
@@ -17,6 +20,7 @@ class DO : public Token {
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::VARIABLE_NAME + "|"

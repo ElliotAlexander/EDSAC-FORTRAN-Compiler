@@ -4,6 +4,8 @@
 #include <string>
 #include "Token.h"
 #include "Utils.h"
+#include <vector>
+#include "TOC.h"
 #include "Constants.h"
 
 class ASSIGN : public Token {
@@ -12,6 +14,7 @@ class ASSIGN : public Token {
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 

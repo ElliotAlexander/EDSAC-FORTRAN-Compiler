@@ -3,3 +3,7 @@
 bool DIMENSION::tokenize(std::string input){
     return true;
 }
+
+std::vector<TOC> DIMENSION::generatetoc(std::string input){
+    return {};
+}

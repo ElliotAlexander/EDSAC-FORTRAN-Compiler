@@ -3,6 +3,8 @@
 
 #include <string>
 #include "Token.h"
+#include <vector>
+#include "TOC.h"
 #include "Utils.h"
 #include "Constants.h"
 
@@ -12,6 +14,7 @@ class END : public Token {
         std::string getTokenName(){return "END_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "END((\\" + RegexConstants::MULTI_VARIABLE_LIST + "\\))?" 
         + "|"

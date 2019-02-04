@@ -2,8 +2,10 @@
 #define __TOKEN_H_INCLUDED
 
 #include <string>
+#include <vector>
 #include "Utils.h"
 #include "Constants.h"
+#include "TOC.h"
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 
@@ -13,6 +15,7 @@ class Token{
         virtual std::string getRegex() = 0;
         virtual std::string getTokenName() = 0;
         virtual bool tokenize(std::string input) = 0;
+        virtual std::vector<TOC> generatetoc(std::string input) = 0;
     private:
 };
 

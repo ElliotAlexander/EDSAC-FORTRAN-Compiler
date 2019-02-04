@@ -1,6 +1,8 @@
 #ifndef __READ_H_INCLUDED
 #define __READ_H_INCLUDED
 
+#include <vector>
+#include "TOC.h"
 #include <string>
 #include "Token.h"
 #include "Utils.h"
@@ -13,6 +15,7 @@ class READ : public Token {
         std::string getTokenName(){return "READ_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "READ (T" + RegexConstants::VARIABLE_NAME;
 };

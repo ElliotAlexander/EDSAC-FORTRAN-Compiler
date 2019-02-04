@@ -1,6 +1,8 @@
 #ifndef __VAR_DECLR_H_INCLUDED
 #define __VAR_DECLR_H_INCLUDED
 
+#include <vector>
+#include "TOC.h"
 #include <string>
 #include <regex>
 #include <iostream>
@@ -14,6 +16,7 @@ class VAR_DECLR : public Token {
         std::string getTokenName(){return "VAR_DECL_TOKEN"; };
         std::string getRegex(){return TO_MATCH;}
         bool tokenize(std::string input);
+        std::vector<TOC> generatetoc(std::string input);
     private:
         std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "[=]" 
         + "(" 
