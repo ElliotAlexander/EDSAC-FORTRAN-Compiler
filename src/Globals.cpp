@@ -7,4 +7,5 @@ namespace Globals {
     bool dump_data_structures = false;
     bool dump_tokens = false;
     bool lazy_tokens =  false;
+    bool dump_parsed_values = false;
 }

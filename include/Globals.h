@@ -11,6 +11,7 @@ namespace Globals {
     extern bool dump_data_structures;
     extern bool dump_tokens;
     extern bool lazy_tokens;
+    extern bool dump_parsed_values;
 }
 
 #endif

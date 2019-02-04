@@ -10,6 +10,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
         ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"))
         ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"))
+        ("p,parsedvalues","Dump Parsed Values from Statements while generating Three Op Codes.", cxxopts::value<bool>()->default_value("false"))
         ("h,help","Print help page", cxxopts::value<bool>()->default_value("false"))
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
@@ -25,6 +26,11 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     if(result["allextensions"].as<bool>()){
         std::cout << "+all-extensions" << std::endl;
         Globals::allow_all_types = true;
+    }
+
+    if(result["parsedvalues"].as<bool>()){
+        std::cout << "+parsed-values" << std::endl;
+        Globals::dump_parsed_values = true;
     }
 
         // Handle Boolean Arguments.
