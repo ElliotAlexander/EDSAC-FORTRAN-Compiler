@@ -22,8 +22,7 @@
             }
     
             std::vector<std::string> toTOCStr(int &variable_index){
-                std::vector<std::string> x = {"$" + std::to_string(variable_index) + "=" + std::to_string(argument)};
-                variable_index++;
+                std::vector<std::string> x = { toValue() }; 
                 return x;
             }
     };
