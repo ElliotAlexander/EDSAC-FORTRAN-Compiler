@@ -9,10 +9,10 @@
   using namespace std;
 
   extern int yylex();
-  extern int yyparse();
+  extern int yyparse(TOC*);
   extern FILE *yyin;
  
-  void yyerror(const char *s);
+  void yyerror(std::vector<std::string> *result, const char *s);
 %}
 
 %code requires {
@@ -27,6 +27,8 @@
   TOC * toc_T;
 }
 
+%parse-param {std::vector<std::string> *result} 
+
 %token <ival> INT
 %token <fval> FLOAT
 %token <vval> VARIABLE
@@ -35,10 +37,11 @@
 
 %type <toc_T> expression1
 %type <toc_T> expression
+%type <toc_T> start
 
 
-%right PLUS MINUS
-%right MUL DIV
+%left PLUS MINUS
+%left MUL DIV
 
 %start start
 %%
@@ -48,10 +51,13 @@ expressions:
     expressions expression1 ENDL
     | expression1 ENDL;
 expression1:
-    expression { 
-        TOC* x = $1;
-        cout<<x->toTOCStr()<<endl; 
-    }; 
+    expression {
+        // careful - this will be lost at the end of control flow.
+        int variable_index = 0;
+        TOC* x = $$;
+        std::vector<std::string> y = x->toTOCStr(variable_index);
+        result->insert(result->end(), y.begin(), y.end());
+    };
 expression:
     expression PLUS expression { 
         TOC *a1 = $1;
@@ -89,7 +95,7 @@ expression:
     };
 %%
 
-void yyerror(const char *s) {
+void yyerror(std::vector<std::string> *result, const char *s) {
   cout << "Parser Error:  Message: " << s << endl;
   exit(-1);
 }

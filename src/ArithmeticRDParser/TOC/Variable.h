@@ -14,7 +14,14 @@
                 tt = TOC_TYPES::VARIABLE_E;
                 name = name_in;
             }
-            std::string toTOCStr(){
+            std::vector<std::string> toTOCStr(int &variable_index){
+                std::vector<std::string> x;
+                x.push_back(std::string("$" + std::to_string(variable_index) + "=" + name));
+                variable_index++;
+                return x;
+            }
+
+            std::string toValue(){
                 std::string x = name;
                 return x;
             }

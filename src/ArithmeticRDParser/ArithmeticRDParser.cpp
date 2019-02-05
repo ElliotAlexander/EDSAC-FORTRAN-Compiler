@@ -10,7 +10,8 @@
 #include <cstdio>
 #include <iostream>
 extern int yylex();
-extern int yyparse();
+extern int yyparse(std::vector<std::string> *result);
+extern TOC* yylval;
 extern FILE *yyin;
 
 
@@ -32,6 +33,10 @@ int parseADString()
     // Set flex to read from it instead of defaulting to STDIN:
     yyin = myfile;  
     // Parse through the input:
-    return yyparse();
+    std::vector<std::string> result;
+    yyparse(&result);
+    for (int i = 0; i < result.size(); i++) {
+		std::cout << result.at(i) << ' ' << std::endl;
+	}
 }
 

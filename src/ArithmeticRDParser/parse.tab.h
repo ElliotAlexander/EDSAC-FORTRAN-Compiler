@@ -91,6 +91,6 @@ typedef union YYSTYPE YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (void);
+int yyparse (std::vector<std::string> *result);
 
 #endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */
