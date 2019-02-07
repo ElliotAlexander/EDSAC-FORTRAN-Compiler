@@ -60,8 +60,9 @@ class Operation : public TOC{
                                         
                     std::vector<std::string> y = arg2->toTOCStr(variable_index);
                     return_arr.insert(return_arr.end(), y.begin(), y.end());
-
-                    return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index) + toOPType(op) + std::string("$") + std::to_string(variable_index-1));
+                    
+                    return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index-2) + toOPType(op) + std::string("$") + std::to_string(variable_index-1));
+                    variable_index++;
                     return return_arr;
                 }
 
@@ -70,16 +71,15 @@ class Operation : public TOC{
                     int variable_index_og = variable_index;
                     std::vector<std::string> x = arg1->toTOCStr(variable_index);
                     return_arr.insert(return_arr.end(), x.begin(), x.end());
-                    return_arr.push_back("$" + std::to_string(variable_index+1) + std::string("=$") + std::to_string(variable_index) + toOPType(op) + arg2->toValue());
+                    return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index-1) + toOPType(op) + arg2->toValue());
                     variable_index++;
                 } 
-
 
                 if(arg2->tt == TOC_TYPES::OPERATION_E){
                     int variable_index_og = variable_index;
                     std::vector<std::string> x = arg2->toTOCStr(variable_index);
                     return_arr.insert(return_arr.end(), x.begin(), x.end());
-                    return_arr.push_back("$" + std::to_string(variable_index+1) + std::string("=$") + std::to_string(variable_index) + toOPType(op) + arg1->toValue());
+                    return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index-1) + toOPType(op) + arg1->toValue());
                     variable_index++;
                 }
                 return return_arr;
@@ -87,7 +87,7 @@ class Operation : public TOC{
                 return_arr.push_back("$" + std::to_string(variable_index) + "=" + arg1->toValue());
                 return_arr.push_back("$" + std::to_string(variable_index+1) + "=" + arg2->toValue());
                 return_arr.push_back("$" + std::to_string(variable_index+2) + "=$" + std::to_string(variable_index) + toOPType(op) + "$" + std::to_string(variable_index+1));
-                variable_index = variable_index + 2;
+                variable_index = variable_index + 3;
                 return return_arr;
             }
         }

@@ -43,12 +43,13 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 18 "parse.y" /* yacc.c:1912  */
+#line 19 "parse.y" /* yacc.c:1912  */
 
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
     #include "TOC.h"
+    #include <vector>
 
-#line 52 "parse.tab.h" /* yacc.c:1912  */
+#line 53 "parse.tab.h" /* yacc.c:1912  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -58,13 +59,15 @@ extern int yydebug;
     INT = 258,
     FLOAT = 259,
     VARIABLE = 260,
-    ENDL = 261,
-    PLUS = 262,
-    MINUS = 263,
-    MUL = 264,
-    DIV = 265,
-    LPAREN = 266,
-    RPAREN = 267
+    FUNCTION_IDENTIFIER = 261,
+    ENDL = 262,
+    PLUS = 263,
+    MINUS = 264,
+    MUL = 265,
+    DIV = 266,
+    LPAREN = 267,
+    RPAREN = 268,
+    COMMA = 269
   };
 #endif
 
@@ -73,14 +76,16 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 23 "parse.y" /* yacc.c:1912  */
+#line 25 "parse.y" /* yacc.c:1912  */
 
   int ival;
   float fval;
   char *vval;
+  char *tval;
   TOC * toc_T;
+  std::vector<TOC*> toc_args;
 
-#line 84 "parse.tab.h" /* yacc.c:1912  */
+#line 89 "parse.tab.h" /* yacc.c:1912  */
 };
 
 typedef union YYSTYPE YYSTYPE;

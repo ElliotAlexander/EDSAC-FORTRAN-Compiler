@@ -2,6 +2,7 @@
 #include <cstdio>
 #include "parse.tab.h"  // to get the token types from Bison
 #include "TOC.h"
+#include <iostream>
 %}
 %%
 [ \t]           ; // consume line by line TODO
@@ -17,4 +18,5 @@
 \/                { return DIV; }
 \(                { return LPAREN; }
 \)                { return RPAREN; }
+\,                { return COMMA; }
 \n                { return ENDL; }

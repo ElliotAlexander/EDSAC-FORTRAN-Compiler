@@ -8,7 +8,8 @@
     enum TOC_TYPES { 
         VARIABLE_E, 
         VALUE_E,
-        OPERATION_E
+        OPERATION_E,
+        FUNCTION_E
     };
     
     class TOC{
