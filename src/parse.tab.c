@@ -69,11 +69,11 @@
 
     #include <cstdio>
     #include <iostream>
-    #include "TOC/Operation.h"
-    #include "TOC/Value.h"
-    #include "TOC/Variable.h"
-    #include "TOC/Function.h"
-    #include "TOC.h"
+    #include "ArithmeticParser/Operation.h"
+    #include "ArithmeticParser/Value.h"
+    #include "ArithmeticParser/Variable.h"
+    #include "ArithmeticParser/Function.h"
+    #include "ArithmeticParser/TOC.h"
     #include <vector>  
 
     using namespace std;   

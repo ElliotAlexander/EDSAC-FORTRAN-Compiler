@@ -451,7 +451,7 @@ char *yytext;
 #line 2 "lex.l"
 #include <cstdio>
 #include "parse.tab.h"  // to get the token types from Bison
-#include "TOC.h"
+#include "ArithmeticParser/TOC.h"
 #include <iostream>
 #line 456 "lex.yy.c"
 #line 457 "lex.yy.c"

@@ -1,6 +1,0 @@
-varHELLO
- 55+ 55
- 55
- 55+varHELLO
-$2 =  55-varHELLO
- 55+

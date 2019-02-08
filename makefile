@@ -14,6 +14,9 @@ rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 
 SRCS := $(call rwildcard,src/,*.cpp) $(call rwildcard,src/,*.c) 
 
+
 all:
+	cd src;	bison -d parse.y --debug -t; flex lex.l
+	cd ..
 	time ./runscripts.sh
 	$(CC) $(FLAGS) -o main.out $(SRCS)
