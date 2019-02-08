@@ -5,9 +5,6 @@ extern int yyparse(std::vector<std::string> *result);
 extern TOC* yylval;
 extern FILE *yyin;
 
-
-int parseADString();
-
 int parseADString()
 {
     // open a file handle to a particular file:
