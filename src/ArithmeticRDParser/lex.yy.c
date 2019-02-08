@@ -738,18 +738,18 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 9 "lex.l"
-{ yylval.fval = atof(yytext); return FLOAT; }
+{ yylval.u.fval = atof(yytext); return FLOAT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 10 "lex.l"
-{ yylval.ival = atoi(yytext); return INT; }
+{ yylval.u.ival = atoi(yytext); return INT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 11 "lex.l"
 {
-    yylval.vval = strdup(yytext);
+    yylval.u.vval = strdup(yytext);
     return VARIABLE;
 }
 	YY_BREAK

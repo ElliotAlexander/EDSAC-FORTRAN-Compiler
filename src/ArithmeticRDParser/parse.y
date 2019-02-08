@@ -1,49 +1,55 @@
 %{
-  #include <cstdio>
-  #include <iostream>
-  #include "TOC/Operation.h"
-  #include "TOC/Value.h"
-  #include "TOC/Variable.h"
-  #include "TOC/Function.h"
-  #include "TOC.h"
+    #include <cstdio>
+    #include <iostream>
+    #include "TOC/Operation.h"
+    #include "TOC/Value.h"
+    #include "TOC/Variable.h"
+    #include "TOC/Function.h"
+    #include "TOC.h"
+    #include <vector>  
 
-  using namespace std;
+    using namespace std;   
 
-  extern int yylex();
-  extern int yyparse(TOC*);
-  extern FILE *yyin;
- 
-  void yyerror(std::vector<std::string> *result, const char *s);
+    extern int yylex();
+    extern int yyparse(TOC*);
+    extern FILE *yyin;
+
+    void yyerror(std::vector<std::string> *result, const char *s);
+
 %}
 
 %code requires {
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
     #include "TOC.h"
     #include <vector>
+
+    struct type_vals {
+        union {
+            int ival;
+            float fval;
+            char *vval;
+            TOC *toc_T;
+        } u;
+        std::vector<TOC*> toc_args;
+    };
 }
 
-%union {
-  int ival;
-  float fval;
-  char *vval;
-  char *tval;
-  TOC * toc_T;
-  std::vector<TOC*> toc_args;
-}
 
 %parse-param {std::vector<std::string> *result} 
 
-%token <ival> INT
-%token <fval> FLOAT
-%token <vval> VARIABLE
-%token <tval> FUNCTION_IDENTIFIER
+%define api.value.type {struct type_vals}
+
+%token <u.ival> INT
+%token <u.fval> FLOAT
+%token <u.vval> VARIABLE
 
 %token ENDL PLUS MINUS MUL DIV LPAREN RPAREN COMMA
 
-%type <toc_T> expression1
-%type <toc_T> expression
-%type <toc_T> start
+%type <u.toc_T> expression1
+%type <u.toc_T> expression
+%type <u.toc_T> start
 %type <toc_args> arguments
+%type <toc_args> single_argument
 
 
 %left PLUS MINUS
@@ -86,10 +92,14 @@ expression:
         $$ = new Operation(a1, a2, OPS::DIVIDE);
     }
     | VARIABLE LPAREN arguments RPAREN {
-        char* test = $1;
-        std::vector<TOC*> args;
-        args.push_back($3);
-        $$ = new Function(args, test);
+        char* function_name = $1;
+        std::vector<TOC*> args = $3;
+        $$ = new Function(args, function_name);
+    }
+    | VARIABLE LPAREN RPAREN {
+        char* function_name = $1;
+        std::vector<TOC*> args = {};
+        $$ = new Function(args, function_name);
     }
     |LPAREN expression RPAREN { 
         TOC *t = $2; 
@@ -101,18 +111,12 @@ expression:
     | FLOAT { 
         $$ = new Value<float>($1);
     }
-    | FUNCTION_IDENTIFIER {}
     | VARIABLE {
         char* name = $1;
         $$ = new Variable(name);
     };
 arguments: 
-    expression {
-        TOC* arg1 = $1;
-        std::vector<TOC*> return_arr;
-        return_arr.push_back(arg1);
-        $$ = return_arr;
-    }
+    single_argument
     | expression COMMA arguments {
         TOC* arg1 = $1;
         std::vector<TOC*> return_arr;
@@ -120,10 +124,17 @@ arguments:
         return_arr.insert(return_arr.end(), stacked_return_arr.begin(), stacked_return_arr.end());
         return_arr.push_back(arg1);
         $$ = return_arr;
-    }
+    };
+single_argument: 
+    expression {
+        TOC* arg1 = $1;
+        std::vector<TOC*> return_arr;
+        return_arr.push_back(arg1);
+        $$ = return_arr;
+    };
 %%
 
 void yyerror(std::vector<std::string> *result, const char *s) {
-  cout << "Parser Error:  Message: " << s << endl;
-  exit(-1);
+    cout << "Parser Error:  Message: " << s << endl;
+    exit(-1);
 }

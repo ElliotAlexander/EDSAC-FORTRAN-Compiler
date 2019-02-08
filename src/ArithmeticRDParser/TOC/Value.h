@@ -22,9 +22,11 @@
             }
     
             std::vector<std::string> toTOCStr(int &variable_index){
-                std::vector<std::string> x = { std::string("$") + toValue() }; 
+                std::vector<std::string> x = { toValue() }; 
                 return x;
             }
+        private:
+            int assigned_variable;
     };
     
     #endif
