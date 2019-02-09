@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for f in Scripts/*.sh 
+for f in scripts/*.sh 
 do 
     echo "Running $f"
     chmod +x $f
