@@ -15,6 +15,7 @@ class Statement {
         Statement(std::string statement_body, std::string label, int line_no);
         Token* identifyStatement();
         bool tokenizeStatement(Token* token_type);
+        std::string getStatementBody();
     private:
         Token* tokentype;
         std::string statement_body;

@@ -1,9 +1,9 @@
 #include "Tokens/IF.h"
 
-bool IF::tokenize(std::string input){
+bool IF::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> IF::generatetoc(std::string input){
+std::vector<TOC*> IF::generatetoc(std::string input){
     return {};
 }

@@ -13,8 +13,8 @@ class IF : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "IF_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
-        bool tokenize(std::string input);
-        std::vector<TOC> generatetoc(std::string input);
+        bool initaliseToken(std::string input);
+        std::vector<TOC*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG_LIST + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK)([0-9]+)((,[0-9]+)+)?";
 

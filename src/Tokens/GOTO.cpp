@@ -1,9 +1,9 @@
 #include "Tokens/GOTO.h"
 
-bool GOTO::tokenize(std::string input){
+bool GOTO::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> GOTO::generatetoc(std::string input){
+std::vector<TOC*> GOTO::generatetoc(std::string input){
     return {};
 }

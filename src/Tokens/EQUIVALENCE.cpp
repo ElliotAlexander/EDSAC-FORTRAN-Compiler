@@ -1,9 +1,9 @@
 #include "Tokens/EQUIVALENCE.h"
 
-bool EQUIVALENCE::tokenize(std::string input){
+bool EQUIVALENCE::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> EQUIVALENCE::generatetoc(std::string input){
+std::vector<TOC*> EQUIVALENCE::generatetoc(std::string input){
     return {};
 }

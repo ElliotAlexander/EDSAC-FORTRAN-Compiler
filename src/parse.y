@@ -5,7 +5,7 @@
     #include "ArithmeticParser/Value.h"
     #include "ArithmeticParser/Variable.h"
     #include "ArithmeticParser/Function.h"
-    #include "ArithmeticParser/TOC.h"
+    #include "TOC.h"
     #include <vector>  
 
     using namespace std;   

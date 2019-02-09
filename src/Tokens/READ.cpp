@@ -1,9 +1,9 @@
 #include "Tokens/READ.h"
 
-bool READ::tokenize(std::string input){
+bool READ::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> READ::generatetoc(std::string input){
+std::vector<TOC*> READ::generatetoc(std::string input){
     return {};
 }

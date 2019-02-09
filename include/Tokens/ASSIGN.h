@@ -13,8 +13,8 @@ class ASSIGN : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
-        bool tokenize(std::string input);
-        std::vector<TOC> generatetoc(std::string input);
+        bool initaliseToken(std::string input);
+        std::vector<TOC*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 

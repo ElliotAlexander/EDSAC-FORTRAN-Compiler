@@ -76,6 +76,6 @@ Token* Statement::identifyStatement(){
 }
 
 
-bool Statement::tokenizeStatement(Token* token_type){
-    token_type->tokenize(Statement::statement_body_nows);
+std::string Statement::getStatementBody(){
+    return Statement::statement_body_nows;
 }

@@ -1,9 +1,9 @@
 #include "Tokens/DIMENSION.h"
 
-bool DIMENSION::tokenize(std::string input){
+bool DIMENSION::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> DIMENSION::generatetoc(std::string input){
+std::vector<TOC*> DIMENSION::generatetoc(std::string input){
     return {};
 }

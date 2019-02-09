@@ -1,6 +1,6 @@
 #include "Tokens/DO.h"
 
-bool DO::tokenize(std::string input){
+bool DO::initaliseToken(std::string input){
     if(input.substr(0, 2) == "DO"){
 
         // Drop the first two chars. 
@@ -64,6 +64,6 @@ bool DO::tokenize(std::string input){
     }
 }
 
-std::vector<TOC> DO::generatetoc(std::string input){
+std::vector<TOC*> DO::generatetoc(std::string input){
     return {};
 }

@@ -3,6 +3,7 @@
 
 #include <string>
 #include "Token.h"
+#include "ArithmeticRDParser.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "Globals.h"
@@ -19,8 +20,8 @@ class DO : public Token {
         bool isValid(std::string input);
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
-        bool tokenize(std::string input);
-        std::vector<TOC> generatetoc(std::string input);
+        bool initaliseToken(std::string input);
+        std::vector<TOC*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::VARIABLE_NAME + "|"

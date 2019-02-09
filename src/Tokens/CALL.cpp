@@ -1,9 +1,9 @@
 #include "Tokens/CALL.h"
 
-bool CALL::tokenize(std::string input){
+bool CALL::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC> CALL::generatetoc(std::string input){
+std::vector<TOC*> CALL::generatetoc(std::string input){
     return {};
 }

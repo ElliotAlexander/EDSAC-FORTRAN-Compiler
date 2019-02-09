@@ -14,8 +14,8 @@ class Token{
         bool isValid(std::string input, std::string regex);
         virtual std::string getRegex() = 0;
         virtual std::string getTokenName() = 0;
-        virtual bool tokenize(std::string input) = 0;
-        virtual std::vector<TOC> generatetoc(std::string input) = 0;
+        virtual bool initaliseToken(std::string input) = 0;
+        virtual std::vector<TOC*> generatetoc(std::string input) = 0;
     private:
 };
 
