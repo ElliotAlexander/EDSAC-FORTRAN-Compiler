@@ -8,6 +8,12 @@ bool lineIsComment(std::string line){
     } else { return false; }
 }
 
+bool printErrorLocation(int location, std::string input){
+    std::cerr << StringConstants::ERROR_TAG << "Error location: " << std::endl << input << std::endl;
+    std::cerr << std::string(location -1, ' ') << "^" << std::endl;
+    return 1;
+}
+
 
 std::string getEnumString(int i){
     switch (i) {
