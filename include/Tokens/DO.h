@@ -28,16 +28,8 @@ class DO : public Token {
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::VARIABLE_NAME + "|"
             + RegexConstants::INTEGER + 
-            + ")=( "
-            + RegexConstants::VARIABLE_NAME + "|"
-            + RegexConstants::INTEGER + 
-            + "),("
-            + RegexConstants::VARIABLE_NAME + "|"
-            + RegexConstants::INTEGER + 
-            + ")(,("
-            + RegexConstants::VARIABLE_NAME + "|"
-            + RegexConstants::INTEGER + 
-            + "))?";
+            + ")="
+            + RegexConstants::ANY_ARG_LIST;
     TOC *control_vars_right_toc[];
 };
 
