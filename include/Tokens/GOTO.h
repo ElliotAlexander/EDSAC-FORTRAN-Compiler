@@ -7,6 +7,8 @@
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
+#include "ArithmeticRDParser.h"
+#include "Globals.h"
 
 class GOTO : public Token {
     public:
@@ -15,6 +17,7 @@ class GOTO : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
+        TOC* goto_result;
     private:
         std::string TO_MATCH = "GOTO([0-9]+)(,\\(([0-9]+)((,[0-9]+)?)+\\))?(,[0-9]+)?";
 
