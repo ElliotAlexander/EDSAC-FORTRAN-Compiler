@@ -17,6 +17,8 @@
 
 class DO : public Token {
     public:
+        TOC* control_loop_var_toc;
+        TOC* main_loop_var_toc;
         bool isValid(std::string input);
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
@@ -36,6 +38,7 @@ class DO : public Token {
             + RegexConstants::VARIABLE_NAME + "|"
             + RegexConstants::INTEGER + 
             + "))?";
+    TOC *control_vars_right_toc[];
 };
 
 

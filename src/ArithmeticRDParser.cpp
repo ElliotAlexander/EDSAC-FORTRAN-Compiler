@@ -16,13 +16,11 @@ TOC* parseADString(std::string input_string)
 	char cstr[input_string.size() + 1];
 	strcpy(cstr, input_string.c_str());	// or pass &s[0]
 
-    std::vector<std::string> result;
-    TOC* result_toc;
-
     YY_BUFFER_STATE buffer = yy_scan_string(cstr);
 
     yyparse();
     yy_delete_buffer(buffer);
+
     return result_toc_extern;
 }
 
