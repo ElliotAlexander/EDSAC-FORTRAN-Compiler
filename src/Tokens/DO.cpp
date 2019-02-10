@@ -46,6 +46,7 @@ bool DO::initaliseToken(std::string input){
         if(control_vars_right.size() > 0){
             if(Globals::dump_parsed_values){           
                 for (size_t i = 0; i < control_vars_right.size(); i++) {
+                    TOC* x = ::parseADString(control_vars_right[i]);
                     std::cout << StringConstants::INFO_TAG << "Control Variable [" << i << "]{" << control_vars_right[i] << "}." << std::endl;
                 }
             }

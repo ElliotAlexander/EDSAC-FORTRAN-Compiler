@@ -5,7 +5,7 @@
 #include <iostream>
 %}
 %%
-[ \t]           ; // consume line by line TODO
+[ \t\n]           ; // consume line by line TODO
 [0-9]+\.[0-9]+    { yylval.u.fval = atof(yytext); return FLOAT; }
 [0-9]+            { yylval.u.ival = atoi(yytext); return INT; }
 [A-Z]([A-Z0-9]+)? {
@@ -19,4 +19,3 @@
 \(                { return LPAREN; }
 \)                { return RPAREN; }
 \,                { return COMMA; }
-\n                { return ENDL; }

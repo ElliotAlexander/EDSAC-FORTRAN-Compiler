@@ -43,7 +43,8 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 21 "parse.y" /* yacc.c:1912  */
+#line 26 "parse.y" /* yacc.c:1912  */
+
 
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
     #include "TOC.h"
@@ -59,7 +60,7 @@ extern int yydebug;
         std::vector<TOC*> toc_args;
     };
 
-#line 63 "parse.tab.h" /* yacc.c:1912  */
+#line 64 "parse.tab.h" /* yacc.c:1912  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -90,6 +91,6 @@ typedef struct type_vals YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (std::vector<std::string> *result);
+int yyparse (void);
 
 #endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */

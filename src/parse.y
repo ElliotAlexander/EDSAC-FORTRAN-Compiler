@@ -5,20 +5,26 @@
     #include "ArithmeticParser/Value.h"
     #include "ArithmeticParser/Variable.h"
     #include "ArithmeticParser/Function.h"
+    #include "ArithmeticParser/Wrapper.h"
+
+    #include "ArithmeticRDParser.h"
     #include "TOC.h"
     #include <vector>  
 
     using namespace std;   
 
+    extern TOC* result_toc_extern;
+
     extern int yylex();
-    extern int yyparse(TOC*);
+    extern int yyparse();
     extern FILE *yyin;
 
-    void yyerror(std::vector<std::string> *result, const char *s);
+    void yyerror(const char *s);
 
 %}
 
 %code requires {
+
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
     #include "TOC.h"
     #include <vector>
@@ -33,9 +39,6 @@
         std::vector<TOC*> toc_args;
     };
 }
-
-
-%parse-param {std::vector<std::string> *result} 
 
 %define api.value.type {struct type_vals}
 
@@ -60,15 +63,13 @@
 start:
     expressions;
 expressions:
-    expressions expression1 ENDL
-    | expression1 ENDL;
+    expressions expression1
+    | expression1;
 expression1:
     expression {
-        // careful - this will be lost at the end of control flow.
-        int variable_index = 0;
-        TOC* x = $$;
-        std::vector<std::string> y = x->toTOCStr(variable_index);
-        result->insert(result->end(), y.begin(), y.end());
+        TOC* x = $1;
+        TOC* result = new Wrapper(x);
+        result_toc_extern = result;
     };
 expression:
     expression PLUS expression { 
@@ -134,7 +135,7 @@ single_argument:
     };
 %%
 
-void yyerror(std::vector<std::string> *result, const char *s) {
+void yyerror(const char *s) {
     cout << "Parser Error:  Message: " << s << endl;
     exit(-1);
 }
