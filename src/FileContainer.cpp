@@ -61,7 +61,7 @@ bool FileContainer::expandContinuations(){
                 }
 
                 // Get relevant section of current line (chars 6 -> onwards.)
-                file_text[i].erase(0,5);
+                file_text[i].erase(0,6);
                     
                 // Append current line to previous line.
                 file_text[i-continuation_count] += file_text[i];
