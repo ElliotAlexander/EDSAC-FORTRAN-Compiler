@@ -5,11 +5,11 @@
      &I,
      &A)
       EQUIVALENCE (I)
-      G 
+      G        
      &O 
      &T
      &O1 
      &5 
      &0 
-     &4 
+     &4       555 +  5
       END
