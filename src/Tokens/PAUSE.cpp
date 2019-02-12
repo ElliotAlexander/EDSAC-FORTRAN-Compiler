@@ -2,6 +2,12 @@
 
 bool PAUSE::initaliseToken(std::string input){
 
+    if(!(input.substr(0,5) == "PAUSE")){
+                std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse PAUSE Statement. " << std::endl 
+        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
+        return 0;  
+    }
+
     // Strip the PAUSE
     input.erase(input.find("PAUSE"), 5);
 

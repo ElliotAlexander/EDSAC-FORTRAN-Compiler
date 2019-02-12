@@ -78,8 +78,9 @@ bool DO::initaliseToken(std::string input){
 
         return true;
     } else {
-        std::cout << "Syntax error!" << std::endl;
-        return false;
+        std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse DO Statement. " << std::endl 
+        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
+        return 0;  
     }
 }
 

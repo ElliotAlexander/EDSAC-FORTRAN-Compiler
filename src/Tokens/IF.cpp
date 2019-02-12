@@ -6,6 +6,11 @@ bool IF::initaliseToken(std::string input){
     // backup input so we can print it in errors.
     std::string input_original = input;
 
+    if(!(input.substr(0,2) == "IF")){
+                std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse IF Statement. " << std::endl 
+        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
+        return 0;  
+    }
 
     // Strip the IF
     input.erase(input.find("IF"), 2);

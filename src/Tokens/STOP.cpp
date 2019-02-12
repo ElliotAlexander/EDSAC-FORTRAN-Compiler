@@ -1,6 +1,13 @@
 #include "Tokens/STOP.h"
 
 bool STOP::initaliseToken(std::string input){
+
+    if(!(input.substr(0,4) == "STOP")){
+                std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse STOP Statement. " << std::endl 
+        << StringConstants::ERROR_TAG << "Couldn't find 'STOP' at start of line." << std::endl
+        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
+        return 0;  
+    }
     // Strip the STOP
     input.erase(input.find("STOP"), 4);
 
