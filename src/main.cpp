@@ -54,7 +54,9 @@ int main(int argc, char* argv[]){
         std::vector<Segment> segs = input_files[i].dissectSegments();
 
         // Validate + tokenize each segments
-        std::cout << "\nBeginning Tokenization: \n";
+        if(Globals::dump_tokens){
+            std::cout << "\nBeginning Tokenization: \n";
+        }
         for(int i = 0; i < segs.size(); i++){
             std::vector<Statement> stmts = segs.at(i).buildStatements();
 

@@ -61,6 +61,8 @@ bool DO::initaliseToken(std::string input){
         if(control_vars_right.size() > 0){
             for (size_t i = 0; i < control_vars_right.size(); i++) {
 
+                // TODO Check for negative values in DO loops
+            
                 // load control variables into intermediary state.
                 control_vars_right_toc[i] = ::parseADString(control_vars_right[i]);
 
