@@ -106,6 +106,14 @@ expression:
         TOC *t = $2; 
         $$ =  t;
     } 
+    | MINUS INT {
+        int x = $2;
+        $$ = new Value<int>(0-x);
+    }
+    | MINUS FLOAT {
+        float x = $2;
+        $$ = new Value<float>(0-x);
+    }
     |INT { 
         $$ =  new Value<int>($1);
     }
