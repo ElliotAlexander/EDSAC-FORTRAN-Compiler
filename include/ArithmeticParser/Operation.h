@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include "TOC.h"
+#include "Constants.h"
 
 enum OPS {
     SUBTRACT,
