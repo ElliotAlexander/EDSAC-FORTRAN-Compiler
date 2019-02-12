@@ -7,6 +7,8 @@
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
+#include "Globals.h"
+#include "ArithmeticRDParser.h"
 
 class STOP : public Token {
     public:
@@ -15,8 +17,10 @@ class STOP : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
+        TOC* stop_input_variable;
+        bool stop_input_variable_set = 0;
     private:
-        std::string TO_MATCH = "STOP([0-9]+)?";
+        std::string TO_MATCH = "STOP|STOP" + RegexConstants::ANY_ARG_LIST;
 };
 
 
