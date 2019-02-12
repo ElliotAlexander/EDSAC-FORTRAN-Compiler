@@ -60,8 +60,14 @@ bool FileContainer::expandContinuations(){
                     return false;
                 }
 
+                std::string line_text_backup = file_text[0];
+
                 // Get relevant section of current line (chars 6 -> onwards.)
                 file_text[i].erase(0,6);
+                if(file_text[i].length() == 0){
+                    std::cerr << StringConstants::ERROR_TAG << "Empty continuation - Continuation labelled lines must contained at least one character." << std::endl;
+                    ::printErrorLocation(7, line_text_backup);
+                }
                     
                 // Append current line to previous line.
                 file_text[i-continuation_count] += file_text[i];
@@ -177,5 +183,11 @@ std::vector<Segment> FileContainer::dissectSegments(){
             }
         }
     }
+
+    if(segment_arr.size() == 0){
+        std::cerr << StringConstants::WARN_TAG << "Warning - failed to load a fail program block from file " << file_name
+            << std::endl << StringConstants::WARN_TAG << "Did you forget to include an END Statement?" << std::endl;       
+    }
+
     return segment_arr;
 }

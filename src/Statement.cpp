@@ -23,6 +23,7 @@ Token* Statement::identifyStatement(){
     IF if_stmt;
     EQUIVALENCE eq_stmt;
     FORMAT format_stmt;
+    PAUSE pause_stmt;
 
     std::vector<Token*> tokens{
         &dostmt,
@@ -38,7 +39,8 @@ Token* Statement::identifyStatement(){
         &dimen_stmt,
         &goto_stmt,
         &assign_stmt,
-        &if_stmt
+        &if_stmt,
+        &pause_stmt
     };
 
     Token* result;
@@ -70,7 +72,8 @@ Token* Statement::identifyStatement(){
     };
 
     if(!found){
-        std::cout << StringConstants::ERROR_TAG << "Cannot find valid token for line [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
+        std::cout << std::endl << StringConstants::ERROR_TAG << "Cannot find valid token for line [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
+        //. TODOD - error handling here.
     }
     return result;
 }
