@@ -6,8 +6,10 @@ bool GOTO::initaliseToken(std::string input){
         std::cout << StringConstants::INFO_TAG << "Loaded GOTO String: " << input << std::endl;
     }
 
-    goto_result = ::parseADString(input);
     
+    TOC* result = ::parseADString(input);
+    goto_result = result;
+
     if(Globals::dump_parsed_values){
         std::cout << StringConstants::INFO_TAG << "Loaded Goto line label: " << goto_result->toValue() << std::endl;
     }

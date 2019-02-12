@@ -19,7 +19,8 @@ class GOTO : public Token {
         std::vector<TOC*> generatetoc(std::string input);
         TOC* goto_result;
     private:
-        std::string TO_MATCH = "GOTO([0-9]+)(,\\(([0-9]+)((,[0-9]+)?)+\\))?(,[0-9]+)?";
+        std::string TO_MATCH = "GOTO"
+        + RegexConstants::ANY_ARG_LIST;
 
 };
 
