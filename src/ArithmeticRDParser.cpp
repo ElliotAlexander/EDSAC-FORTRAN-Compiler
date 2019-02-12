@@ -20,7 +20,6 @@ TOC* parseADString(std::string input_string)
 
     yyparse();
     yy_delete_buffer(buffer);
-
     return result_toc_extern;
 }
 

@@ -10,6 +10,7 @@
 #include "ArithmeticParser/Value.h"
 #include "ArithmeticParser/Variable.h"
 #include "TOC.h"
+#include "Constants.h"
 
 TOC* parseADString(std::string input_string);
 
