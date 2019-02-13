@@ -9,18 +9,20 @@
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
+#include <boost/algorithm/string.hpp>
 
 class ARITH_FUNCTION : public Token {
 
     public:
+        TOC* function_resolution;
+        std::string function_name;
+        std::vector<TOC*> function_arguments;
+        ARITH_FUNCTION();
         bool isValid(std::string input);
         std::string getTokenName(){return "ARITH_FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
-        TOC* function_resolution;
-        std::string function_name;
-        std::vector<std::string> function_arguments;
     private:
         std::string TO_MATCH = RegexConstants::SUBROUTINE_NAME + "(\\" + RegexConstants::MULTI_VARIABLE_LIST + "\\)[=]" + RegexConstants::ANY_ARG_LIST;
     };
