@@ -1,7 +1,8 @@
 #include "Tokens/ARITH_FUNCTION.h"
 
 ARITH_FUNCTION::ARITH_FUNCTION(){
-    std::string function_name;
+    std::string function_name; 
+    TOC* function_resolution;
     std::vector<TOC*> function_arguments;
 }
 
@@ -26,39 +27,41 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
         } else if(!in_args){
             function_name_temp.push_back(equals_split.at(0)[i]);
         }
-    }
-    
+    }    
 
     ARITH_FUNCTION::function_name = function_name_temp;
+
     std::vector<std::string> var_list_temp;
     boost::split(var_list_temp, variable_list, boost::is_any_of(","));
-
-    for(std::vector<std::string>::iterator it = var_list_temp.begin(); it != var_list_temp.end(); ++it){
-        TOC* x = ::parseADString(*it);
-        ARITH_FUNCTION::function_arguments.push_back(x);
+    if(var_list_temp.size() == 0){
         if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Function argument : " << *it << std::endl;
+            std::cout << StringConstants::INFO_TAG << "Loaded zero command arguments. " << std::endl;
+        }
+    } else {
+        int index = 0;
+        for(std::vector<std::string>::iterator it = var_list_temp.begin(); it != var_list_temp.end(); ++it){
+            ARITH_FUNCTION::function_arguments[index] = ::parseADString(*it);
+            if(Globals::dump_parsed_values){
+                std::cout << StringConstants::INFO_TAG << "Function argument : " << *it << std::endl;
+            }
+            index++;
         }
     }
 
 
-
-
-    std::string rhs_string;
-    bool rhs = 0;
-    for(std::string::size_type i = 0; i < input.size(); ++i) {
-        if(input[i] == '='){
-            rhs = 1;
-        } else if(rhs){
-            rhs_string.push_back(input[i]);
-        }
+    if(equals_split[1].length() == 0){
+        std::cerr << StringConstants::ERROR_TAG << "Failed to load right hand side string, length was zero." << std::endl;
     }
-
+    
+    ARITH_FUNCTION::function_resolution = ::parseADString(equals_split[1]);
 
     if(Globals::dump_parsed_values){
         std::cout << StringConstants::INFO_TAG << "Function name: " << ARITH_FUNCTION::function_name << std::endl;
-        std::cout << StringConstants::INFO_TAG << "Right hand side " << rhs_string << std::endl;
+        std::cout << StringConstants::INFO_TAG << "Right hand side " << equals_split[1] << std::endl;
     }
+
+
+    return true;
     
 }
 
