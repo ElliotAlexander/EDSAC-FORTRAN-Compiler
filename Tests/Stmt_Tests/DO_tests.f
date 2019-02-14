@@ -3,4 +3,6 @@
       DO 10 NEWVAR=55,OLDVAR,NOT434
       DO 100 I=1,LIM1
       DO 100 I=100 / 2 + 4, OLDVAR, 5+6
+      DO7I1=DO,DO
+      DO10DO10=DO10,DO10
       END
