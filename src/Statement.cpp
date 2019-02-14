@@ -25,6 +25,9 @@ Token* Statement::identifyStatement(){
     FORMAT format_stmt;
     PAUSE pause_stmt;
 
+
+
+    // TODO - There msut be a better way to do this. 
     std::vector<Token*> tokens{
         &dostmt,
         &format_stmt,
@@ -40,7 +43,7 @@ Token* Statement::identifyStatement(){
         &goto_stmt,
         &assign_stmt,
         &if_stmt,
-        &pause_stmt
+        &pause_stmt,
     };
 
     Token* result;
@@ -48,7 +51,6 @@ Token* Statement::identifyStatement(){
 
     // Iterate through token types.
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
-        
         // Check token is valud - parse token type. 
         if(tokens[i]->isValid(statement_body_nows, (tokens[i]->getRegex()))){
 
@@ -57,7 +59,7 @@ Token* Statement::identifyStatement(){
                 std::cerr << StringConstants::ERROR_TAG + "Error parsing line - line matches two possible tokens [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
                 std::cerr << StringConstants::ERROR_TAG + "Second matching token: " + tokens[i]->getTokenName() << std::endl;
                 continue; 
-            }
+            } 
 
             if(Globals::dump_tokens) { 
                 std::cout << "[" << Statement::line_no + 1 << "][" << tokens[i]->getTokenName() << "] {" << statement_body << "\t}" << std::endl;
