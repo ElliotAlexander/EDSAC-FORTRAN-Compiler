@@ -20,7 +20,7 @@ class CALL : public Token {
         + RegexConstants::SUBROUTINE_NAME 
         + "\\("
         + RegexConstants::ANY_ARG_LIST
-        + "\\)$";
+        + "\\)";
 };
 
 
