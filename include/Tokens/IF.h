@@ -9,6 +9,23 @@
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
+#include <boost/regex.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp> 
+
+enum IF_STATEMENT_TYPE {
+    SENSELIGHT,
+    SENSESWITCH,
+    ACCUMULATOROVERFLOW,
+    QUOTIENTOVERFLOW,
+    DIVIDECHECK,
+    ARITHMETIC
+};
+
+struct StringOperationContainer{
+    std::string input_string;
+    bool result;
+};
 
 class IF : public Token {
     public:
@@ -18,10 +35,14 @@ class IF : public Token {
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
         TOC* conditional_variable;
-        std::vector<TOC*> instruction_values;
+        IF_STATEMENT_TYPE statement_type;
     private:
-        std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG_LIST + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK)" + RegexConstants::ANY_ARG_LIST;
-
+        std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::ANY_ARG_LIST;
+        bool parseRightHandSideArguments(std::string right_hand_side_string);
+        StringOperationContainer parseFixedConditionalString(std::string conditional_string);
+        StringOperationContainer parseConditionalArgument(std::string conditional_argument_string);
+        std::string stripIFTag(std::string input);
+    TOC* instruction_values[];
 };
 
 #endif
