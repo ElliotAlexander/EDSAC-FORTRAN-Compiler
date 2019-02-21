@@ -132,11 +132,6 @@ std::vector<Segment> FileContainer::dissectSegments(){
                     std::cout << StringConstants::ERROR_TAG << "END statement found inside a segment block. Are you missing a return? [" << i << "].\n";
                 } else if(in_main_block){
                     in_main_block = false;
-
-                    // Build segment
-
-                    std::cout << "Start line = " << start_line << std::endl;
-                    std::cout << " i = " << i << std::endl;
                     std::vector<std::string> segment_text;
                     for(int x = start_line; x < ( i+1 ); x++){
                         segment_text.push_back(file_text.at(x));
