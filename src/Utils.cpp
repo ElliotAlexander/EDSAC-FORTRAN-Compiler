@@ -2,7 +2,6 @@
 
 
 bool lineIsComment(std::string line){
-    line = stripWhitespaceString(line);
     if(line.length() > 0){
         return (line.at(0) == 'C' || line.at(0) == 'c' || line.at(0) == '!') ? true : false;
     } else { return false; }

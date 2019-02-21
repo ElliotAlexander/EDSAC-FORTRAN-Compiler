@@ -63,7 +63,6 @@ int main(int argc, char* argv[]){
             for(int x = 0; x < stmts.size(); x++){
 
                 Statement* s = &stmts.at(x);
-
                 // Identify type of statement - i.e. do, IF, assignment, etc.
                 Token* token = s->identifyStatement();
 

@@ -134,6 +134,9 @@ std::vector<Segment> FileContainer::dissectSegments(){
                     in_main_block = false;
 
                     // Build segment
+
+                    std::cout << "Start line = " << start_line << std::endl;
+                    std::cout << " i = " << i << std::endl;
                     std::vector<std::string> segment_text;
                     for(int x = start_line; x < ( i+1 ); x++){
                         segment_text.push_back(file_text.at(x));
@@ -155,7 +158,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
                     std::cout << "+" << ::getEnumString(current_type) << " [" << start_line + 1 << "," << i + 1 << "]{" << ::stripWhitespaceString(segment_text.at(0))  << "}." << std::endl;
                     segment_arr.push_back(Segment(current_type, start_line, i, segment_text));
                     in_segment_block = false;
-                    start_line = i;
+                    start_line = i+1;
                     current_type = {};
                 } else {
                     std::cerr << "RETURN detected outside of Subroutine Block [start=" << start_line + 1 << ", end="<<i + 1<< "]." << std::endl;
