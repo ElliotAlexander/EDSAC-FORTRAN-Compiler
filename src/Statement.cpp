@@ -7,7 +7,7 @@ Statement::Statement(std::string statement_body, std::string label, int line_no)
     Statement::statement_body_nows = ::stripWhitespaceString(statement_body);
 }
 
-Token* Statement::identifyStatement(){
+IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 
     DO dostmt;
     SUBROUTINE substmt;
@@ -74,10 +74,10 @@ Token* Statement::identifyStatement(){
     };
 
     if(!found){
-        std::cout << std::endl << StringConstants::ERROR_TAG << "Cannot find valid token for line [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
-        //. TODOD - error handling here.
+        std::cout << StringConstants::ERROR_TAG << "Cannot find valid token for line [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
+        return IDENTIFY_STATEMENT_RESULT_T{nullptr, false};
     }
-    return result;
+    return IDENTIFY_STATEMENT_RESULT_T{result, true};
 }
 
 

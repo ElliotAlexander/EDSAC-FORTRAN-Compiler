@@ -64,13 +64,9 @@ int main(int argc, char* argv[]){
 
                 Statement* s = &stmts.at(x);
                 // Identify type of statement - i.e. do, IF, assignment, etc.
-                Token* token = s->identifyStatement();
-
-                bool res = token->initaliseToken(s->getStatementBody());
-                if(res){
-
-                } else {
-                    // TODO - Error handling.
+                IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();
+                if(identify_result.result){
+                    bool res = identify_result.token->initaliseToken(s->getStatementBody());
                 }
             }
         };
