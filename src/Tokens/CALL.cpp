@@ -40,14 +40,18 @@ bool CALL::initaliseToken(std::string input){
                     subroutine_arguments[index] = ::parseADString(*it);
                     index++;
                 }
+
+                return true;
             } else {
                 std::cerr << StringConstants::ERROR_TAG << "Error parsing arguments for function " << subroutine_name << std::endl;
                 std::cerr << StringConstants::ERROR_TAG << "Function Argument String: " << subroutine_arguments_string << std::endl;
                 ::printErrorLocation(4+subroutine_name.size(), input_original);
+                return false;
             }
         } else {
             std::cerr << StringConstants::ERROR_TAG << "Failed to parse subroutine name from CALL Statement." << std::endl;
             ::printErrorLocation(0, input_original);
+            return false;
         }
     } else {
         std::cerr << StringConstants::ERROR_TAG << "Failed to parse values from CALL Token: { " << input << " }" << std::endl;  

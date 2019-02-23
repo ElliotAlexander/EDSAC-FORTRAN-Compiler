@@ -9,6 +9,8 @@ bool IF::initaliseToken(std::string input){
     } else {
         parseRightHandSideArguments(checkedFixedArguments.input_string);
     }
+
+    return true;
 }
 
 std::string IF::stripIFTag(std::string input){
