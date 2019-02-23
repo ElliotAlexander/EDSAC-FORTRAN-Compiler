@@ -7,6 +7,10 @@
 #include <vector>
 #include "TOC.h"
 #include "Constants.h"
+#include <boost/regex.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp> 
+#include "Globals.h"
 
 class ASSIGN : public Token {
     public:
@@ -15,6 +19,9 @@ class ASSIGN : public Token {
         std::string getRegex(){return TO_MATCH; }    
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
+        std::string variable_name;
+        std::string assignment_value_string;
+        TOC* assignment_value;
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
