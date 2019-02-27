@@ -9,6 +9,7 @@
 #include <Constants.h>
 #include "CommandArgs.h"
 #include "Globals.h"
+#include "Logging.h"
 
 class FileVerification {
     public:

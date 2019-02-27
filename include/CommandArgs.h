@@ -3,6 +3,7 @@
 
 #include <cxxopts.hpp>
 #include "Globals.h"
+#include "Logging.h"
 
 class CommandArgs {
     public:

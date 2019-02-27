@@ -6,6 +6,7 @@
 #include <vector>  
 #include <time.h>
 
+#include "Logging.h"
 #include "Constants.h"
 #include "CommandArgs.h"
 #include "FileVerification.h"

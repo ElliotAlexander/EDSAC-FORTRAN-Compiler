@@ -16,49 +16,49 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     auto result = options.parse(argc, argv);
 
     if(result["help"].as<bool>()){
-        std::cout << options.help() << std::endl;
+        Logging::logMessage(options.help());
         exit(1);
     }
 
-    std::cout << std::endl << ":: Loading Command Arguments ::" << "\n\n";
+    Logging::logMessage("\n:: Loading Command Arguments ::\n\n");
 
     // Handle Boolean Arguments.
     if(result["allextensions"].as<bool>()){
-        std::cout << "+all-extensions" << std::endl;
+        Logging::logMessage("+all-extensions");
         Globals::allow_all_types = true;
     }
 
     if(result["parsedvalues"].as<bool>()){
-        std::cout << "+parsed-values" << std::endl;
+        Logging::logMessage("+parsed-values");
         Globals::dump_parsed_values = true;
     }
 
         // Handle Boolean Arguments.
     if(result["lazytokens"].as<bool>()){
-        std::cout << "+lazy tokens" << std::endl;
+        Logging::logMessage("+lazy tokens");
         Globals::lazy_tokens = true;
     }
 
     if(result["linelengthwarnings"].as<bool>()){
-        std::cout << "+disable line length warnings" << std::endl;
+        Logging::logMessage("+disabled line length warnings");
         Globals::disable_line_length_warnings = true;
     }
 
     if(result["dump"].as<bool>()){
-        std::cout << "+dump data structures" << std::endl;
+        Logging::logMessage("+dump data structures");
         Globals::dump_data_structures = true;
     }
 
     if(result["tokens"].as<bool>()){
-        std::cout << "+dump tokens" << std::endl;
+        Logging::logMessage("+dump tokens");
         Globals::dump_tokens = true;
     }
 
     // Handle positional file arguments.
     options.parse_positional({"f,file"});
     for(int i =0; i < result.count("file"); i++){
-        std::cout << "+load: " << Globals::file_list[i] << "\n";
+        Logging::logMessage("+load: " + Globals::file_list[i]);
     }
 
-    std::cout << std::endl;
+    Logging::logNewLine();
 }  

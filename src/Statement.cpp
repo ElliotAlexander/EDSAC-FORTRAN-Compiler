@@ -9,45 +9,47 @@ Statement::Statement(std::string statement_body, std::string label, int line_no)
 
 IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 
-    DO dostmt;
-    SUBROUTINE substmt;
-    END endstmt;
-    CALL callstmt;
-    RETURN returnstmt;
-    ARITH_FUNCTION arithstmt;
-    STOP stop_stmt;
-    VAR_DECLR var_declr;
-    DIMENSION dimen_stmt;
-    GOTO goto_stmt;
-    ASSIGN assign_stmt;
-    IF if_stmt;
-    EQUIVALENCE eq_stmt;
-    FORMAT format_stmt;
-    PAUSE pause_stmt;
+
+    DO* dostmt = new DO();
+    SUBROUTINE* substmt = new SUBROUTINE();
+    END* endstmt = new END();
+    CALL* callstmt = new CALL();
+    RETURN* returnstmt = new RETURN();
+    ARITH_FUNCTION* arithstmt = new ARITH_FUNCTION();
+    STOP* stop_stmt = new STOP();
+    VAR_DECLR* var_declr = new VAR_DECLR();
+    DIMENSION* dimen_stmt = new DIMENSION();
+    GOTO* goto_stmt = new GOTO();
+    ASSIGN* assign_stmt = new ASSIGN();
+    IF* if_stmt = new IF();
+    EQUIVALENCE* eq_stmt = new EQUIVALENCE();
+    FORMAT* format_stmt = new FORMAT();
+    PAUSE* pause_stmt = new PAUSE();
 
 
 
     // TODO - There msut be a better way to do this. 
     std::vector<Token*> tokens{
-        &dostmt,
-        &format_stmt,
-        &eq_stmt,
-        &substmt,
-        &endstmt,
-        &callstmt,
-        &returnstmt,
-        &arithstmt,
-        &stop_stmt,
-        &var_declr,
-        &dimen_stmt,
-        &goto_stmt,
-        &assign_stmt,
-        &if_stmt,
-        &pause_stmt,
+        dostmt,
+        format_stmt,
+        eq_stmt,
+        substmt,
+        endstmt,
+        callstmt,
+        returnstmt,
+        arithstmt,
+        stop_stmt,
+        var_declr,
+        dimen_stmt,
+        goto_stmt,
+        assign_stmt,
+        if_stmt,
+        pause_stmt,
     };
+    bool found = false;
+
 
     Token* result;
-    bool found = false;
 
     // Iterate through token types.
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
@@ -56,14 +58,11 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 
             //
             if(found){
-                std::cerr << StringConstants::ERROR_TAG + "Error parsing line - line matches two possible tokens [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
-                std::cerr << StringConstants::ERROR_TAG + "Second matching token: " + tokens[i]->getTokenName() << std::endl;
+                Logging::logErrorMessage("Error parsing line - line matches two possible tokens [" + std::to_string(Statement::line_no + 1) + "]{" + statement_body + "}");
+                Logging::logErrorMessage("Second matching token: " + tokens[i]->getTokenName());
                 continue; 
             } 
-
-            if(Globals::dump_tokens) { 
-                std::cout << "[" << Statement::line_no + 1 << "][" << tokens[i]->getTokenName() << "] {" << statement_body << "\t}" << std::endl;
-            }
+            Logging::logConditionalMessage(Globals::dump_tokens, "[" + std::to_string(Statement::line_no + 1) + "][" + tokens[i]->getTokenName() + "] { " + statement_body + " }");
 
             found = true;
             result = tokens[i];
@@ -74,10 +73,11 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
     };
 
     if(!found){
-        std::cout << StringConstants::ERROR_TAG << "Cannot find valid token for line [" << Statement::line_no + 1 << "]{" << statement_body << "}" << std::endl;
+        Logging::logErrorMessage("Cannot find valid token for line [" + std::to_string(Statement::line_no + 1) + "]{" + statement_body + "}");
         return IDENTIFY_STATEMENT_RESULT_T{nullptr, false};
+    } else {
+        return IDENTIFY_STATEMENT_RESULT_T{result, true};
     }
-    return IDENTIFY_STATEMENT_RESULT_T{result, true};
 }
 
 

@@ -8,18 +8,18 @@ bool FileVerification::verify(std::string file_input) {
      *      Error Cases
      * */
     if(!verify_exists(file_input)){
-        std::cerr << StringConstants::ERROR_TAG << "File not found: [" << file_input << "] - exiting...\n";
+        Logging::logErrorMessage("File not found: [" + file_input + "] - exiting...");
         return_val = false;
     }
 
     // Check the file is accessible.
     if (!verify_accessible(file_input)) {
-        std::cerr << StringConstants::ERROR_TAG << "File " << file_input << " is not accessible, or is empty. Check your file permissions and try again.\n";
+        Logging::logErrorMessage("File " + file_input + " is not accessible, or is empty. Check your file permissions and try again.");
         return_val = false;
     } 
     
     if(!verify_regular_file(file_input)){
-        std::cerr << StringConstants::ERROR_TAG << "File " << file_input << " does not appear to be a regular file.\n";
+        Logging::logErrorMessage("File " + file_input + " does not appear to be a regular file.");
         return_val = false;
     }
 
@@ -64,7 +64,7 @@ bool FileVerification::verify_extension(std::string file_input){
                 return true; 
             };
         }
-        std::cerr << StringConstants::WARN_TAG << " File " << file_input << " has an unrecognised extension [" << x << "]. Use -x to disable these warnings.\n";
+        Logging::logWarnMessage(" File " + file_input + " has an unrecognised extension [" + x + "]. Use -x to disable these warnings.");
         return false;
     } else {
         return false;

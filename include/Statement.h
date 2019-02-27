@@ -10,6 +10,8 @@
 #include "Token_Headers.h"
 #include "Token.h"
 
+#include "Logging.h"
+
 struct IDENTIFY_STATEMENT_RESULT_T{
     Token* token;
     bool result;

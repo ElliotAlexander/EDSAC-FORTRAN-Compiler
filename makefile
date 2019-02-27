@@ -1,10 +1,10 @@
 CC=g++
 
-BASE_FLAGS = -ll -std=c++11 -Wunknown-escape-sequence
+BASE_FLAGS = -std=c++14
 
-LDFLAGS = -I/usr/local/Cellar/boost/1.50.0/include -I/opt/local/include -I include/
+LDFLAGS = -I/usr/local/Cellar/boost/1.69.0/include -I/opt/local/include -I include/
 
-LLIBFLAGS = -L/usr/local/Cellar/boost/1.68.0/
+LLIBFLAGS = -L/usr/local/Cellar/boost/1.68.0/lib
 
 LINKFLAGS = -lboost_thread -lboost_system -l boost_filesystem -l boost_regex -ll -lm
 

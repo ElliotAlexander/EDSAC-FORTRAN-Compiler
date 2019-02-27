@@ -9,8 +9,8 @@ bool lineIsComment(std::string line){
 
 
 bool printErrorLocation(int location, std::string input){
-    std::cerr << StringConstants::ERROR_TAG << "Error location: " << std::endl << input << std::endl;
-    std::cerr << std::string(location -1, ' ') << "^" << std::endl;
+    Logging::logErrorMessage("Error location: \n" +  input);
+    Logging::logErrorMessage(std::string(location -1, ' ') + "^");
     return true;
 }
 
@@ -37,9 +37,16 @@ std::string stripWhitespaceString(std::string input){
 }
 
 void print_header(){
-    std::cout << "\n\n" << "===== " << "EDSAC FORTRAN II Compiler " << " =====" << "\n\n";
+    Logging::logMessage("\n\n===== EDSAC FORTRAN II Compiler  =====\n");
 }
 
 void print_footer(){
-    std::cout << "\n\n" << "==== " << "End of runtime " << " ====" << "\n\n"; 
+    Logging::logMessage("\n\n==== End of runtime  ====\n");; 
+}
+
+unsigned long long getTotalSystemMemory()
+{
+    long pages = sysconf(_SC_PHYS_PAGES);
+    long page_size = sysconf(_SC_PAGE_SIZE);
+    return pages * page_size;
 }

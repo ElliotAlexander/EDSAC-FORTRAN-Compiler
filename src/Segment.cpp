@@ -25,9 +25,9 @@ std::vector<Statement>  Segment::buildStatements(){
 }
 
 void Segment::dumpSegment(){
-    std::cout << "Begin Segment Dump(Type=" << ::getEnumString(seg_type) << ")\n";
+    Logging::logMessage("Begin Segment Dump(Type=" + ::getEnumString(seg_type) + ")");
     for(std::vector<std::string>::size_type i = 0; i != segment_body.size(); i++){ 
-        std::cout << segment_body[i] << std::endl;
+        Logging::logMessage(segment_body[i]);
     }
-    std::cout << "End Segment Dump \n" << std::endl;
+    Logging::logMessage("End Segment Dump ");
 }
