@@ -1,8 +1,5 @@
 #include "main.h"
 
-void print_header();
-void print_footer();
-
 int main(int argc, char* argv[]){
     clock_t tStart = clock();
     ::print_header();
