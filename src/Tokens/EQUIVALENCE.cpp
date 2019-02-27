@@ -13,8 +13,8 @@ bool EQUIVALENCE::initaliseToken(std::string input){
         for(char& c : input) {
             if(c == '('){
                 if(inside_statement_flag){
-                    std::cerr << StringConstants::ERROR_TAG << "Failed to load variable list from {" << input << "}" << std::endl;
-                    std::cerr << StringConstants::ERROR_TAG << "Found nested brackets, but no arguments?" << std::endl;
+                    Logging::logErrorMessage("Failed to load variable list from {" + input + "}");
+                    Logging::logErrorMessage("Found nested brackets, but no arguments?");
                     ::printErrorLocation(index-1, input);
                     continue;
                 } else {
@@ -25,8 +25,8 @@ bool EQUIVALENCE::initaliseToken(std::string input){
                     inside_statement_flag = 0;
                     argument_list.push_back(std::string(""));
                 } else {
-                    std::cerr << StringConstants::ERROR_TAG << "Failed to load variable list from {" << input << "}" << std::endl;
-                    std::cerr << StringConstants::ERROR_TAG << "Found unmatched parenthesis." << std::endl;
+                    Logging::logErrorMessage("Failed to load variable list from {" + input + "}");
+                    Logging::logErrorMessage("Found unmatched parenthesis.");
                     ::printErrorLocation(index-1, input);
                     continue;
                 }
@@ -34,8 +34,8 @@ bool EQUIVALENCE::initaliseToken(std::string input){
                 if(inside_statement_flag){
                     argument_list.back().push_back(c);
                 } else {
-                    std::cerr << StringConstants::ERROR_TAG << "Failed to load variable list from {" << input << "}"  << std::endl;
-                    std::cerr << StringConstants::ERROR_TAG << "Found variables declared outside parenthesis." << std::endl;
+                    Logging::logErrorMessage("Failed to load variable list from {" + input + "}");
+                    Logging::logErrorMessage("Found variables declared outside parenthesis.");
                     ::printErrorLocation(index-1, input);
                     continue;
                 }
@@ -43,15 +43,15 @@ bool EQUIVALENCE::initaliseToken(std::string input){
             index++;
         }
 
-
         // Argument list will always exit with a spare, blank variable on the end, unfilled.
         // We need to drop that now.
         argument_list.pop_back();
 
+
+
+        int argument_index = 0;
         //Dump
         for(std::vector<std::string>::iterator it = argument_list.begin(); it != argument_list.end(); ++it) {
-
-            std::map<TOC*, TOC*> argument_mapping;
 
             // Split on the comma,. A,B -> A and B.
             boost::cmatch loop_matches;
@@ -60,36 +60,24 @@ bool EQUIVALENCE::initaliseToken(std::string input){
 
             // Iterate through: x,x,x, and so on.
             if(argument_values.size() == 2){
-                TOC* vals[2];
+                std::vector<std::unique_ptr<TOC>> vals;
                 for (size_t i = 0; i < argument_values.size(); i++) {
-
-                    // load control variables into intermediary state.
-                    vals[i] = ::parseADString(argument_values[i]);
-
-                    // Dump raw strings. 
-                    if(Globals::dump_parsed_values){           
-                        std::cout << StringConstants::INFO_TAG << "Loaded Equivalence Argument: [" << vals[i]->toValue() << "]" << std::endl;
-                    }
-
+                    equivalence_arguments.at(argument_index).push_back(::parseADString(argument_values[i]));
+                    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Equivalence Argument: [" + vals[i]->toValue() +"]");
                 }
-
-                // Build variable mappings.
-                argument_mapping.insert(std::pair<TOC*, TOC*>(vals[0], vals[1]));
-                equivalence_arguments.push_back(argument_mapping);
-
             } else {
-                std::cerr << StringConstants::ERROR_TAG << "Found too many arguments." << std::endl;
                 std::string s;
-                s = std::accumulate(std::begin(argument_values), std::end(argument_values), s);
-                std::cerr << StringConstants::ERROR_TAG << "Argument {" << s << "} contained " << argument_values.size() << " values. Expected 2" << std::endl;
+                std::accumulate(std::begin(argument_values), std::end(argument_values), s);
+                Logging::logErrorMessage( "Found too many arguments.");
+                Logging::logErrorMessage("Argument {" + s + "} contained " + std::to_string(argument_values.size()) + " values. Expected 2");
             }
+            argument_index++;
         }
-
-        return 1;
+        return true;
     } else {
-        std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse EQUIVALENCE Statement. " << std::endl 
-        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
-        return 0;  
+        Logging::logErrorMessage( "Syntax Error - Failed to parse EQUIVALENCE Statement. ");
+        Logging::logErrorMessage("Full statement: { " + input + "}. ");
+        return false;  
     }
 
 }

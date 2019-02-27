@@ -1,5 +1,5 @@
 #include "Tokens/IF.h"
-
+// TODO save the full string to a class member, improve output.
 bool IF::initaliseToken(std::string input){
     std::string input_noIF = stripIFTag(input);
     StringOperationContainer checkedFixedArguments = parseFixedConditionalString(input_noIF);
@@ -9,20 +9,16 @@ bool IF::initaliseToken(std::string input){
     } else {
         parseRightHandSideArguments(checkedFixedArguments.input_string);
     }
-
     return true;
 }
 
 std::string IF::stripIFTag(std::string input){
     if(!(input.substr(0,2) == "IF")){
-        std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse IF Statement. " << std::endl 
-        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
-        return 0;  
+        Logging::logErrorMessage("Syntax Error - Failed to parse IF Statement. ");
+        Logging::logErrorMessage("Full statement: { " + input + "}. ");
     } else {
         input.erase(input.find("IF"), 2);
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded IF String: " << input << std::endl;
-        }
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded IF String: " + input);
     }
     return input;
 }
@@ -41,8 +37,8 @@ StringOperationContainer IF::parseFixedConditionalString(std::string conditional
                 statement_type = IF_STATEMENT_TYPE::SENSELIGHT;
                 output_string = "SENSE LIGHT";
             } else {
-                std::cerr << StringConstants::ERROR_TAG << "An unknown error occured loading conditional string: " << conditional_string << "." << std::endl
-                    << "Error Location: " << ::printErrorLocation(1, conditional_string) << std::endl;
+                Logging::logErrorMessage("An unknown error occured loading conditional string: " + conditional_string);
+                ::printErrorLocation(1, conditional_string);
             }
 
             std::string integer_string;
@@ -67,12 +63,8 @@ StringOperationContainer IF::parseFixedConditionalString(std::string conditional
 
             conditional_variable = ::parseADString(integer_string);
             conditional_string.erase(0, index);
-
-            if(Globals::dump_parsed_values){
-                std::cout << StringConstants::INFO_TAG << "Loaded fixed value: " << output_string << std::endl;
-                std::cout << StringConstants::INFO_TAG << "Loaded conditional value: " << conditional_variable->toValue() << std::endl;
-            }
-
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded fixed value: " + output_string);
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded conditional value: " + conditional_variable->toValue());
             return StringOperationContainer{conditional_string, true};
         } else {
             return StringOperationContainer{conditional_string, false};
@@ -93,13 +85,10 @@ StringOperationContainer IF::parseFixedConditionalString(std::string conditional
                 conditional_string.erase(0,11);
                 output_string = "DIVIDECHECK";
             } else {
-                std::cerr << StringConstants::ERROR_TAG << "An unknown error occured loading conditional string: " << conditional_string << "." << std::endl
-                    << "Error Location: " << ::printErrorLocation(1, conditional_string) << std::endl;
+                Logging::logErrorMessage("An unknown error occured loading conditional string. Full Statement { " + conditional_string + " }.");
+                ::printErrorLocation(1, conditional_string);
             }
-
-            if(Globals::dump_parsed_values){
-                std::cout << StringConstants::INFO_TAG << "Loaded fixed conditional value: " << output_string << std::endl;
-            }
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded fixed conditional value: " + output_string);
         } else {
             return StringOperationContainer{conditional_string, false};
         }
@@ -140,18 +129,15 @@ StringOperationContainer IF::parseConditionalArgument(std::string conditional_st
             if(c == '('){
                 inside_parens = 1;
             } else {
-                std::cerr << StringConstants::WARN_TAG << " Warning - Possible syntax error. Was expecting '(', found '" << c << "'." << std::endl;
+                Logging::logWarnMessage(" Warning - Possible syntax error. Was expecting '(', found '" + std::to_string(c) + "'.");
                 ::printErrorLocation(index + 2, conditional_string_input);
             }
         }
         index++;
     }
-    conditional_string_input.erase(0, index);
+    conditional_string_input.erase(0,index);
     conditional_variable = ::parseADString(conditional_variable_string);
-
-    if(Globals::dump_parsed_values){
-        std::cout << StringConstants::INFO_TAG << "Parsed conditional value succcessfully: " << conditional_variable->toValue() << std::endl;
-    }
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Parsed conditional value succcessfully: " + conditional_variable_string);
     return StringOperationContainer{conditional_string_input, true};
 }
 
@@ -161,29 +147,27 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     std::vector<std::string> instruction_values_arr;
     boost::split(instruction_values_arr, rhs_input_string, boost::is_any_of(","));
     // Iterate through: x,x,x, and so on.
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded right hand side string " + rhs_input_string);
     if(instruction_values_arr.size() > 0){
         if(instruction_values_arr.size() > 3){
-            std::cerr << StringConstants::ERROR_TAG << "Found too many instructions in IF statement. Expected 2|3, found " << instruction_values_arr.size() << std::endl
-            << StringConstants::ERROR_TAG << "Full statement: { " << rhs_input_string << " }." << std::endl;
-            return 0;
+            Logging::logErrorMessage( "Found too many instructions in IF statement. Expected 2|3, found " + std::to_string(instruction_values_arr.size()));
+            Logging::logErrorMessage("Full statement: { " + rhs_input_string + " }.");    
         } else if(instruction_values_arr.size() == 1){
-            std::cerr << StringConstants::ERROR_TAG << "Found too few instructions in IF statement. Expected 2|3, found " << instruction_values_arr.size() << std::endl
-            << StringConstants::ERROR_TAG << "Full statement: { " << rhs_input_string << " }." << std::endl;
-            return 0;
+            Logging::logErrorMessage("Found too few instructions in IF statement. Expected 2|3, found " + std::to_string(instruction_values_arr.size()));
+            Logging::logErrorMessage("Full statement: { " + rhs_input_string + " }.");
         } else {
             int index = instruction_values_arr.size();
             for(int i = 0; i < index; i++){
-                instruction_values[i] = ::parseADString(instruction_values_arr.at(i));
-                if(Globals::dump_parsed_values){
-                    std::cout << StringConstants::INFO_TAG << "Loaded instruction [" << i << "]:" << instruction_values_arr.at(i) << std::endl;
-                }
+                instruction_values.push_back(::parseADString(instruction_values_arr.at(i)));
+                Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded instruction [" + std::to_string(i) + "]:" + instruction_values_arr.at(i));
             }
-            return 1;
+            return true;
         }
+        return false;
     } else {
-        std::cerr << StringConstants::ERROR_TAG << "Syntax Error - IF Statement instruction values are improperly formatted. " << std::endl
-        << StringConstants::ERROR_TAG << "Expected format is: \nIF (<Conditional>) <Line label>, <Line label> [,<Line label>]" << std::endl;
-        return 0;
+        Logging::logErrorMessage("Syntax Error - IF Statement instruction values are improperly formatted.");
+        Logging::logErrorMessage("Expected format is: \nIF (<Conditional>) <Line label>, <Line label> [,<Line label>]");
+        return false;
     }
 }
 

@@ -1,17 +1,20 @@
 #ifndef __GOTO_H_INCLUDED
 #define __GOTO_H_INCLUDED
 
-#include <string>
-#include <vector>
 #include "TOC.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "ArithmeticRDParser.h"
 #include "Globals.h"
+#include "Logging.h"
+
+#include <string>
+#include <vector>
 #include <boost/algorithm/string.hpp> 
 #include <boost/regex.hpp> 
 #include <boost/lexical_cast.hpp>
+#include <memory>
 
 
 struct ARG_LIST_WRAPPER {
@@ -27,8 +30,8 @@ class GOTO : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
-        TOC* goto_single_arg;
-        std::vector<TOC*> goto_arg_list;
+        std::unique_ptr<TOC> goto_single_arg;
+        std::vector<std::unique_ptr<TOC>> goto_arg_list;
     private:
         std::string TO_MATCH = "GOTO" + RegexConstants::ANY_ARG_LIST + "|(GOTO\\(" + RegexConstants::ANY_ARG_LIST + "\\)," + RegexConstants::ANY_ARG_LIST + ")|(GOTO" +  RegexConstants::ANY_ARG_LIST + ",\\(" + RegexConstants::ANY_ARG_LIST + "\\))";
         ARG_LIST_WRAPPER loadArgumentString(std::string input_argument_string);

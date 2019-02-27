@@ -13,6 +13,7 @@
             Variable(char* name_in);
             std::vector<std::string> toTOCStr(int &variable_index);
             std::string toValue();
+            virtual ~Variable() {}
     };
 
 #endif

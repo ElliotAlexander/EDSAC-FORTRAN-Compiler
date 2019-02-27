@@ -43,7 +43,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 26 "parse.y" /* yacc.c:1912  */
+#line 24 "parse.y" /* yacc.c:1912  */
 
 
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
@@ -91,6 +91,6 @@ typedef struct type_vals YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (void);
+int yyparse (TOC *&result);
 
 #endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */

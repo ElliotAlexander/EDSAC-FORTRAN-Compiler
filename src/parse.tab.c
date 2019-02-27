@@ -81,16 +81,14 @@
 
     using namespace std;   
 
-    extern TOC* result_toc_extern;
-
     extern int yylex();
-    extern int yyparse();
+    extern int yyparse(TOC *&result);
     extern FILE *yyin;
 
-    void yyerror(const char *s);
+    void yyerror(TOC *&result, const char *s);
 
 
-#line 94 "parse.tab.c" /* yacc.c:338  */
+#line 92 "parse.tab.c" /* yacc.c:338  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -123,7 +121,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 26 "parse.y" /* yacc.c:353  */
+#line 24 "parse.y" /* yacc.c:353  */
 
 
     // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
@@ -140,7 +138,7 @@ extern int yydebug;
         std::vector<TOC*> toc_args;
     };
 
-#line 144 "parse.tab.c" /* yacc.c:353  */
+#line 142 "parse.tab.c" /* yacc.c:353  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -171,7 +169,7 @@ typedef struct type_vals YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (void);
+int yyparse (TOC *&result);
 
 #endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */
 
@@ -464,9 +462,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    64,    64,    66,    67,    69,    75,    80,    85,    90,
-      95,   100,   105,   109,   113,   117,   120,   123,   128,   129,
-     138
+       0,    64,    64,    66,    67,    69,    74,    79,    84,    89,
+      94,    99,   104,   108,   112,   116,   119,   122,   127,   128,
+     137
 };
 #endif
 
@@ -607,7 +605,7 @@ do                                                              \
     }                                                           \
   else                                                          \
     {                                                           \
-      yyerror (YY_("syntax error: cannot back up")); \
+      yyerror (result, YY_("syntax error: cannot back up")); \
       YYERROR;                                                  \
     }                                                           \
 while (0)
@@ -644,7 +642,7 @@ do {                                                                      \
     {                                                                     \
       YYFPRINTF (stderr, "%s ", Title);                                   \
       yy_symbol_print (stderr,                                            \
-                  Type, Value); \
+                  Type, Value, result); \
       YYFPRINTF (stderr, "\n");                                           \
     }                                                                     \
 } while (0)
@@ -655,10 +653,11 @@ do {                                                                      \
 `-----------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, TOC *&result)
 {
   FILE *yyoutput = yyo;
   YYUSE (yyoutput);
+  YYUSE (result);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
@@ -674,12 +673,12 @@ yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
 `---------------------------*/
 
 static void
-yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, TOC *&result)
 {
   YYFPRINTF (yyo, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyo, yytype, yyvaluep);
+  yy_symbol_value_print (yyo, yytype, yyvaluep, result);
   YYFPRINTF (yyo, ")");
 }
 
@@ -712,7 +711,7 @@ do {                                                            \
 `------------------------------------------------*/
 
 static void
-yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
+yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, TOC *&result)
 {
   unsigned long yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
@@ -726,7 +725,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
       yy_symbol_print (stderr,
                        yystos[yyssp[yyi + 1 - yynrhs]],
                        &(yyvsp[(yyi + 1) - (yynrhs)])
-                                              );
+                                              , result);
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -734,7 +733,7 @@ yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
 # define YY_REDUCE_PRINT(Rule)          \
 do {                                    \
   if (yydebug)                          \
-    yy_reduce_print (yyssp, yyvsp, Rule); \
+    yy_reduce_print (yyssp, yyvsp, Rule, result); \
 } while (0)
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -993,9 +992,10 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 `-----------------------------------------------*/
 
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, TOC *&result)
 {
   YYUSE (yyvaluep);
+  YYUSE (result);
   if (!yymsg)
     yymsg = "Deleting";
   YY_SYMBOL_PRINT (yymsg, yytype, yyvaluep, yylocationp);
@@ -1022,7 +1022,7 @@ int yynerrs;
 `----------*/
 
 int
-yyparse (void)
+yyparse (TOC *&result)
 {
     int yystate;
     /* Number of tokens to shift before error messages enabled.  */
@@ -1259,126 +1259,125 @@ yyreduce:
 #line 69 "parse.y" /* yacc.c:1660  */
     {
         TOC* x = (yyvsp[0].u.toc_T);
-        TOC* result = new Wrapper(x);
-        result_toc_extern = result;
+        result = x;
     }
-#line 1266 "parse.tab.c" /* yacc.c:1660  */
+#line 1265 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 6:
-#line 75 "parse.y" /* yacc.c:1660  */
+#line 74 "parse.y" /* yacc.c:1660  */
     { 
         TOC *a1 = (yyvsp[-2].u.toc_T);
         TOC *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::ADD);
     }
-#line 1276 "parse.tab.c" /* yacc.c:1660  */
+#line 1275 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 7:
-#line 80 "parse.y" /* yacc.c:1660  */
+#line 79 "parse.y" /* yacc.c:1660  */
     { 
         TOC *a1 = (yyvsp[-2].u.toc_T);
         TOC *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::SUBTRACT);  
     }
-#line 1286 "parse.tab.c" /* yacc.c:1660  */
+#line 1285 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 8:
-#line 85 "parse.y" /* yacc.c:1660  */
+#line 84 "parse.y" /* yacc.c:1660  */
     {
         TOC *a1 = (yyvsp[-2].u.toc_T);
         TOC *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::MULTIPLY);
     }
-#line 1296 "parse.tab.c" /* yacc.c:1660  */
+#line 1295 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 9:
-#line 90 "parse.y" /* yacc.c:1660  */
+#line 89 "parse.y" /* yacc.c:1660  */
     { 
         TOC *a1 = (yyvsp[-2].u.toc_T);
         TOC *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::DIVIDE);
     }
-#line 1306 "parse.tab.c" /* yacc.c:1660  */
+#line 1305 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 10:
-#line 95 "parse.y" /* yacc.c:1660  */
+#line 94 "parse.y" /* yacc.c:1660  */
     {
         char* function_name = (yyvsp[-3].u.vval);
         std::vector<TOC*> args = (yyvsp[-1].toc_args);
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1316 "parse.tab.c" /* yacc.c:1660  */
+#line 1315 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 11:
-#line 100 "parse.y" /* yacc.c:1660  */
+#line 99 "parse.y" /* yacc.c:1660  */
     {
         char* function_name = (yyvsp[-2].u.vval);
         std::vector<TOC*> args = {};
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1326 "parse.tab.c" /* yacc.c:1660  */
+#line 1325 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 12:
-#line 105 "parse.y" /* yacc.c:1660  */
+#line 104 "parse.y" /* yacc.c:1660  */
     { 
         TOC *t = (yyvsp[-1].u.toc_T); 
         (yyval.u.toc_T) =  t;
     }
-#line 1335 "parse.tab.c" /* yacc.c:1660  */
+#line 1334 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 13:
-#line 109 "parse.y" /* yacc.c:1660  */
+#line 108 "parse.y" /* yacc.c:1660  */
     {
         int x = (yyvsp[0].u.ival);
         (yyval.u.toc_T) = new Value<int>(0-x);
     }
-#line 1344 "parse.tab.c" /* yacc.c:1660  */
+#line 1343 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 14:
-#line 113 "parse.y" /* yacc.c:1660  */
+#line 112 "parse.y" /* yacc.c:1660  */
     {
         float x = (yyvsp[0].u.fval);
         (yyval.u.toc_T) = new Value<float>(0-x);
     }
-#line 1353 "parse.tab.c" /* yacc.c:1660  */
+#line 1352 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 15:
-#line 117 "parse.y" /* yacc.c:1660  */
+#line 116 "parse.y" /* yacc.c:1660  */
     { 
         (yyval.u.toc_T) =  new Value<int>((yyvsp[0].u.ival));
     }
-#line 1361 "parse.tab.c" /* yacc.c:1660  */
+#line 1360 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 16:
-#line 120 "parse.y" /* yacc.c:1660  */
+#line 119 "parse.y" /* yacc.c:1660  */
     { 
         (yyval.u.toc_T) = new Value<float>((yyvsp[0].u.fval));
     }
-#line 1369 "parse.tab.c" /* yacc.c:1660  */
+#line 1368 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 17:
-#line 123 "parse.y" /* yacc.c:1660  */
+#line 122 "parse.y" /* yacc.c:1660  */
     {
         char* name = (yyvsp[0].u.vval);
         (yyval.u.toc_T) = new Variable(name);
     }
-#line 1378 "parse.tab.c" /* yacc.c:1660  */
+#line 1377 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 19:
-#line 129 "parse.y" /* yacc.c:1660  */
+#line 128 "parse.y" /* yacc.c:1660  */
     {
         TOC* arg1 = (yyvsp[-2].u.toc_T);
         std::vector<TOC*> return_arr;
@@ -1387,22 +1386,22 @@ yyreduce:
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1391 "parse.tab.c" /* yacc.c:1660  */
+#line 1390 "parse.tab.c" /* yacc.c:1660  */
     break;
 
   case 20:
-#line 138 "parse.y" /* yacc.c:1660  */
+#line 137 "parse.y" /* yacc.c:1660  */
     {
         TOC* arg1 = (yyvsp[0].u.toc_T);
         std::vector<TOC*> return_arr;
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1402 "parse.tab.c" /* yacc.c:1660  */
+#line 1401 "parse.tab.c" /* yacc.c:1660  */
     break;
 
 
-#line 1406 "parse.tab.c" /* yacc.c:1660  */
+#line 1405 "parse.tab.c" /* yacc.c:1660  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1451,7 +1450,7 @@ yyerrlab:
     {
       ++yynerrs;
 #if ! YYERROR_VERBOSE
-      yyerror (YY_("syntax error"));
+      yyerror (result, YY_("syntax error"));
 #else
 # define YYSYNTAX_ERROR yysyntax_error (&yymsg_alloc, &yymsg, \
                                         yyssp, yytoken)
@@ -1478,7 +1477,7 @@ yyerrlab:
                 yymsgp = yymsg;
               }
           }
-        yyerror (yymsgp);
+        yyerror (result, yymsgp);
         if (yysyntax_error_status == 2)
           goto yyexhaustedlab;
       }
@@ -1502,7 +1501,7 @@ yyerrlab:
       else
         {
           yydestruct ("Error: discarding",
-                      yytoken, &yylval);
+                      yytoken, &yylval, result);
           yychar = YYEMPTY;
         }
     }
@@ -1558,7 +1557,7 @@ yyerrlab1:
 
 
       yydestruct ("Error: popping",
-                  yystos[yystate], yyvsp);
+                  yystos[yystate], yyvsp, result);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -1595,7 +1594,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 yyexhaustedlab:
-  yyerror (YY_("memory exhausted"));
+  yyerror (result, YY_("memory exhausted"));
   yyresult = 2;
   /* Fall through.  */
 #endif
@@ -1607,7 +1606,7 @@ yyreturn:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval);
+                  yytoken, &yylval, result);
     }
   /* Do not reclaim the symbols of the rule whose action triggered
      this YYABORT or YYACCEPT.  */
@@ -1616,7 +1615,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-                  yystos[*yyssp], yyvsp);
+                  yystos[*yyssp], yyvsp, result);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1629,10 +1628,10 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 144 "parse.y" /* yacc.c:1903  */
+#line 143 "parse.y" /* yacc.c:1903  */
 
 
-void yyerror(const char *s) {
+void yyerror(TOC *&result, const char *s) {
     cout << "Parser Error:  Message: " << s << endl;
     exit(-1);
 }

@@ -10,13 +10,10 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
 
     std::vector<std::string> equals_split;
     boost::split(equals_split, input, boost::is_any_of("="));
-    if(equals_split.size() > 2){
-        // TODO
-    }
+    Logging::logConditionalErrorMessage((equals_split.size() > 2), "Syntax Error - found multiple equals symbols in Arithmetic Statement.");
 
     bool in_args = 0;
-    std::string variable_list = "";
-    std::string function_name_temp;
+    std::string variable_list, function_name_temp;
     for(std::string::size_type i = 0; i < equals_split.at(0).size(); i++) {
         if(in_args == 0 && equals_split.at(0)[i] == '('){
             in_args = 1;
@@ -30,37 +27,22 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     }    
 
     ARITH_FUNCTION::function_name = function_name_temp;
-
     std::vector<std::string> var_list_temp;
     boost::split(var_list_temp, variable_list, boost::is_any_of(","));
+
     if(var_list_temp.size() == 0){
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded zero command arguments. " << std::endl;
-        }
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded zero command arguments");
     } else {
-        int index = 0;
         for(std::vector<std::string>::iterator it = var_list_temp.begin(); it != var_list_temp.end(); ++it){
-            ARITH_FUNCTION::function_arguments[index] = ::parseADString(*it);
-            if(Globals::dump_parsed_values){
-                std::cout << StringConstants::INFO_TAG << "Function argument : " << *it << std::endl;
-            }
-            index++;
+            ARITH_FUNCTION::function_arguments.push_back(::parseADString(*it));
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function argument : " + function_arguments.back()->toValue());
         }
     }
 
-
-    if(equals_split[1].length() == 0){
-        std::cerr << StringConstants::ERROR_TAG << "Failed to load right hand side string, length was zero." << std::endl;
-    }
-    
-    ARITH_FUNCTION::function_resolution = ::parseADString(equals_split[1]);
-
-    if(Globals::dump_parsed_values){
-        std::cout << StringConstants::INFO_TAG << "Function name: " << ARITH_FUNCTION::function_name << std::endl;
-        std::cout << StringConstants::INFO_TAG << "Right hand side " << equals_split[1] << std::endl;
-    }
-
-
+    ARITH_FUNCTION::function_resolution = std::unique_ptr<TOC>(::parseADString(equals_split[1]));
+    Logging::logConditionalErrorMessage((equals_split[1].length() == 0), "Failed to load right hand side string, length was zero.");
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function name: " + ARITH_FUNCTION::function_name);
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Right hand side " + equals_split[1]);
     return true;
     
 }

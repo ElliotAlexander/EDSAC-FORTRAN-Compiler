@@ -27,6 +27,7 @@ class Operation : public TOC{
         std::string toOPType(OPS e);
         std::string toValue();
         std::vector<std::string> toTOCStr(int &variable_index);
+        virtual ~Operation() {};
 };
 
 #endif

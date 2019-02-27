@@ -21,6 +21,7 @@
             Wrapper(TOC* in);
             std::vector<std::string> toTOCStr(int &variable_index);
             std::string toValue();
+            virtual ~Wrapper() {}
     };
 
 #endif

@@ -13,13 +13,11 @@
 
     using namespace std;   
 
-    extern TOC* result_toc_extern;
-
     extern int yylex();
-    extern int yyparse();
+    extern int yyparse(TOC *&result);
     extern FILE *yyin;
 
-    void yyerror(const char *s);
+    void yyerror(TOC *&result, const char *s);
 
 %}
 
@@ -41,12 +39,14 @@
 }
 
 %define api.value.type {struct type_vals}
+%parse-param {TOC *&result}
 
 %token <u.ival> INT
 %token <u.fval> FLOAT
 %token <u.vval> VARIABLE
 
 %token ENDL PLUS MINUS MUL DIV LPAREN RPAREN COMMA
+
 
 %type <u.toc_T> expression1
 %type <u.toc_T> expression
@@ -68,8 +68,7 @@ expressions:
 expression1:
     expression {
         TOC* x = $1;
-        TOC* result = new Wrapper(x);
-        result_toc_extern = result;
+        result = x;
     };
 expression:
     expression PLUS expression { 
@@ -143,7 +142,7 @@ single_argument:
     };
 %%
 
-void yyerror(const char *s) {
+void yyerror(TOC *&result, const char *s) {
     cout << "Parser Error:  Message: " << s << endl;
     exit(-1);
 }

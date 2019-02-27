@@ -10,8 +10,9 @@
 #include "ArithmeticParser/Value.h"
 #include "ArithmeticParser/Variable.h"
 #include "TOC.h"
-#include "Constants.h"
+#include <memory>
+#include "Logging.h"
 
-TOC* parseADString(std::string input_string);
+std::unique_ptr<TOC> parseADString(std::string input_string);
 
 #endif

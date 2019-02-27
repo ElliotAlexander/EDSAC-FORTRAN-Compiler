@@ -20,6 +20,7 @@ template <class T> class Value : public TOC {
             std::vector<std::string> x = {toValue()};
             return x;
         }
+        virtual ~Value() {}
     private:
         int assigned_variable;
 };

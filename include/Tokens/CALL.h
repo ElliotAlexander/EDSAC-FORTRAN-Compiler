@@ -12,6 +12,8 @@
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
+#include <memory>
+#include "Logging.h"
 
 class CALL : public Token {
     public:
@@ -20,12 +22,12 @@ class CALL : public Token {
         std::string getRegex(){return TO_MATCH; } 
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
+        std::vector<std::unique_ptr<TOC>> subroutine_arguments;
         std::string subroutine_name;
     private:
         std::string TO_MATCH = "CALL" + RegexConstants::SUBROUTINE_NAME + "\\(("
         + RegexConstants::ANY_ARG_LIST
         + ")?\\)";
-    TOC* subroutine_arguments[];
 };
 
 

@@ -4,11 +4,7 @@ bool GOTO::initaliseToken(std::string input){
     if(input.substr(0,4) == "GOTO"){
 
         input.erase(input.find("GOTO"), 4);
-
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded GOTO String: " << input << std::endl;
-        }   
-
+        Logging::logConditionalErrorMessage(Globals::dump_parsed_values, "Loaded GOTO String: " + input);
 
         // There are several options for how the arguments for a GOTO statement can be formatted.
         // Pick them apart in this function, and return them in a data structure.
@@ -22,17 +18,17 @@ bool GOTO::initaliseToken(std::string input){
             GOTO::loadArgumentListValue(wrapper.arg_list);
         }
         
-        return 1;
+        return true;
     } else {
-        std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse GOTO Statement. " << std::endl 
-        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
-        return 0;  
+        Logging::logErrorMessage("Syntax Error - Failed to parse GOTO Statement. ");
+        Logging::logErrorMessage("Full statement: { " + input + "}. ");
+        return false;  
     }
 }
 
 
 void GOTO::loadSingleArgumentValue(std::string argument_string){
-    goto_single_arg = ::parseADString(argument_string);
+    goto_single_arg = std::unique_ptr<TOC>(::parseADString(argument_string));
 }
 
 void GOTO::loadArgumentListValue(std::string argument_list_string){
@@ -48,11 +44,8 @@ void GOTO::loadArgumentListValue(std::string argument_list_string){
     std::vector<std::string> argument_split;
     boost::split(argument_split, argument_list_string, boost::is_any_of(","));
     for(std::vector<std::string>::iterator it = argument_split.begin(); it != argument_split.end(); ++it){
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded Argument List value: " << *it << std::endl;
-        }
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Argument List value: " + *it);
         goto_arg_list.push_back(::parseADString(*it));
-        std::cout << StringConstants::INFO_TAG << "Parsed value: " << goto_arg_list.back()->toValue() << std::endl;
     }
 }
 
@@ -81,7 +74,7 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
                     if (is_argument_list)
                     {
                         next_argument_string.push_back(c);
-                        std::cout << StringConstants::INFO_TAG << "Loaded GOTO list: " << next_argument_string << std::endl;
+                        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded GOTO list: " + next_argument_string);
                         inside_parens = false;
                         is_argument_list = false;
                         list_expr = next_argument_string;
@@ -91,10 +84,7 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
                     else
                     {
                         next_argument_string.push_back(c);
-                        if (Globals::dump_parsed_values)
-                        {
-                            std::cout << StringConstants::INFO_TAG << "Loaded arithmetic argument string : " << next_argument_string << std::endl;
-                        }
+                        Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded arithmetic argument string : " + next_argument_string);
                         non_list_expr = next_argument_string;
                         inside_parens = false;
                         next_argument_string = "";
@@ -118,8 +108,8 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
             else if (c == ',')
             {
                 if (nested_parens != 0)
-                {
-                    std::cerr << StringConstants::ERROR_TAG << "Found list inside nested parenthesis. Was expecting either a list: (x,y,z) or an arithmetic expression: (a+b)." << std::endl;
+                {   
+                    Logging::logErrorMessage("Found list inside nested parenthesis. Was expecting either a list: (x,y,z) or an arithmetic expression: (a+b).");
                     ::printErrorLocation(index + 1, input_argument_string);
                     continue;
                 }
@@ -138,10 +128,7 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
                 if (next_argument_string.length() != 0)
                 {
                     non_list_expr = next_argument_string;
-                    if (Globals::dump_parsed_values)
-                    {
-                        std::cout << StringConstants::INFO_TAG << "Loaded non-list GOTO expression: " << next_argument_string << std::endl;
-                    }
+                    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded non-list GOTO expression: " + next_argument_string );
                     next_argument_string = "";
                 }
                 else
@@ -157,8 +144,8 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
             }
             else if (c == ')')
             {
-                std::cerr << StringConstants::ERROR_TAG << "Found imbalanced parenthesis in GOTO statement: " << std::endl
-                        << ::printErrorLocation(index + 1, input_argument_string) << std::endl;
+                Logging::logErrorMessage("Found imbalanced parenthesis in GOTO statement. ");
+                ::printErrorLocation(index + 1, input_argument_string);
             }
             else
             {
@@ -169,15 +156,12 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
 
     if(next_argument_string.length() != 0){
         if(non_list_expr.length() != 0){
-            std::cout << StringConstants::WARN_TAG << "Found two non-list string arguments - overwriting the first one. " << std::endl 
-                << StringConstants::WARN_TAG << "First Argument: " << non_list_expr << std::endl
-                << StringConstants::WARN_TAG << "Second Argument: " << next_argument_string << std::endl;
+            Logging::logWarnMessage("Found two non-list string arguments - overwriting the first one. ");
+            Logging::logWarnMessage("First Argument: " + non_list_expr);
+            Logging::logWarnMessage("Second Argument: " + next_argument_string );
         } 
-
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded second argument " << next_argument_string << std::endl;
-        }
-
+        
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded second argument " + next_argument_string );
         non_list_expr = next_argument_string;
     }
 

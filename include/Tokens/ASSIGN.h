@@ -11,6 +11,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
 #include "Globals.h"
+#include "Logging.h"
+#include <memory>
+#include "ArithmeticRDParser.h"
 
 class ASSIGN : public Token {
     public:
@@ -20,8 +23,7 @@ class ASSIGN : public Token {
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
         std::string variable_name;
-        std::string assignment_value_string;
-        TOC* assignment_value;
+        std::unique_ptr<TOC> assignment_value;
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 

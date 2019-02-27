@@ -2,8 +2,6 @@
 
 bool CALL::initaliseToken(std::string input){
     std::string input_original = input;
-
-
     if(input.substr(0,4) == "CALL"){
         input.erase(0,4);
 
@@ -16,15 +14,12 @@ bool CALL::initaliseToken(std::string input){
         {
             std::string function_name_string = char_matches[2];
             CALL::subroutine_name = function_name_string;
-            if(Globals::dump_parsed_values){
-                std::cout << StringConstants::INFO_TAG << "Loaded subroutine name " << subroutine_name << std::endl;
-            }
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded subroutine name " + subroutine_name);
 
             std::string subroutine_arguments_string = char_matches[3];
             if(subroutine_arguments_string.back() == ')' && subroutine_arguments_string.front() == '('){
                 subroutine_arguments_string.erase(0,1);
                 subroutine_arguments_string.pop_back();
-
                 if(subroutine_arguments_string.length() == 0){
                     return true;
                 }
@@ -34,29 +29,25 @@ bool CALL::initaliseToken(std::string input){
 
                 int index = 0;
                 for(std::vector<std::string>::iterator it = comma_split_arguments.begin(); it != comma_split_arguments.end(); ++it){
-                    if(Globals::dump_parsed_values){
-                        std::cout << StringConstants::INFO_TAG << "Loaded function argument [" << index << "] " << *it << std::endl;
-                    }
-                    subroutine_arguments[index] = ::parseADString(*it);
+                    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded function argument [" + std::to_string(index) + "] " + *it);
+                    subroutine_arguments.push_back(::parseADString(*it));
                     index++;
                 }
 
                 return true;
             } else {
-                std::cerr << StringConstants::ERROR_TAG << "Error parsing arguments for function " << subroutine_name << std::endl;
-                std::cerr << StringConstants::ERROR_TAG << "Function Argument String: " << subroutine_arguments_string << std::endl;
+                Logging::logErrorMessage("Error parsing arguments for function " + subroutine_name);
+                Logging::logErrorMessage("Function Argument String: " + subroutine_arguments_string);
                 ::printErrorLocation(4+subroutine_name.size(), input_original);
-                return false;
             }
         } else {
-            std::cerr << StringConstants::ERROR_TAG << "Failed to parse subroutine name from CALL Statement." << std::endl;
+            Logging::logErrorMessage("Failed to parse subroutine name from CALL Statement.");
             ::printErrorLocation(0, input_original);
-            return false;
         }
     } else {
-        std::cerr << StringConstants::ERROR_TAG << "Failed to parse values from CALL Token: { " << input << " }" << std::endl;  
-        return false;
+        Logging::logErrorMessage("Failed to parse values from CALL Token: { " + input + " }");
     }
+    return false;
 }
 
 std::vector<TOC*> CALL::generatetoc(std::string input){

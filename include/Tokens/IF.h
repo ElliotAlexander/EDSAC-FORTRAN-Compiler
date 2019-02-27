@@ -1,17 +1,21 @@
 #ifndef __IF_H_INCLUDED
 #define __IF_H_INCLUDED
 
-#include <string>
-#include <vector>
+
 #include "TOC.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
+#include "Logging.h"
+
+#include <string>
+#include <vector>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
+#include <memory>
 
 enum IF_STATEMENT_TYPE {
     SENSELIGHT,
@@ -34,15 +38,15 @@ class IF : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<TOC*> generatetoc(std::string input);
-        TOC* conditional_variable;
-        IF_STATEMENT_TYPE statement_type;
+        std::vector<std::unique_ptr<TOC>> instruction_values;
+        std::unique_ptr<TOC> conditional_variable;
     private:
         std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::ANY_ARG_LIST;
         bool parseRightHandSideArguments(std::string right_hand_side_string);
         StringOperationContainer parseFixedConditionalString(std::string conditional_string);
         StringOperationContainer parseConditionalArgument(std::string conditional_argument_string);
         std::string stripIFTag(std::string input);
-    TOC* instruction_values[];
+        IF_STATEMENT_TYPE statement_type;
 };
 
 #endif

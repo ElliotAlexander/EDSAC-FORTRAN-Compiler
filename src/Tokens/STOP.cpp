@@ -3,27 +3,21 @@
 bool STOP::initaliseToken(std::string input){
 
     if(!(input.substr(0,4) == "STOP")){
-                std::cerr << StringConstants::ERROR_TAG << "Syntax Error - Failed to parse STOP Statement. " << std::endl 
-        << StringConstants::ERROR_TAG << "Couldn't find 'STOP' at start of line." << std::endl
-        << StringConstants::ERROR_TAG << "Full statement: { " << input << "}. " << std::endl;
-        return 0;  
+        Logging::logErrorMessage( "Syntax Error - Failed to parse STOP Statement. ");
+        Logging::logErrorMessage("Couldn't find 'STOP' at start of line.");
+        Logging::logErrorMessage("Full statement: { " + input + "}. ");
+        return false;  
     }
+    
     // Strip the STOP
     input.erase(input.find("STOP"), 4);
-
     if(input.length() == 0){
-        return 1;
+        return true;
     } else {
-
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded Stop String: " << input << std::endl;
-        }
-        stop_input_variable_set = 1;
-        TOC* result = ::parseADString(input);
-        stop_input_variable = result;
-        if(Globals::dump_parsed_values){
-            std::cout << StringConstants::INFO_TAG << "Loaded Stop Variable: " << result->toValue() << std::endl;
-        }
+        STOP::stop_input_variable_set = 1;
+        STOP::stop_input_variable = ::parseADString(input);
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Stop String: " + input );
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Stop Variable: " + STOP::stop_input_variable->toValue()); 
         return true;
     }
 }
