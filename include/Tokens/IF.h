@@ -2,7 +2,7 @@
 #define __IF_H_INCLUDED
 
 
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -37,9 +37,9 @@ class IF : public Token {
         std::string getTokenName(){return "IF_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::vector<std::unique_ptr<TOC>> instruction_values;
-        std::unique_ptr<TOC> conditional_variable;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::unique_ptr<RDParseTreeNode>> instruction_values;
+        std::unique_ptr<RDParseTreeNode> conditional_variable;
     private:
         std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::ANY_ARG_LIST;
         bool parseRightHandSideArguments(std::string right_hand_side_string);

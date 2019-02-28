@@ -7,7 +7,7 @@
 #include <iostream>
 #include <memory>
 
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -21,8 +21,8 @@ class EQUIVALENCE : public Token {
         std::string getTokenName(){return "EQUIVALENCE_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::vector<std::vector<std::unique_ptr<TOC>>> equivalence_arguments;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::vector<std::unique_ptr<RDParseTreeNode>>> equivalence_arguments;
     private:
         std::string TO_MATCH = "EQUIVALENCE(\\(" + RegexConstants::ANY_ARG_LIST + "\\))+";
 };

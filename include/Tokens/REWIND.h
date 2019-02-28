@@ -2,7 +2,7 @@
 #define __REWIND_H_INCLUDED
 
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include <string>
 #include "Token.h"
 #include "Utils.h"
@@ -14,7 +14,7 @@ class REWIND : public Token {
         std::string getTokenName(){return "REWIND_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "REWIND" + RegexConstants::VARIABLE_NAME;
 };

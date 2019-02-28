@@ -43,11 +43,11 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 24 "parse.y" /* yacc.c:1912  */
+#line 23 "parse.y" /* yacc.c:1912  */
 
 
-    // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
-    #include "TOC.h"
+    // This is required to force bison to include the parse node structure before the preprocessing of union types and YYTYPE.
+    #include "RDParseTreeNode.h"
     #include <vector>
 
     struct type_vals {
@@ -55,9 +55,9 @@ extern int yydebug;
             int ival;
             float fval;
             char *vval;
-            TOC *toc_T;
+            RDParseTreeNode *toc_T;
         } u;
-        std::vector<TOC*> toc_args;
+        std::vector<RDParseTreeNode*> toc_args;
     };
 
 #line 64 "parse.tab.h" /* yacc.c:1912  */
@@ -91,6 +91,6 @@ typedef struct type_vals YYSTYPE;
 
 extern YYSTYPE yylval;
 
-int yyparse (TOC *&result);
+int yyparse (RDParseTreeNode *&result);
 
 #endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */

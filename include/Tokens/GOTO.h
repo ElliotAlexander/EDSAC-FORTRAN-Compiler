@@ -1,7 +1,7 @@
 #ifndef __GOTO_H_INCLUDED
 #define __GOTO_H_INCLUDED
 
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -29,9 +29,9 @@ class GOTO : public Token {
         std::string getTokenName(){return "GOTO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::unique_ptr<TOC> goto_single_arg;
-        std::vector<std::unique_ptr<TOC>> goto_arg_list;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::unique_ptr<RDParseTreeNode> goto_single_arg;
+        std::vector<std::unique_ptr<RDParseTreeNode>> goto_arg_list;
     private:
         std::string TO_MATCH = "GOTO" + RegexConstants::ANY_ARG_LIST + "|(GOTO\\(" + RegexConstants::ANY_ARG_LIST + "\\)," + RegexConstants::ANY_ARG_LIST + ")|(GOTO" +  RegexConstants::ANY_ARG_LIST + ",\\(" + RegexConstants::ANY_ARG_LIST + "\\))";
         ARG_LIST_WRAPPER loadArgumentString(std::string input_argument_string);

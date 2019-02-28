@@ -1,0 +1,80 @@
+
+
+===== EDSAC FORTRAN II Compiler  =====
+
+
+:: Loading Command Arguments ::
+
++parsed-values
++dump data structures
++dump tokens
++load: tests/Stmt_Tests/ARITH_FUNCTION_tests.f
+
+
+
+:: Loading File Inputs ::
+
+ --- tests/Stmt_Tests/ARITH_FUNCTION_tests.f ---
+Loaded tests/Stmt_Tests/ARITH_FUNCTION_tests.f[7] successfully. 
+Begin File Dump(Name=tests/Stmt_Tests/ARITH_FUNCTION_tests.f):
+      FFISF(X) = A*X + B 
+      SECONDF(X, B) = A*X + B 
+      THSDDF(D) = FIRSTF(E)/D 
+      FOURTHF(F, G) = SECONDF(F,THffiDF(G)) 
+      FIFTHF(I, A)= 3. 0*A**I 
+      SIXTHF (J) = J + K 
+      END 
+
+End File Dump
+
+
+:: Beginning preliminary parsing of files ::
+
+ --- tests/Stmt_Tests/ARITH_FUNCTION_tests.f ---
+
+File Segment breakdown: 
++PROGRAM [1,7]
+Begin Segment Dump(Type=UNKNOWN)
+      FFISF(X) = A*X + B
+      SECONDF(X, B) = A*X + B
+      THSDDF(D) = FIRSTF(E)/D
+      FOURTHF(F, G) = SECONDF(F,THffiDF(G))
+      FIFTHF(I, A)= 3. 0*A**I
+      SIXTHF (J) = J + K
+      END
+End Segment Dump 
+
+Found end of Program [7].
+
+Beginning Tokenization: 
+[1][ARITH_FUNCTION] {FFISF(X) = A*X + B	}
+[INFO] Loaded function name: FFISF
+[INFO] Loaded function argument: X
+[2][ARITH_FUNCTION] {SECONDF(X, B) = A*X + B	}
+[INFO] Loaded function name: SECONDF
+[INFO] Loaded function argument: X
+[INFO] Loaded function argument: B
+[3][ARITH_FUNCTION] {THSDDF(D) = FIRSTF(E)/D	}
+[INFO] Loaded function name: THSDDF
+[INFO] Loaded function argument: D
+[4][ARITH_FUNCTION] {FOURTHF(F, G) = SECONDF(F,THffiDF(G))	}
+[INFO] Loaded function name: FOURTHF
+[INFO] Loaded function argument: F
+[INFO] Loaded function argument: G
+[5][ARITH_FUNCTION] {FIFTHF(I, A)= 3. 0*A**I	}
+[INFO] Loaded function name: FIFTHF
+[INFO] Loaded function argument: I
+[INFO] Loaded function argument: A
+[6][ARITH_FUNCTION] {SIXTHF (J) = J + K	}
+[INFO] Loaded function name: SIXTHF
+[INFO] Loaded function argument: J
+[7][END_TOKEN] {END	}
+
+ --- End --- 
+
+
+Time taken: 0.01s
+
+
+==== End of runtime  ====
+

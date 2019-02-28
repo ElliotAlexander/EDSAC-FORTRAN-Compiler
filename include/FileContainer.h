@@ -23,10 +23,8 @@ class FileContainer {
         std::string removeShortLines(std::string input, int line_counter);
         std::string getEnumString(int i);
         std::string removeNewlines(std::string line);
-
         std::string file_name;
         std::vector<std::string> file_text;
-
         std::vector<Segment> segment_arr;
 };
 #endif

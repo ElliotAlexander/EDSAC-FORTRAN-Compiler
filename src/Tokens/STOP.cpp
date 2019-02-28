@@ -8,7 +8,7 @@ bool STOP::initaliseToken(std::string input){
         Logging::logErrorMessage("Full statement: { " + input + "}. ");
         return false;  
     }
-    
+
     // Strip the STOP
     input.erase(input.find("STOP"), 4);
     if(input.length() == 0){
@@ -22,6 +22,6 @@ bool STOP::initaliseToken(std::string input){
     }
 }
 
-std::vector<TOC*> STOP::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> STOP::generatetoc(std::string input){
     return {};
 }

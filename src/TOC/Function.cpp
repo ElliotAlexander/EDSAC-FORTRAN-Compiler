@@ -1,6 +1,6 @@
 #include "ArithmeticParser/Function.h"
 
-Function::Function(std::vector<TOC *> args_in, std::string function_name_in)
+Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_name_in)
 {
     tt = TOC_TYPES::FUNCTION_E;
     args = args_in;
@@ -15,12 +15,12 @@ std::string Function::toValue()
 std::vector<std::string> Function::toTOCStr(int &variable_index)
 {
     int index = 0;
-    std::vector<TOC *> arg_list;
+    std::vector<RDParseTreeNode *> arg_list;
 
     // Prestring represents operations + variable setup for function calls.
     std::vector<std::string> pre_string;
 
-    for (std::vector<TOC *>::iterator it = args.begin(); it != args.end(); ++it)
+    for (std::vector<RDParseTreeNode *>::iterator it = args.begin(); it != args.end(); ++it)
     {
         // Iterate through argument list.
 
@@ -66,7 +66,7 @@ std::vector<std::string> Function::toTOCStr(int &variable_index)
     {
         // Iterate through TOC representations of reach argument.
         // Iterate backwards - FIFO
-        for (std::vector<TOC *>::reverse_iterator it = arg_list.rbegin(); it != arg_list.rend(); ++it)
+        for (std::vector<RDParseTreeNode *>::reverse_iterator it = arg_list.rbegin(); it != arg_list.rend(); ++it)
         {
             //for (std::vector<TOC*>::iterator it = arg_list.begin(); it != arg_list.end(); ++it) {
             /** Append value to output string.

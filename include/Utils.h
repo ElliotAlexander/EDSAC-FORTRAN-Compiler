@@ -12,5 +12,8 @@ std::string getEnumString(int i);
 std::string stripWhitespaceString(std::string input);
 bool printErrorLocation(int location, std::string);
 unsigned long long getTotalSystemMemory();
+void print_header();
+void print_footer();
+
 
 #endif

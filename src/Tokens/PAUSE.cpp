@@ -21,6 +21,6 @@ bool PAUSE::initaliseToken(std::string input){
 
 }
 
-std::vector<TOC*> PAUSE::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> PAUSE::generatetoc(std::string input){
     return {};
 }

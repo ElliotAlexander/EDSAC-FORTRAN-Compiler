@@ -50,6 +50,6 @@ bool CALL::initaliseToken(std::string input){
     return false;
 }
 
-std::vector<TOC*> CALL::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> CALL::generatetoc(std::string input){
     return {};
 }

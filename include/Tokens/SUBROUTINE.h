@@ -2,7 +2,7 @@
 #define __SUBROUTINE_H_INCLUDED
 
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include <string>
 #include "Utils.h"
 #include "Constants.h"
@@ -15,7 +15,7 @@ class SUBROUTINE : public Token {
         std::string getTokenName(){return "SUBROUTINE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
     private:
     // Note that the second section of this regex matches subroutines without arguments
     // i.e. SUBROUTINE HelloWorld 

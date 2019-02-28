@@ -11,13 +11,14 @@
         OPERATION_E,
         FUNCTION_E
     };
+
     
-    class TOC{
+    class RDParseTreeNode{
         public:
             TOC_TYPES tt;   
             virtual std::vector<std::string> toTOCStr(int &variable_index) = 0;
             virtual std::string toValue() = 0;
-            virtual ~TOC() {};
+            virtual ~RDParseTreeNode() {};
     };
 
 #endif

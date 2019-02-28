@@ -5,7 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Constants.h"
 
 enum OPS {
@@ -16,14 +16,14 @@ enum OPS {
     EXPONENT
 };
 
-class Operation : public TOC{
+class Operation : public RDParseTreeNode{
 
     OPS op;
     public:
-        TOC* arg1;
-        TOC* arg2;
+        RDParseTreeNode* arg1;
+        RDParseTreeNode* arg2;
         int final_var_index = -1;
-        Operation(TOC* arg1_in, TOC* arg2_in, OPS operation);
+        Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation);
         std::string toOPType(OPS e);
         std::string toValue();
         std::vector<std::string> toTOCStr(int &variable_index);

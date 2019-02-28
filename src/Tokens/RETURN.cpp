@@ -4,6 +4,6 @@ bool RETURN::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC*> RETURN::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> RETURN::generatetoc(std::string input){
     return {};
 }

@@ -60,10 +60,9 @@ bool EQUIVALENCE::initaliseToken(std::string input){
 
             // Iterate through: x,x,x, and so on.
             if(argument_values.size() == 2){
-                std::vector<std::unique_ptr<TOC>> vals;
                 for (size_t i = 0; i < argument_values.size(); i++) {
                     equivalence_arguments.at(argument_index).push_back(::parseADString(argument_values[i]));
-                    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Equivalence Argument: [" + vals[i]->toValue() +"]");
+                    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Equivalence Argument: [" + equivalence_arguments.at(argument_index).back()->toValue() +"]");
                 }
             } else {
                 std::string s;
@@ -82,6 +81,6 @@ bool EQUIVALENCE::initaliseToken(std::string input){
 
 }
 
-std::vector<TOC*> EQUIVALENCE::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> EQUIVALENCE::generatetoc(std::string input){
     return {};
 }

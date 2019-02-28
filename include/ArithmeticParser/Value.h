@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 
-template <class T> class Value : public TOC {
+template <class T> class Value : public RDParseTreeNode {
     public:
         T argument;
         Value(T arg) {

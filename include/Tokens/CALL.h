@@ -5,7 +5,7 @@
 #include "Token.h"
 #include "Utils.h"
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
@@ -21,8 +21,8 @@ class CALL : public Token {
         std::string getTokenName(){return "CALL_TOKEN"; };
         std::string getRegex(){return TO_MATCH; } 
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::vector<std::unique_ptr<TOC>> subroutine_arguments;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::unique_ptr<RDParseTreeNode>> subroutine_arguments;
         std::string subroutine_name;
     private:
         std::string TO_MATCH = "CALL" + RegexConstants::SUBROUTINE_NAME + "\\(("

@@ -9,10 +9,10 @@
 #include "ArithmeticParser/Operation.h"
 #include "ArithmeticParser/Value.h"
 #include "ArithmeticParser/Variable.h"
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include <memory>
 #include "Logging.h"
 
-std::unique_ptr<TOC> parseADString(std::string input_string);
+std::unique_ptr<RDParseTreeNode> parseADString(std::string input_string);
 
 #endif

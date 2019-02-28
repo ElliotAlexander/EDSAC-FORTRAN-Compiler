@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
@@ -19,8 +19,8 @@ class STOP : public Token {
         std::string getTokenName(){return "STOP_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::unique_ptr<TOC> stop_input_variable;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::unique_ptr<RDParseTreeNode> stop_input_variable;
         bool stop_input_variable_set = 0;
     private:
         std::string TO_MATCH = "STOP|STOP" + RegexConstants::ANY_ARG_LIST;

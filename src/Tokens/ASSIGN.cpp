@@ -36,6 +36,6 @@ bool ASSIGN::initaliseToken(std::string input){
     }
 }
 
-std::vector<TOC*> ASSIGN::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> ASSIGN::generatetoc(std::string input){
     return {};
 }

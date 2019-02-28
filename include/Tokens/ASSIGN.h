@@ -5,7 +5,7 @@
 #include "Token.h"
 #include "Utils.h"
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Constants.h"
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
@@ -21,9 +21,9 @@ class ASSIGN : public Token {
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
         std::string variable_name;
-        std::unique_ptr<TOC> assignment_value;
+        std::unique_ptr<RDParseTreeNode> assignment_value;
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 

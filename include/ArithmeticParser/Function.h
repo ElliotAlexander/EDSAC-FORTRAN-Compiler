@@ -4,17 +4,16 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 
 
-
-    class Function : public TOC {
+    class Function : public RDParseTreeNode {
         private:
             std::string function_call = "";
         public:
-            std::vector<TOC*> args;
+            std::vector<RDParseTreeNode*> args;
             std::string function_name;
-            Function(std::vector<TOC*> args_in, std::string function_name_in);
+            Function(std::vector<RDParseTreeNode*> args_in, std::string function_name_in);
             std::string toValue();
             std::vector<std::string> toTOCStr(int &variable_index);
             virtual ~Function() {};

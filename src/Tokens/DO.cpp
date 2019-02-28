@@ -68,6 +68,6 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
     }
 }
 
-std::vector<TOC*> DO::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> DO::generatetoc(std::string input){
     return {};
 }

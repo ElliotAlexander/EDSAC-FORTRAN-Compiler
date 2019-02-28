@@ -171,6 +171,6 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     }
 }
 
-std::vector<TOC*> IF::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> IF::generatetoc(std::string input){
     return {};
 }

@@ -5,7 +5,7 @@
 #include "Token.h"
 #include "Utils.h"
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Constants.h"
 
 class DIMENSION : public Token {
@@ -14,7 +14,7 @@ class DIMENSION : public Token {
         std::string getTokenName(){return "DIMENSION_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "DIMENSION(("
         + RegexConstants::VARIABLE_NAME

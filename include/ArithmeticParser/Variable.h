@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 
 
-    class Variable : public TOC {
+    class Variable : public RDParseTreeNode {
         public:
             char *name;
             Variable(char* name_in);

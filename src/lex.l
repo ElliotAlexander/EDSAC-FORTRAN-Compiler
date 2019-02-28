@@ -1,7 +1,7 @@
 %{
 #include <cstdio>
 #include "parse.tab.h"  // to get the token types from Bison
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include <iostream>
 %}
 %%

@@ -8,7 +8,7 @@
 #include "Constants.h"
 #include "Globals.h"
 #include <vector>
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Logging.h"
 #include <stdlib.h>
 #include <boost/regex.hpp>
@@ -24,9 +24,9 @@ class DO : public Token {
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
-        std::unique_ptr<TOC> control_loop_var_toc, main_loop_var_toc;
-        std::vector<std::unique_ptr<TOC>> control_vars_right_toc;
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::unique_ptr<RDParseTreeNode> control_loop_var_toc, main_loop_var_toc;
+        std::vector<std::unique_ptr<RDParseTreeNode>> control_vars_right_toc;
     private:
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::VARIABLE_NAME + "|"

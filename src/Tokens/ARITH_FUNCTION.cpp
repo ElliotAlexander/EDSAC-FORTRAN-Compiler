@@ -2,8 +2,8 @@
 
 ARITH_FUNCTION::ARITH_FUNCTION(){
     std::string function_name; 
-    TOC* function_resolution;
-    std::vector<TOC*> function_arguments;
+    RDParseTreeNode* function_resolution;
+    std::vector<RDParseTreeNode*> function_arguments;
 }
 
 bool ARITH_FUNCTION::initaliseToken(std::string input){
@@ -39,7 +39,7 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
         }
     }
 
-    ARITH_FUNCTION::function_resolution = std::unique_ptr<TOC>(::parseADString(equals_split[1]));
+    ARITH_FUNCTION::function_resolution = std::unique_ptr<RDParseTreeNode>(::parseADString(equals_split[1]));
     Logging::logConditionalErrorMessage((equals_split[1].length() == 0), "Failed to load right hand side string, length was zero.");
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function name: " + ARITH_FUNCTION::function_name);
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Right hand side " + equals_split[1]);
@@ -47,6 +47,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     
 }
 
-std::vector<TOC*> ARITH_FUNCTION::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> ARITH_FUNCTION::generatetoc(std::string input){
     return {};
 }

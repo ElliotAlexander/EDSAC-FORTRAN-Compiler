@@ -1,6 +1,6 @@
 #include "ArithmeticParser/Operation.h"
 
-Operation::Operation(TOC *arg1_in, TOC *arg2_in, OPS operation)
+Operation::Operation(RDParseTreeNode *arg1_in, RDParseTreeNode *arg2_in, OPS operation)
 {
     tt = TOC_TYPES::OPERATION_E;
     arg1 = arg1_in;

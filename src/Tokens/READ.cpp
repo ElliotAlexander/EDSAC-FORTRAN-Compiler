@@ -4,6 +4,6 @@ bool READ::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC*> READ::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> READ::generatetoc(std::string input){
     return {};
 }

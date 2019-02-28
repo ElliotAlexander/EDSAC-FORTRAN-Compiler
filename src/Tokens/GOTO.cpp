@@ -28,7 +28,7 @@ bool GOTO::initaliseToken(std::string input){
 
 
 void GOTO::loadSingleArgumentValue(std::string argument_string){
-    goto_single_arg = std::unique_ptr<TOC>(::parseADString(argument_string));
+    goto_single_arg = ::parseADString(argument_string);
 }
 
 void GOTO::loadArgumentListValue(std::string argument_list_string){
@@ -168,6 +168,6 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
     return ARG_LIST_WRAPPER{list_expr, non_list_expr, !list_expr.empty()};
 }
 
-std::vector<TOC*> GOTO::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> GOTO::generatetoc(std::string input){
     return {};
 }

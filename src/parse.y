@@ -5,26 +5,25 @@
     #include "ArithmeticParser/Value.h"
     #include "ArithmeticParser/Variable.h"
     #include "ArithmeticParser/Function.h"
-    #include "ArithmeticParser/Wrapper.h"
 
     #include "ArithmeticRDParser.h"
-    #include "TOC.h"
+    #include "RDParseTreeNode.h"
     #include <vector>  
 
     using namespace std;   
 
     extern int yylex();
-    extern int yyparse(TOC *&result);
+    extern int yyparse(RDParseTreeNode *&result);
     extern FILE *yyin;
 
-    void yyerror(TOC *&result, const char *s);
+    void yyerror(RDParseTreeNode *&result, const char *s);
 
 %}
 
 %code requires {
 
-    // This is required to force bison to include TOC before the preprocessing of union types and YYTYPE.
-    #include "TOC.h"
+    // This is required to force bison to include the parse node structure before the preprocessing of union types and YYTYPE.
+    #include "RDParseTreeNode.h"
     #include <vector>
 
     struct type_vals {
@@ -32,14 +31,14 @@
             int ival;
             float fval;
             char *vval;
-            TOC *toc_T;
+            RDParseTreeNode *toc_T;
         } u;
-        std::vector<TOC*> toc_args;
+        std::vector<RDParseTreeNode*> toc_args;
     };
 }
 
 %define api.value.type {struct type_vals}
-%parse-param {TOC *&result}
+%parse-param {RDParseTreeNode *&result}
 
 %token <u.ival> INT
 %token <u.fval> FLOAT
@@ -67,42 +66,42 @@ expressions:
     | expression1;
 expression1:
     expression {
-        TOC* x = $1;
+        RDParseTreeNode* x = $1;
         result = x;
     };
 expression:
     expression PLUS expression { 
-        TOC *a1 = $1;
-        TOC *a2 = $3;
+        RDParseTreeNode *a1 = $1;
+        RDParseTreeNode *a2 = $3;
         $$ = new Operation(a1, a2, OPS::ADD);
     }
     |expression MINUS expression { 
-        TOC *a1 = $1;
-        TOC *a2 = $3;
+        RDParseTreeNode *a1 = $1;
+        RDParseTreeNode *a2 = $3;
         $$ = new Operation(a1, a2, OPS::SUBTRACT);  
     }
     |expression MUL expression {
-        TOC *a1 = $1;
-        TOC *a2 = $3;
+        RDParseTreeNode *a1 = $1;
+        RDParseTreeNode *a2 = $3;
         $$ = new Operation(a1, a2, OPS::MULTIPLY);
     }
     |expression DIV expression { 
-        TOC *a1 = $1;
-        TOC *a2 = $3;
+        RDParseTreeNode *a1 = $1;
+        RDParseTreeNode *a2 = $3;
         $$ = new Operation(a1, a2, OPS::DIVIDE);
     }
     | VARIABLE LPAREN arguments RPAREN {
         char* function_name = $1;
-        std::vector<TOC*> args = $3;
+        std::vector<RDParseTreeNode*> args = $3;
         $$ = new Function(args, function_name);
     }
     | VARIABLE LPAREN RPAREN {
         char* function_name = $1;
-        std::vector<TOC*> args = {};
+        std::vector<RDParseTreeNode*> args = {};
         $$ = new Function(args, function_name);
     }
     |LPAREN expression RPAREN { 
-        TOC *t = $2; 
+        RDParseTreeNode *t = $2; 
         $$ =  t;
     } 
     | MINUS INT {
@@ -126,23 +125,23 @@ expression:
 arguments: 
     single_argument
     | expression COMMA arguments {
-        TOC* arg1 = $1;
-        std::vector<TOC*> return_arr;
-        std::vector<TOC*> stacked_return_arr = $3;
+        RDParseTreeNode* arg1 = $1;
+        std::vector<RDParseTreeNode*> return_arr;
+        std::vector<RDParseTreeNode*> stacked_return_arr = $3;
         return_arr.insert(return_arr.end(), stacked_return_arr.begin(), stacked_return_arr.end());
         return_arr.push_back(arg1);
         $$ = return_arr;
     };
 single_argument: 
     expression {
-        TOC* arg1 = $1;
-        std::vector<TOC*> return_arr;
+        RDParseTreeNode* arg1 = $1;
+        std::vector<RDParseTreeNode*> return_arr;
         return_arr.push_back(arg1);
         $$ = return_arr;
     };
 %%
 
-void yyerror(TOC *&result, const char *s) {
+void yyerror(RDParseTreeNode *&result, const char *s) {
     cout << "Parser Error:  Message: " << s << endl;
     exit(-1);
 }

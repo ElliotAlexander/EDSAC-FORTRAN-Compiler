@@ -449,7 +449,7 @@ char *yytext;
 #line 2 "lex.l"
 #include <cstdio>
 #include "parse.tab.h"  // to get the token types from Bison
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include <iostream>
 #line 454 "lex.yy.c"
 #line 455 "lex.yy.c"

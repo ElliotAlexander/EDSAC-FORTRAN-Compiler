@@ -4,6 +4,6 @@ bool SUBROUTINE::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<TOC*> SUBROUTINE::generatetoc(std::string input){
+std::vector<RDParseTreeNode*> SUBROUTINE::generatetoc(std::string input){
     return {};
 }

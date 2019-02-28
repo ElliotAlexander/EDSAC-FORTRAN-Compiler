@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 
-#include "TOC.h"
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Constants.h"
 #include "Globals.h"
@@ -15,12 +15,12 @@
 class PAUSE : public Token {
     public:
         bool pause_input_variable_set;
-        std::unique_ptr<TOC> pause_input_variable;
+        std::unique_ptr<RDParseTreeNode> pause_input_variable;
         bool isValid(std::string input);
         std::string getTokenName(){return "PAUSE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<TOC*> generatetoc(std::string input);
+        std::vector<RDParseTreeNode*> generatetoc(std::string input);
     private:
         std::string TO_MATCH = "PAUSE|PAUSE"+RegexConstants::ANY_ARG_LIST;
 
