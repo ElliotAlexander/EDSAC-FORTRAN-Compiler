@@ -25,6 +25,7 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
     EQUIVALENCE* eq_stmt = new EQUIVALENCE();
     FORMAT* format_stmt = new FORMAT();
     PAUSE* pause_stmt = new PAUSE();
+    FUNCTION* function_stmt = new FUNCTION();
 
 
 
@@ -45,6 +46,7 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
         assign_stmt,
         if_stmt,
         pause_stmt,
+        function_stmt,
     };
     bool found = false;
 
