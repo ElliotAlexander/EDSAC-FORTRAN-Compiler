@@ -168,6 +168,6 @@ ARG_LIST_WRAPPER GOTO::loadArgumentString(std::string input_argument_string)
     return ARG_LIST_WRAPPER{list_expr, non_list_expr, !list_expr.empty()};
 }
 
-std::vector<RDParseTreeNode*> GOTO::generatetoc(std::string input){
+std::vector<std::string> GOTO::generatetoc(int &variable_index){
     return {};
 }

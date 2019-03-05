@@ -26,7 +26,7 @@ bool ASSIGN::initaliseToken(std::string input){
         ASSIGN::variable_name = variable_name_temp;
         ASSIGN::assignment_value = ::parseADString(assignment_string_temp);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable name : " + variable_name_temp);
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable assignment : " + assignment_value->toValue());
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable assignment : " + assignment_string_temp);
         
         return true;
     } else {
@@ -36,6 +36,6 @@ bool ASSIGN::initaliseToken(std::string input){
     }
 }
 
-std::vector<RDParseTreeNode*> ASSIGN::generatetoc(std::string input){
+std::vector<std::string> ASSIGN::generatetoc(int &variable_index){
     return {};
 }

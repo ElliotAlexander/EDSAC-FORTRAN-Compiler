@@ -64,7 +64,7 @@ StringOperationContainer IF::parseFixedConditionalString(std::string conditional
             conditional_variable = ::parseADString(integer_string);
             conditional_string.erase(0, index);
             Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded fixed value: " + output_string);
-            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded conditional value: " + conditional_variable->toValue());
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,  "Loaded conditional value: " + integer_string);
             return StringOperationContainer{conditional_string, true};
         } else {
             return StringOperationContainer{conditional_string, false};
@@ -171,6 +171,6 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     }
 }
 
-std::vector<RDParseTreeNode*> IF::generatetoc(std::string input){
+std::vector<std::string> IF::generatetoc(int &variable_index){
     return {};
 }

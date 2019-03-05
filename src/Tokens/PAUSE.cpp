@@ -14,13 +14,12 @@ bool PAUSE::initaliseToken(std::string input){
         return 1;
     } else {
         PAUSE::pause_input_variable = ::parseADString(input);
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Pause String: " + input);
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Pause Variable: " + PAUSE::pause_input_variable->toValue());
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Pause Variable: " + input);
         return 1;
     }
 
 }
 
-std::vector<RDParseTreeNode*> PAUSE::generatetoc(std::string input){
+std::vector<std::string> PAUSE::generatetoc(int &variable_index){
     return {};
 }

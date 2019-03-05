@@ -4,6 +4,6 @@ bool REWIND::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<RDParseTreeNode*> REWIND::generatetoc(std::string input){
+std::vector<std::string> REWIND::generatetoc(int &variable_index){
     return {};
 }

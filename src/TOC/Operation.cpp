@@ -27,72 +27,18 @@ std::string Operation::toOPType(OPS e)
     }
 }
 
-std::string Operation::toValue()
-{
-    return "$" + std::to_string(final_var_index);
-}
+TOC_RETURN_VALUE Operation::generateThreeOPCode(int &variable_index){
+    std::vector<std::string> pre_string;
 
-std::vector<std::string> Operation::toTOCStr(int &variable_index)
-{
-    std::vector<std::string> return_arr;
-    if (arg1->tt == TOC_TYPES::OPERATION_E || arg2->tt == TOC_TYPES::OPERATION_E)
-    {
 
-        if (arg1->tt == TOC_TYPES::OPERATION_E && arg2->tt == TOC_TYPES::OPERATION_E)
-        {
-            std::vector<std::string> x = arg1->toTOCStr(variable_index);
-            return_arr.insert(return_arr.end(), x.begin(), x.end());
+    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(variable_index);
+    TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(variable_index);
+    
+    pre_string.insert(pre_string.end(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
+    pre_string.insert(pre_string.end(), arg2_ret.pre_string.begin(), arg2_ret.pre_string.end());
 
-            std::vector<std::string> y = arg2->toTOCStr(variable_index);
-            return_arr.insert(return_arr.end(), y.begin(), y.end());
-
-            return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index - 2) + toOPType(op) + std::string("$") + std::to_string(variable_index - 1));
-        }
-        else if (arg1->tt == TOC_TYPES::OPERATION_E)
-        {
-            std::vector<std::string> x = arg1->toTOCStr(variable_index);
-            return_arr.insert(return_arr.end(), x.begin(), x.end());
-            return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index - 1) + toOPType(op) + arg2->toValue());
-        }
-        else if (arg2->tt == TOC_TYPES::OPERATION_E)
-        {
-            std::vector<std::string> x = arg2->toTOCStr(variable_index);
-            return_arr.insert(return_arr.end(), x.begin(), x.end());
-            return_arr.push_back("$" + std::to_string(variable_index) + std::string("=$") + std::to_string(variable_index - 1) + toOPType(op) + arg1->toValue());
-        }
-        final_var_index = variable_index;
-        variable_index++;
-        return return_arr;
-    }
-    else if (arg1->tt == TOC_TYPES::FUNCTION_E || arg2->tt == TOC_TYPES::FUNCTION_E)
-    {
-        if (arg1->tt == TOC_TYPES::FUNCTION_E && arg2->tt == TOC_TYPES::FUNCTION_E)
-        {
-        }
-        else if (arg1->tt == TOC_TYPES::FUNCTION_E)
-        {
-            std::vector<std::string> pre_string = arg1->toTOCStr(variable_index);
-            // Function call is already added.
-            return_arr.insert(return_arr.end(), pre_string.begin(), pre_string.end());
-            return_arr.pop_back();
-            return_arr.push_back("$" + std::to_string(variable_index) + std::string("=") + arg2->toValue() + toOPType(op) + arg1->toValue());
-        }
-        else if (arg2->tt == TOC_TYPES::FUNCTION_E)
-        {
-            std::vector<std::string> pre_string = arg2->toTOCStr(variable_index);
-            // Function call is already added.
-            return_arr.insert(return_arr.end(), pre_string.begin(), pre_string.end());
-            return_arr.pop_back();
-            return_arr.push_back("$" + std::to_string(variable_index) + std::string("=") + arg1->toValue() + toOPType(op) + arg2->toValue());
-        }
-        return return_arr;
-    }
-    else {
-        return_arr.push_back("$" + std::to_string(variable_index) + "=" + arg1->toValue());
-        return_arr.push_back("$" + std::to_string(variable_index + 1) + "=" + arg2->toValue());
-        return_arr.push_back("$" + std::to_string(variable_index + 2) + "=$" + std::to_string(variable_index) + toOPType(op) + "$" + std::to_string(variable_index + 1));
-        final_var_index = variable_index + 2;
-        variable_index = variable_index + 3;
-        return return_arr;
-    }
+    pre_string.push_back("$" + std::to_string(variable_index) + std::string("=") + arg1_ret.call_value + toOPType(op) + arg2_ret.call_value);
+    std::string return_call_value = std::string("$" + std::to_string(variable_index));
+    
+    return {pre_string, return_call_value};
 }

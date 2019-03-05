@@ -7,103 +7,28 @@ Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_
     function_name = function_name_in;
 }
 
-std::string Function::toValue()
-{
-    return function_call;
-}
+TOC_RETURN_VALUE Function::generateThreeOPCode(int &variable_index){
 
-std::vector<std::string> Function::toTOCStr(int &variable_index)
-{
-    int index = 0;
-    std::vector<RDParseTreeNode *> arg_list;
-
-    // Prestring represents operations + variable setup for function calls.
+    std::vector<std::string> arg_list;
     std::vector<std::string> pre_string;
 
-    for (std::vector<RDParseTreeNode *>::iterator it = args.begin(); it != args.end(); ++it)
-    {
-        // Iterate through argument list.
-
-        // We need to build a pre-string for Operations and other functiosn.
-        // This might involve setting variables, or completing operations.
-        if ((*it)->tt == TOC_TYPES::OPERATION_E || (*it)->tt == TOC_TYPES::FUNCTION_E)
-        {
-            if ((*it)->tt == TOC_TYPES::OPERATION_E)
-            {
-                std::vector<std::string> op_pre_string = (*it)->toTOCStr(variable_index);
-                pre_string.insert(pre_string.end(), op_pre_string.begin(), op_pre_string.end());
-                arg_list.push_back(*it);
-            }
-            else if ((*it)->tt == TOC_TYPES::FUNCTION_E)
-            {
-                std::vector<std::string> op_pre_string = (*it)->toTOCStr(variable_index);
-                pre_string.insert(pre_string.end(), op_pre_string.begin(), op_pre_string.end());
-
-                // Remove the final element (i.e. the function call) for functions used as operations.
-                pre_string.pop_back();
-                arg_list.push_back(*it);
-            }
-        }
-        else
-        {
-            arg_list.push_back((*it));
-        }
+    for (std::vector<RDParseTreeNode *>::iterator it = args.begin(); it != args.end(); ++it) {
+        TOC_RETURN_VALUE opreturn = (*it)->generateThreeOPCode(variable_index);
+        std::vector<std::string> op_pre_string = opreturn.pre_string;
+        pre_string.insert(pre_string.end(), op_pre_string.begin(), op_pre_string.end());
+        arg_list.push_back(opreturn.call_value);
     }
 
     // Setup our final function call.
     // Note that this must be the final thing outputted, preceded by the pre-string.
-    std::string func_call = function_name + "(";
-
-    /**
-                 *  Build output string.
-                 *  <FUNCTION_NAME> <PAREN> <ARGS> <COMMA>? <ARGS>? <PAREN>
-                 */
-    if (arg_list.begin() == arg_list.end())
-    {
-        func_call.append(std::string(")"));
+    Function::function_call = function_name + "(";
+    for(int i = arg_list.size() - 1; i != 0; i--){
+        Function::function_call.append(arg_list.at(i));
+        Function::function_call.append(",");
     }
-    else
-    {
-        // Iterate through TOC representations of reach argument.
-        // Iterate backwards - FIFO
-        for (std::vector<RDParseTreeNode *>::reverse_iterator it = arg_list.rbegin(); it != arg_list.rend(); ++it)
-        {
-            //for (std::vector<TOC*>::iterator it = arg_list.begin(); it != arg_list.end(); ++it) {
-            /** Append value to output string.
-                        Note that functions and operations will print their 'final_var_index' - i.e.
-                        Setup will be appended to pre-string, for example:
-                        5+5 as an argument will be interpreted as:
-                        
-                        Prestring:
-                            $0 = 5
-                            $1 = 5
-                            $2 = 5 + 5 
-                            <final_var_index = 2>
-
-                        Output string:
-                            $2
-
-                        **/
-            func_call.append((*it)->toValue());
-
-            // If we're at the end of the list, print a closing parenthesis.
-            // If we're not at the end of the list, print a comma.
-            if (it + 1 == arg_list.rend())
-            {
-                func_call.append(std::string(")"));
-            }
-            else
-            {
-                func_call.append(std::string(","));
-            }
-        }
-    }
-
-    function_call = func_call;
-
-    // Add our final output string to the pre-string.
-    pre_string.push_back(func_call);
+    Function::function_call.pop_back();
+    Function::function_call.append(")");
 
     // return combined string.
-    return pre_string;
+    return {pre_string, Function::function_call};
 }

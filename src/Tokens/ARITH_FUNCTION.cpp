@@ -35,7 +35,7 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     } else {
         for(std::vector<std::string>::iterator it = var_list_temp.begin(); it != var_list_temp.end(); ++it){
             ARITH_FUNCTION::function_arguments.push_back(::parseADString(*it));
-            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function argument : " + function_arguments.back()->toValue());
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function argument : " + *it);
         }
     }
 
@@ -47,6 +47,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     
 }
 
-std::vector<RDParseTreeNode*> ARITH_FUNCTION::generatetoc(std::string input){
-    return {};
+std::vector<std::string> ARITH_FUNCTION::generatetoc(int &variable_index){
+    
 }

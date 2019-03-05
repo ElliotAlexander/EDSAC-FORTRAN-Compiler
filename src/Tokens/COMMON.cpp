@@ -4,6 +4,6 @@ bool COMMON::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<RDParseTreeNode*> COMMON::generatetoc(std::string input){
+std::vector<std::string> COMMON::generatetoc(int &variable_index){
     return {};
 }

@@ -17,11 +17,10 @@ bool STOP::initaliseToken(std::string input){
         STOP::stop_input_variable_set = 1;
         STOP::stop_input_variable = ::parseADString(input);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Stop String: " + input );
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Stop Variable: " + STOP::stop_input_variable->toValue()); 
         return true;
     }
 }
 
-std::vector<RDParseTreeNode*> STOP::generatetoc(std::string input){
+std::vector<std::string> STOP::generatetoc(int &variable_index){
     return {};
 }

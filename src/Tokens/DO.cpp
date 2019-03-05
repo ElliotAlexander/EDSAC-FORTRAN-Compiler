@@ -40,8 +40,8 @@ bool DO::parseLeftHandSide(std::string lhs_input_string){
         // Load Control Variables to the left of the equals sign.
         DO::control_loop_var_toc = ::parseADString(char_matches[1]); 
         DO::main_loop_var_toc = ::parseADString(char_matches[3]);
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Control Loop Variable: " + DO::control_loop_var_toc->toValue());
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Main Loop Variable: " +  DO::main_loop_var_toc->toValue());
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Control Loop Variable: " + char_matches[1]);
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Main Loop Variable: " +  char_matches[3]);
         return true;
     } else {
         Logging::logErrorMessage("Syntax Error - failed to parse control variables from line {" + lhs_input_string + "}");
@@ -59,7 +59,7 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
     if(control_vars_right.size() > 0){
         for(int i = 0; i < control_vars_right.size(); i++){
             DO::control_vars_right_toc.push_back(::parseADString(control_vars_right.at(i)));
-            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,"Loaded instruction value { " + DO::control_vars_right_toc.back()->toValue() + " }");
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,"Loaded instruction value { " + control_vars_right.at(i) + " }");
         }
         return true;
     } else {
@@ -68,6 +68,6 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
     }
 }
 
-std::vector<RDParseTreeNode*> DO::generatetoc(std::string input){
+std::vector<std::string> DO::generatetoc(int &variable_index){
     return {};
 }

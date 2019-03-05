@@ -4,6 +4,6 @@ bool DIMENSION::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<RDParseTreeNode*> DIMENSION::generatetoc(std::string input){
+std::vector<std::string> DIMENSION::generatetoc(int &variable_index){
     return {};
 }

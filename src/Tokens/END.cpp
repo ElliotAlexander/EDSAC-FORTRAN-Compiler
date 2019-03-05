@@ -17,7 +17,7 @@ bool END::initaliseToken(std::string input){
             for(std::vector<std::string>::iterator it = end_argument_list.begin(); it != end_argument_list.end(); ++it){
                 argument_list.push_back(::parseADString(*it));
                 if(Globals::dump_parsed_values){
-                    std::cout << StringConstants::INFO_TAG << "Loaded end argument [" << std::to_string(index) << "]: " << argument_list.back()->toValue() << std::endl;;
+                    std::cout << StringConstants::INFO_TAG << "Loaded end argument [" << std::to_string(index) << "]: " << *it << std::endl;;
                 }
                 index++;
             }
@@ -32,6 +32,6 @@ bool END::initaliseToken(std::string input){
     return false;
 }
 
-std::vector<RDParseTreeNode*> END::generatetoc(std::string input){
+std::vector<std::string> END::generatetoc(int &variable_index){
     return {};
 }
