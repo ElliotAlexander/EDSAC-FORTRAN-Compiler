@@ -8,9 +8,8 @@ bool VAR_DECLR::initaliseToken(std::string input){
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Variable Declaration String " + input);
 
     VAR_DECLR::variable_name = equals_split[0];
-    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, std::string("Loaded Variable Assignment: " + variable_name));
-
-    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, std::string("Attempting to parse string: " + equals_split[1]));
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, std::string("Loaded Variable Name: " + variable_name));
+    Logging::logConditionalInfoMessage(Globals::dump_parsed_values, std::string("Loaded Variable Assignment: " + equals_split[1]));
     Logging::logConditionalErrorMessage((equals_split[1] == equals_split[0]), std::string("Self Assignment - Assigning " + equals_split[0] + " to " + equals_split[1] + " isn't supported."));
     
     VAR_DECLR::right_hand_side_parsed = ::parseADString(equals_split[1]);    
