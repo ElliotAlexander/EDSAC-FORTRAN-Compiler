@@ -11,6 +11,7 @@
 #include "Tokens/END.h"
 #include "Tokens/EQUIVALENCE.h"
 #include "Tokens/FORMAT.h"
+#include "Tokens/FUNCTION.h"
 #include "Tokens/GOTO.h"
 #include "Tokens/IF.h"
 #include "Tokens/PAUSE.h"
