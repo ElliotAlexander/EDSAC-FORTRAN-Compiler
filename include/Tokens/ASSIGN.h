@@ -21,7 +21,7 @@ class ASSIGN : public Token {
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> assignment_value;
     private:

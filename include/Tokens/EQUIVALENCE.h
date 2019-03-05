@@ -21,7 +21,7 @@ class EQUIVALENCE : public Token {
         std::string getTokenName(){return "EQUIVALENCE_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
         std::vector<std::vector<std::unique_ptr<RDParseTreeNode>>> equivalence_arguments;
     private:
         std::string TO_MATCH = "EQUIVALENCE(\\(" + RegexConstants::ANY_ARG_LIST + "\\))+";

@@ -20,7 +20,7 @@ class END : public Token {
         std::string getTokenName(){return "END_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
     private:
         std::string TO_MATCH = "END(\\([0-9]+,[0-9]+,[0-9]+,[0-9]+,[0-9]+\\))?|(END)(FILE)"
         + RegexConstants::ANY_ARG;

@@ -25,7 +25,7 @@ class ARITH_FUNCTION : public Token {
         std::string getTokenName(){return "ARITH_FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
     private:
         std::string TO_MATCH = RegexConstants::SUBROUTINE_NAME + "(\\" + RegexConstants::MULTI_VARIABLE_LIST + "\\)[=]" + RegexConstants::ANY_ARG_LIST;
     };

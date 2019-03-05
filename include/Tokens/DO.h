@@ -24,7 +24,7 @@ class DO : public Token {
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
         std::unique_ptr<RDParseTreeNode> control_loop_var_toc, main_loop_var_toc;
         std::vector<std::unique_ptr<RDParseTreeNode>> control_vars_right_toc;
     private:

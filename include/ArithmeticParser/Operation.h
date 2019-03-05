@@ -25,8 +25,7 @@ class Operation : public RDParseTreeNode{
         int final_var_index = -1;
         Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation);
         std::string toOPType(OPS e);
-        std::string toValue();
-        std::vector<std::string> toTOCStr(int &variable_index);
+        TOC_RETURN_VALUE generateThreeOPCode(int &variable_index);
         virtual ~Operation() {};
 };
 

@@ -13,13 +13,10 @@ template <class T> class Value : public RDParseTreeNode {
             tt = TOC_TYPES::VALUE_E;
             argument = arg;
         }
-        std::string toValue() {
-            return std::to_string(argument);
-        }
-        std::vector<std::string> toTOCStr(int &variable_index) {
-            std::vector<std::string> x = {toValue()};
-            return x;
-        }
+
+        TOC_RETURN_VALUE generateThreeOPCode(int &variable_index) {
+            return {std::vector<std::string>(), std::to_string(argument)};
+        };
         virtual ~Value() {}
     private:
         int assigned_variable;

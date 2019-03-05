@@ -9,6 +9,10 @@
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
+#include "Logging.h"
+#include "Globals.h"
+#include "ArithmeticRDParser.h"
+#include <boost/algorithm/string.hpp>
 
 class VAR_DECLR : public Token {
     public:
@@ -16,28 +20,12 @@ class VAR_DECLR : public Token {
         std::string getTokenName(){return "VAR_DECL_TOKEN"; };
         std::string getRegex(){return TO_MATCH;}
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
+        std::string variable_name;
+        std::unique_ptr<RDParseTreeNode> right_hand_side_parsed;
     private:
         std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "[=]" 
-        + "(" 
-        + RegexConstants::FUNCTION_CALL
-        + "|"
-        + RegexConstants::FLOATING_POINT
-        + "|"
-        + RegexConstants::VARIABLE_NAME 
-        + "|"
-        + RegexConstants::DIRECT_VAL
-        + ")((" 
-        + RegexConstants::INLINE_OPERATION 
-        + "("
-        + RegexConstants::VARIABLE_NAME 
-        + "|"
-        + RegexConstants::FLOATING_POINT
-        + "|"
-        + RegexConstants::FUNCTION_CALL
-        + "|"
-        + RegexConstants::DIRECT_VAL
-        + "))+)?";
+        + RegexConstants::ANY_ARG_LIST;
     };
 
 

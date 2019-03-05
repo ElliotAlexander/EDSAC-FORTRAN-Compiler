@@ -4,15 +4,19 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <map>
 #include "RDParseTreeNode.h"
+
+#include "Logging.h"
 
 
     class Variable : public RDParseTreeNode {
         public:
             char *name;
+            int memory_mapping;
+            bool memory_mapped;
             Variable(char* name_in);
-            std::vector<std::string> toTOCStr(int &variable_index);
-            std::string toValue();
+            TOC_RETURN_VALUE generateThreeOPCode(int &variable_index);
             virtual ~Variable() {}
     };
 

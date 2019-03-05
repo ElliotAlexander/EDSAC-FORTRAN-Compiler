@@ -37,7 +37,7 @@ class IF : public Token {
         std::string getTokenName(){return "IF_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
         std::vector<std::unique_ptr<RDParseTreeNode>> instruction_values;
         std::unique_ptr<RDParseTreeNode> conditional_variable;
     private:

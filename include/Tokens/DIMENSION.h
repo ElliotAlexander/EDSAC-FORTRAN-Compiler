@@ -14,7 +14,7 @@ class DIMENSION : public Token {
         std::string getTokenName(){return "DIMENSION_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
     private:
         std::string TO_MATCH = "DIMENSION(("
         + RegexConstants::VARIABLE_NAME

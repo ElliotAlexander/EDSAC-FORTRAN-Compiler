@@ -13,11 +13,17 @@
     };
 
     
+    struct TOC_RETURN_VALUE {
+        // Pre string represents all the things we need to do in order to setup the initial variable.
+        std::vector<std::string> pre_string;
+        // The final variable value.
+        std::string call_value;
+    };
+
     class RDParseTreeNode{
         public:
             TOC_TYPES tt;   
-            virtual std::vector<std::string> toTOCStr(int &variable_index) = 0;
-            virtual std::string toValue() = 0;
+            virtual TOC_RETURN_VALUE generateThreeOPCode(int &variable_index) = 0;
             virtual ~RDParseTreeNode() {};
     };
 

@@ -15,7 +15,7 @@ class SUBROUTINE : public Token {
         std::string getTokenName(){return "SUBROUTINE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<RDParseTreeNode*> generatetoc(std::string input);
+        std::vector<std::string> generatetoc(int &variable_index);
     private:
     // Note that the second section of this regex matches subroutines without arguments
     // i.e. SUBROUTINE HelloWorld 
