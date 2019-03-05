@@ -15,6 +15,7 @@ namespace Logging {
     void logConditionalMessage(bool conditional, std::string input);
     void logWarnMessage(std::string input);
     void logConditionalWarnMessage(bool conditional, std::string input);
+    void logOutputSummary();
     void logNewLine();
 }
 

@@ -33,7 +33,6 @@ int main(int argc, char* argv[]){
     for(std::vector<FileContainer>::size_type i = 0; i != input_files.size(); i++){ 
         Logging::logMessage(" --- " + Globals::file_list[i] + " ---\n");
 
-
         // Prepare data structures.
         input_files[i].expandContinuations();
 
@@ -50,14 +49,18 @@ int main(int argc, char* argv[]){
                 IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();
                 if(identify_result.result){
                     bool res = identify_result.token->initaliseToken(s->getStatementBody());
+                } else {
+                    Logging::logErrorMessage("Failed to identify token. ");
                 }
             }
+            Logging::logNewLine();
         };
         Logging::logMessage("\n --- End --- \n\n\n");
     }
     
     // TODO printf is bad
     printf("Time taken: %.2fs\n", (double)(clock() - tStart)/CLOCKS_PER_SEC);
+    Logging::logOutputSummary();
     ::print_footer();
 }
 
