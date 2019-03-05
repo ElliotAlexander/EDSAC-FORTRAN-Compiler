@@ -3,6 +3,7 @@
 bool END::initaliseToken(std::string input){
     if(input.substr(0,7) == "ENDFILE"){
         // TODO - Not imiplemented
+        Logging::logInfoMessage("Not implemented.");
     } else if(input.substr(0, 3) == "END"){
         if(input.length() == 3){
             return true;
@@ -16,18 +17,16 @@ bool END::initaliseToken(std::string input){
             int index = 0;
             for(std::vector<std::string>::iterator it = end_argument_list.begin(); it != end_argument_list.end(); ++it){
                 argument_list.push_back(::parseADString(*it));
-                if(Globals::dump_parsed_values){
-                    std::cout << StringConstants::INFO_TAG << "Loaded end argument [" << std::to_string(index) << "]: " << *it << std::endl;;
-                }
+                Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded end argument [ " + std::to_string(index) + "]: " + (*it));
                 index++;
             }
             return true;
         } else { 
-            std::cerr << StringConstants::ERROR_TAG << "Failed to parse END Statement." << std::endl;
+            Logging::logErrorMessage("Failed to parse END Statement.");
         }
     } else {
         // TODO - tidy all these messages up
-        std::cerr << StringConstants::ERROR_TAG << "Failed to parse END Statement." << std::endl;
+        Logging::logErrorMessage("Failed to parse END Statement. ");
     }
     return false;
 }

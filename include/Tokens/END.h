@@ -9,6 +9,7 @@
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
+#include "Logging.h"
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
