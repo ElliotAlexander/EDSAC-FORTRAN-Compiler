@@ -11,17 +11,28 @@ bool ASSIGN::initaliseToken(std::string input){
         // ASSIGNTOTOTO5 would be valid.
 
         std::size_t found = input.find_last_of("TO");
-        std::string variable_name_temp = input.substr(0, found-1);
+        std::string variable_name_temp = input.substr(0, found);
         if(variable_name_temp.length() < 1){
             Logging::logErrorMessage("Failed to parse variable name.");
             ::printErrorLocation(found-1, input);
         }
 
-        std::string assignment_string_temp = input.substr(found+1, input.length() );
+
+        // we need to handle a single character differently - using .substr on two chars will return nothing.
+        std::string assignment_string_temp;
+        
+        if((found + 1 - input.length()) == 0) {
+            assignment_string_temp = input.back();
+        } else {
+            assignment_string_temp = std::string((input.substr(found+1, input.length())));
+        } 
+        
         if(assignment_string_temp.length() < 1){
             Logging::logErrorMessage("Failed to parse assignment value.");
-            ::printErrorLocation(found+1, input);
+            ::printErrorLocation(found+1, input_backup);
         }
+
+
 
         ASSIGN::variable_name = variable_name_temp;
         ASSIGN::assignment_value = ::parseADString(assignment_string_temp);
