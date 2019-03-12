@@ -7,6 +7,8 @@
 #include <iostream>
 #include "RDParseTreeNode.h"
 #include "Constants.h"
+#include "SymbolTable/STController.h"
+#include <memory>
 
 enum OPS {
     SUBTRACT,
@@ -17,7 +19,6 @@ enum OPS {
 };
 
 class Operation : public RDParseTreeNode{
-
     OPS op;
     public:
         RDParseTreeNode* arg1;
@@ -25,7 +26,7 @@ class Operation : public RDParseTreeNode{
         int final_var_index = -1;
         Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation);
         std::string toOPType(OPS e);
-        TOC_RETURN_VALUE generateThreeOPCode(int &variable_index);
+        TOC_RETURN_VALUE generateThreeOPCode();
         virtual ~Operation() {};
 };
 
