@@ -50,6 +50,6 @@ bool CALL::initaliseToken(std::string input){
     return false;
 }
 
-std::vector<std::string> CALL::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(){
     return {};
 }

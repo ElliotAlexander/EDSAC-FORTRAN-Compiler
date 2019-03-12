@@ -4,6 +4,6 @@ bool SUBROUTINE::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<std::string> SUBROUTINE::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> SUBROUTINE::generatetoc(){
     return {};
 }

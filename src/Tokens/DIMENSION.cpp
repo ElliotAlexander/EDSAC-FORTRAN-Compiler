@@ -4,6 +4,6 @@ bool DIMENSION::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<std::string> DIMENSION::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> DIMENSION::generatetoc(){
     return {};
 }

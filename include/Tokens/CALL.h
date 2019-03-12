@@ -1,19 +1,21 @@
 #ifndef __CALL_H_INCLUDED
 #define __CALL_H_INCLUDED
 
-#include <string>
 #include "Token.h"
 #include "Utils.h"
-#include <vector>
+#include "ThreeOpCode/ThreeOpCode.h"
 #include "RDParseTreeNode.h"
 #include "Constants.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
+#include "Logging.h"
+
+#include <vector>
+#include <string>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
 #include <memory>
-#include "Logging.h"
 
 class CALL : public Token {
     public:
@@ -21,7 +23,7 @@ class CALL : public Token {
         std::string getTokenName(){return "CALL_TOKEN"; };
         std::string getRegex(){return TO_MATCH; } 
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::vector<std::unique_ptr<RDParseTreeNode>> subroutine_arguments;
         std::string subroutine_name;
     private:

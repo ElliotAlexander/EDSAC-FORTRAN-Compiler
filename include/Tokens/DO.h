@@ -1,22 +1,22 @@
 #ifndef __DO_H_INCLUDED
 #define __DO_H_INCLUDED
 
-#include <string>
 #include "Token.h"
 #include "ArithmeticRDParser.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "Globals.h"
-#include <vector>
 #include "RDParseTreeNode.h"
 #include "Logging.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 #include <stdlib.h>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
 #include <iostream>
 #include <memory>
-
+#include <vector>
+#include <string>
 
 class DO : public Token {
     public:
@@ -24,7 +24,7 @@ class DO : public Token {
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::unique_ptr<RDParseTreeNode> control_loop_var_toc, main_loop_var_toc;
         std::vector<std::unique_ptr<RDParseTreeNode>> control_vars_right_toc;
     private:

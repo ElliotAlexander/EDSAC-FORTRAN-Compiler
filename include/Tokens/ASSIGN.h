@@ -1,19 +1,24 @@
 #ifndef __ASSIGN_H_INCLUDED
 #define __ASSIGN_H_INCLUDED
 
-#include <string>
 #include "Token.h"
 #include "Utils.h"
-#include <vector>
 #include "RDParseTreeNode.h"
 #include "Constants.h"
+#include "ThreeOpCode/ThreeOpCode.h"
+#include "Globals.h"
+#include "Logging.h"
+#include "ArithmeticRDParser.h"
+#include "SymbolTable/STController.h"
+
+
+#include <memory>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
-#include "Globals.h"
-#include "Logging.h"
-#include <memory>
-#include "ArithmeticRDParser.h"
+#include <string>
+#include <vector>
+
 
 class ASSIGN : public Token {
     public:
@@ -21,14 +26,14 @@ class ASSIGN : public Token {
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> assignment_value;
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
             + "TO"
-            + "([0-9]+)(.[0-9]+)?";
+            + RegexConstants::ANY_ARG_LIST;
 };
 
 

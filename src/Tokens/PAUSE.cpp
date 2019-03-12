@@ -17,9 +17,8 @@ bool PAUSE::initaliseToken(std::string input){
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Pause Variable: " + input);
         return 1;
     }
-
 }
 
-std::vector<std::string> PAUSE::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> PAUSE::generatetoc(){
     return {};
 }

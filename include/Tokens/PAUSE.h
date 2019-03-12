@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <memory>
 
 #include "RDParseTreeNode.h"
 #include "Token.h"
@@ -11,6 +12,7 @@
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
 #include "Logging.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 class PAUSE : public Token {
     public:
@@ -20,7 +22,8 @@ class PAUSE : public Token {
         std::string getTokenName(){return "PAUSE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        bool prepareStatements(); 
     private:
         std::string TO_MATCH = "PAUSE|PAUSE"+RegexConstants::ANY_ARG_LIST;
 

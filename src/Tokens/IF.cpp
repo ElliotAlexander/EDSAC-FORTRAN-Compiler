@@ -171,6 +171,6 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     }
 }
 
-std::vector<std::string> IF::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(){
     return {};
 }

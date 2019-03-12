@@ -2,17 +2,20 @@
 #define __VAR_DECLR_H_INCLUDED
 
 #include <vector>
-#include "RDParseTreeNode.h"
 #include <string>
 #include <regex>
 #include <iostream>
+#include <memory>
+#include <boost/algorithm/string.hpp>
+
+#include "RDParseTreeNode.h"
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
 #include "Logging.h"
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
-#include <boost/algorithm/string.hpp>
+#include "ThreeOpCode/ThreeOpCode.h"
 
 class VAR_DECLR : public Token {
     public:
@@ -20,7 +23,7 @@ class VAR_DECLR : public Token {
         std::string getTokenName(){return "VAR_DECL_TOKEN"; };
         std::string getRegex(){return TO_MATCH;}
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> right_hand_side_parsed;
     private:

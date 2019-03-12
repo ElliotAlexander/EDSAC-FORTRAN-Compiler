@@ -17,6 +17,6 @@ bool VAR_DECLR::initaliseToken(std::string input){
 
 }
 
-std::vector<std::string> VAR_DECLR::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> VAR_DECLR::generatetoc(){
     return {};
 }

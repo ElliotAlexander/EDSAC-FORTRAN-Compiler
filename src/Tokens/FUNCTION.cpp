@@ -42,6 +42,6 @@ bool FUNCTION::initaliseToken(std::string input){
     }
 }
 
-std::vector<std::string> FUNCTION::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION::generatetoc(){
     return {};
 }

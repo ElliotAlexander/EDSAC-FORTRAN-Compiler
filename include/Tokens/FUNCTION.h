@@ -9,9 +9,12 @@
 #include "Globals.h"
 #include "Logging.h"
 #include "Constants.h"
+#include "ThreeOpCode/ThreeOpCode.h"
+
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp> 
+#include <memory>
 
 class FUNCTION : public Token {
     public:
@@ -19,7 +22,7 @@ class FUNCTION : public Token {
         std::string getTokenName(){return "FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
     private:
         std::string TO_MATCH = "FUNCTION" + RegexConstants::SUBROUTINE_NAME + "\\((" + RegexConstants::ANY_ARG_LIST + ")?\\)";
 

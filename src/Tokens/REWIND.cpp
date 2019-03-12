@@ -4,6 +4,6 @@ bool REWIND::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<std::string> REWIND::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> REWIND::generatetoc(){
     return {};
 }

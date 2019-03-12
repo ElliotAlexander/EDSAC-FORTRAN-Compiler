@@ -1,13 +1,15 @@
 #ifndef __SUBROUTINE_H_INCLUDED
 #define __SUBROUTINE_H_INCLUDED
 
-#include <vector>
 #include "RDParseTreeNode.h"
-#include <string>
 #include "Utils.h"
 #include "Constants.h"
 #include "Token.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
+#include <string>
+#include <vector>
+#include <memory>
 
 class SUBROUTINE : public Token {
     public:
@@ -15,7 +17,7 @@ class SUBROUTINE : public Token {
         std::string getTokenName(){return "SUBROUTINE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
     private:
     // Note that the second section of this regex matches subroutines without arguments
     // i.e. SUBROUTINE HelloWorld 

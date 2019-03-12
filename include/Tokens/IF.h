@@ -9,6 +9,7 @@
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
 #include "Logging.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ class IF : public Token {
         std::string getTokenName(){return "IF_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::vector<std::unique_ptr<RDParseTreeNode>> instruction_values;
         std::unique_ptr<RDParseTreeNode> conditional_variable;
     private:

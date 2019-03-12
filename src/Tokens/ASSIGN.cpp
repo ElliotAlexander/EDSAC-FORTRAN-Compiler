@@ -27,7 +27,6 @@ bool ASSIGN::initaliseToken(std::string input){
         ASSIGN::assignment_value = ::parseADString(assignment_string_temp);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable name : " + variable_name_temp);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable assignment : " + assignment_string_temp);
-        
         return true;
     } else {
         Logging::logErrorMessage( "Failed to load ASSIGN token - couldn't parse ASSIGN keyword.");
@@ -36,6 +35,17 @@ bool ASSIGN::initaliseToken(std::string input){
     }
 }
 
-std::vector<std::string> ASSIGN::generatetoc(int &variable_index){
-    return {};
+std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(){
+    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+
+    TOC_RETURN_VALUE res = ASSIGN::assignment_value->generateThreeOPCode();
+    pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
+
+
+
+
+    std::shared_ptr<ST_ENTRY> add_result = addDeclaredVariable(ASSIGN::variable_name, std::to_string(res.call_value->base_memory_address), ST_ENTRY_TYPE::FLOAT_T);
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(add_result, THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+
+    return pre_string;
 }

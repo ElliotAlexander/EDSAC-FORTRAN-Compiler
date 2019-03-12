@@ -12,6 +12,7 @@
 #include "Globals.h"
 #include "ArithmeticRDParser.h"
 #include "Logging.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 class STOP : public Token {
     public:
@@ -19,7 +20,7 @@ class STOP : public Token {
         std::string getTokenName(){return "STOP_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::unique_ptr<RDParseTreeNode> stop_input_variable;
         bool stop_input_variable_set = 0;
     private:

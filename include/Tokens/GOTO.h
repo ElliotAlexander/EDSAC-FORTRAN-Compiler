@@ -8,6 +8,7 @@
 #include "ArithmeticRDParser.h"
 #include "Globals.h"
 #include "Logging.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 #include <string>
 #include <vector>
@@ -29,7 +30,7 @@ class GOTO : public Token {
         std::string getTokenName(){return "GOTO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
         std::unique_ptr<RDParseTreeNode> goto_single_arg;
         std::vector<std::unique_ptr<RDParseTreeNode>> goto_arg_list;
     private:

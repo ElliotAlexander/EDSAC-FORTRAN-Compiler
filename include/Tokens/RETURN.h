@@ -1,11 +1,14 @@
 #ifndef __RETURN_H_INCLUDED
 #define __RETURN_H_INCLUDED
 
-#include <vector>
 #include "RDParseTreeNode.h"
-#include <string>
+#include "ThreeOpCode/ThreeOpCode.h"
 #include "Token.h"
 #include "Utils.h"
+
+#include <string>
+#include <vector>
+#include <memory>
 #include "Constants.h"
 
 class RETURN : public Token {
@@ -14,7 +17,8 @@ class RETURN : public Token {
         std::string getTokenName(){return "RETURN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        bool prepareStatements(); 
     private:
         std::string TO_MATCH = "RETURN";
 };

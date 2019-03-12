@@ -3,7 +3,6 @@
 bool READ::initaliseToken(std::string input){
     return true;
 }
-
-std::vector<std::string> READ::generatetoc(int &variable_index){
+std::vector<std::shared_ptr<ThreeOpCode>> READ::generatetoc(){
     return {};
 }

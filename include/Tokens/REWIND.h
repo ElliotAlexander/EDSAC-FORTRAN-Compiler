@@ -1,12 +1,15 @@
 #ifndef __REWIND_H_INCLUDED
 #define __REWIND_H_INCLUDED
 
-#include <vector>
 #include "RDParseTreeNode.h"
-#include <string>
 #include "Token.h"
 #include "Utils.h"
 #include "Constants.h"
+#include "ThreeOpCode/ThreeOpCode.h"
+
+#include <vector>
+#include <string>
+#include <memory>
 
 class REWIND : public Token {
     public:
@@ -14,7 +17,7 @@ class REWIND : public Token {
         std::string getTokenName(){return "REWIND_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::string> generatetoc(int &variable_index);
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
     private:
         std::string TO_MATCH = "REWIND" + RegexConstants::VARIABLE_NAME;
 };

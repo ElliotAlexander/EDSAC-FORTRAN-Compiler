@@ -47,6 +47,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     
 }
 
-std::vector<std::string> ARITH_FUNCTION::generatetoc(int &variable_index){
-    
+std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(){
+	return {};
 }
