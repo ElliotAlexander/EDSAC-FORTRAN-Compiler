@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <cstdio>
+#include <cstring>
 #include <iostream>
 
 #include "ArithmeticParser/Operation.h"
