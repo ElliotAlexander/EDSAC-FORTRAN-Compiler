@@ -15,6 +15,8 @@ bool printErrorLocation(int location, std::string input){
 }
 
 
+
+// TODO change the name on this.
 std::string getEnumString(int i){
     switch (i) {
         case 0: 
@@ -32,7 +34,7 @@ std::string getEnumString(int i){
 }
 
 std::string stripWhitespaceString(std::string input){
-    input.erase(remove(input.begin(), input.end(), ' '), input.end());
+    input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
     return input;
 }
 
@@ -42,11 +44,4 @@ void print_header(){
 
 void print_footer(){
     Logging::logMessage("\n\n==== End of runtime  ====\n");; 
-}
-
-unsigned long long getTotalSystemMemory()
-{
-    long pages = sysconf(_SC_PHYS_PAGES);
-    long page_size = sysconf(_SC_PAGE_SIZE);
-    return pages * page_size;
 }
