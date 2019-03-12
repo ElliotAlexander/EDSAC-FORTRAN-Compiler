@@ -10,8 +10,8 @@ extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
 std::unique_ptr<RDParseTreeNode> parseADString(std::string input_string)
 {
-	char cstr[input_string.size() + 1];
-	strcpy(cstr, input_string.c_str());
+	// MSVC support - no dynamic arrays. 
+	char* cstr = (char*)input_string.c_str();
     YY_BUFFER_STATE buffer = yy_scan_string(cstr);
     RDParseTreeNode* x;
     int res = yyparse(x);
