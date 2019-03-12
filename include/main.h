@@ -13,5 +13,6 @@
 #include "FileContainer.h"
 #include "Globals.h"
 #include "Utils.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 #endif
