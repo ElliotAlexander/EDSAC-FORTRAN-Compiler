@@ -8,4 +8,7 @@ namespace Globals {
     bool dump_tokens = false;
     bool lazy_tokens =  false;
     bool dump_parsed_values = false;
+    bool output_symbol_table_operations = false;
+    bool dump_three_op_code = false;
+    bool dump_symbol_table = false;
 }

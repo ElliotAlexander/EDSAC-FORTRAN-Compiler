@@ -12,6 +12,9 @@ namespace Globals {
     extern bool dump_tokens;
     extern bool lazy_tokens;
     extern bool dump_parsed_values;
+    extern bool output_symbol_table_operations;
+    extern bool dump_three_op_code;
+    extern bool dump_symbol_table;
 }
 
 #endif

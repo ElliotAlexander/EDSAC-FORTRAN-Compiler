@@ -6,12 +6,15 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     cxxopts::Options options("./executable", "FORTRAN II Compiler built for the EDSAC Machine.");
     options.add_options()
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
-        ("x,allextensions", "Allow all file extension", cxxopts::value<bool>()->default_value("false"))
+        ("x,allextensions", "Allow all file extensions", cxxopts::value<bool>()->default_value("false"))
         ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
         ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"))
         ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"))
         ("p,parsedvalues","Dump Parsed Values from Statements while generating Three Op Codes.", cxxopts::value<bool>()->default_value("false"))
         ("h,help","Print help page", cxxopts::value<bool>()->default_value("false"))
+        ("s,stops","Dump Symbol Table operations during parsing.", cxxopts::value<bool>()->default_value("false"))
+        ("y,stdump","Dump Symbol Table once Compilation has finished.", cxxopts::value<bool>()->default_value("false"))
+        ("o,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
@@ -53,6 +56,22 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         Logging::logMessage("+dump tokens");
         Globals::dump_tokens = true;
     }
+
+    if(result["stops"].as<bool>()){
+        Logging::logMessage("+dump Symbol Table operations");
+        Globals::output_symbol_table_operations = true;
+    }
+
+    if(result["stdump"].as<bool>()){
+        Logging::logMessage("+dump Symbol Table");
+        Globals::dump_symbol_table = true;
+    }
+
+    if(result["toc"].as<bool>()){
+        Logging::logMessage("+dump Three Op Code");
+        Globals::dump_three_op_code = true;
+    }
+
 
     // Handle positional file arguments.
     options.parse_positional({"f,file"});
