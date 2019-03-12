@@ -4,6 +4,9 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include "SymbolTable/STController.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
     enum TOC_TYPES { 
         VARIABLE_E, 
@@ -15,15 +18,16 @@
     
     struct TOC_RETURN_VALUE {
         // Pre string represents all the things we need to do in order to setup the initial variable.
-        std::vector<std::string> pre_string;
+        std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
         // The final variable value.
-        std::string call_value;
+        std::shared_ptr<ST_ENTRY> call_value;
     };
 
     class RDParseTreeNode{
         public:
+            std::shared_ptr<ST_ENTRY> st_entry;
             TOC_TYPES tt;   
-            virtual TOC_RETURN_VALUE generateThreeOPCode(int &variable_index) = 0;
+            virtual TOC_RETURN_VALUE generateThreeOPCode() = 0;
             virtual ~RDParseTreeNode() {};
     };
 
