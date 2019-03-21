@@ -59,7 +59,7 @@ namespace Logging {
 
     void logOutputSummary(){
         std::cout << "\nOutput Summary:\n"
-        << "Found " << error_count << " errors, " << warn_count << " warnings and " << info_count << " info messages."
+        << "Finished with " << error_count << " errors, " << warn_count << " warnings and " << info_count << " info messages."
         << std::endl;
     }
 
