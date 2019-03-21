@@ -33,8 +33,8 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_YY_PARSE_TAB_H_INCLUDED
-# define YY_YY_PARSE_TAB_H_INCLUDED
+#ifndef YY_YY_PARSE_TAB_HH_INCLUDED
+# define YY_YY_PARSE_TAB_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -60,7 +60,7 @@ extern int yydebug;
         std::vector<RDParseTreeNode*> toc_args;
     };
 
-#line 64 "parse.tab.h" /* yacc.c:1912  */
+#line 64 "parse.tab.hh" /* yacc.c:1912  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -93,4 +93,4 @@ extern YYSTYPE yylval;
 
 int yyparse (RDParseTreeNode *&result);
 
-#endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSE_TAB_HH_INCLUDED  */

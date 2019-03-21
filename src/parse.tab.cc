@@ -80,14 +80,15 @@
 
     using namespace std;   
 
-    extern int yylex();
+
+    extern int yylex(void);
     extern int yyparse(RDParseTreeNode *&result);
     extern FILE *yyin;
 
     void yyerror(RDParseTreeNode *&result, const char *s);
 
 
-#line 91 "parse.tab.c" /* yacc.c:338  */
+#line 92 "parse.tab.cc" /* yacc.c:338  */
 # ifndef YY_NULLPTR
 #  if defined __cplusplus
 #   if 201103L <= __cplusplus
@@ -109,9 +110,9 @@
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "parse.tab.h".  */
-#ifndef YY_YY_PARSE_TAB_H_INCLUDED
-# define YY_YY_PARSE_TAB_H_INCLUDED
+   by #include "parse.tab.hh".  */
+#ifndef YY_YY_PARSE_TAB_HH_INCLUDED
+# define YY_YY_PARSE_TAB_HH_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 1
@@ -137,7 +138,7 @@ extern int yydebug;
         std::vector<RDParseTreeNode*> toc_args;
     };
 
-#line 141 "parse.tab.c" /* yacc.c:353  */
+#line 142 "parse.tab.cc" /* yacc.c:353  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -170,7 +171,7 @@ extern YYSTYPE yylval;
 
 int yyparse (RDParseTreeNode *&result);
 
-#endif /* !YY_YY_PARSE_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSE_TAB_HH_INCLUDED  */
 
 
 
@@ -474,8 +475,8 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "INT", "FLOAT", "VARIABLE", "ENDL",
   "PLUS", "MINUS", "MUL", "DIV", "LPAREN", "RPAREN", "COMMA", "$accept",
-  "start", "expressions", "expression1", "expression", "arguments",
-  "single_argument", YY_NULLPTR
+  "start", "expressions", "top_level_expression", "expression",
+  "arguments", "single_argument", YY_NULLPTR
 };
 #endif
 
@@ -1260,7 +1261,7 @@ yyreduce:
         RDParseTreeNode* x = (yyvsp[0].u.toc_T);
         result = x;
     }
-#line 1264 "parse.tab.c" /* yacc.c:1660  */
+#line 1265 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 6:
@@ -1270,7 +1271,7 @@ yyreduce:
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::ADD);
     }
-#line 1274 "parse.tab.c" /* yacc.c:1660  */
+#line 1275 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 7:
@@ -1280,7 +1281,7 @@ yyreduce:
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::SUBTRACT);  
     }
-#line 1284 "parse.tab.c" /* yacc.c:1660  */
+#line 1285 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 8:
@@ -1290,7 +1291,7 @@ yyreduce:
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::MULTIPLY);
     }
-#line 1294 "parse.tab.c" /* yacc.c:1660  */
+#line 1295 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 9:
@@ -1300,7 +1301,7 @@ yyreduce:
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::DIVIDE);
     }
-#line 1304 "parse.tab.c" /* yacc.c:1660  */
+#line 1305 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 10:
@@ -1310,7 +1311,7 @@ yyreduce:
         std::vector<RDParseTreeNode*> args = (yyvsp[-1].toc_args);
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1314 "parse.tab.c" /* yacc.c:1660  */
+#line 1315 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 11:
@@ -1320,7 +1321,7 @@ yyreduce:
         std::vector<RDParseTreeNode*> args = {};
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1324 "parse.tab.c" /* yacc.c:1660  */
+#line 1325 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 12:
@@ -1329,7 +1330,7 @@ yyreduce:
         RDParseTreeNode *t = (yyvsp[-1].u.toc_T); 
         (yyval.u.toc_T) =  t;
     }
-#line 1333 "parse.tab.c" /* yacc.c:1660  */
+#line 1334 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 13:
@@ -1338,7 +1339,7 @@ yyreduce:
         int x = (yyvsp[0].u.ival);
         (yyval.u.toc_T) = new Value<int>(0-x);
     }
-#line 1342 "parse.tab.c" /* yacc.c:1660  */
+#line 1343 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 14:
@@ -1347,7 +1348,7 @@ yyreduce:
         float x = (yyvsp[0].u.fval);
         (yyval.u.toc_T) = new Value<float>(0-x);
     }
-#line 1351 "parse.tab.c" /* yacc.c:1660  */
+#line 1352 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 15:
@@ -1355,7 +1356,7 @@ yyreduce:
     { 
         (yyval.u.toc_T) =  new Value<int>((yyvsp[0].u.ival));
     }
-#line 1359 "parse.tab.c" /* yacc.c:1660  */
+#line 1360 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 16:
@@ -1363,7 +1364,7 @@ yyreduce:
     { 
         (yyval.u.toc_T) = new Value<float>((yyvsp[0].u.fval));
     }
-#line 1367 "parse.tab.c" /* yacc.c:1660  */
+#line 1368 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 17:
@@ -1372,7 +1373,7 @@ yyreduce:
         char* name = (yyvsp[0].u.vval);
         (yyval.u.toc_T) = new Variable(name);
     }
-#line 1376 "parse.tab.c" /* yacc.c:1660  */
+#line 1377 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 19:
@@ -1385,7 +1386,7 @@ yyreduce:
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1389 "parse.tab.c" /* yacc.c:1660  */
+#line 1390 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
   case 20:
@@ -1396,11 +1397,11 @@ yyreduce:
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1400 "parse.tab.c" /* yacc.c:1660  */
+#line 1401 "parse.tab.cc" /* yacc.c:1660  */
     break;
 
 
-#line 1404 "parse.tab.c" /* yacc.c:1660  */
+#line 1405 "parse.tab.cc" /* yacc.c:1660  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

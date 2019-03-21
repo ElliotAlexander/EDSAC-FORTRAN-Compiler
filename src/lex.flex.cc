@@ -1,5 +1,6 @@
+#line 1 "lex.flex.cc"
 
-#line 2 "lex.yy.c"
+#line 3 "lex.flex.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -321,6 +322,8 @@ void yyfree ( void *  );
 	}
 #define YY_AT_BOL() (YY_CURRENT_BUFFER_LVALUE->yy_at_bol)
 
+#define yywrap() (/*CONSTCOND*/1)
+#define YY_SKIP_YYWRAP
 typedef flex_uint8_t YY_CHAR;
 
 FILE *yyin = NULL, *yyout = NULL;
@@ -448,11 +451,20 @@ char *yytext;
 #line 1 "lex.l"
 #line 2 "lex.l"
 #include <cstdio>
-#include "parse.tab.h"  // to get the token types from Bison
+#include "parse.tab.hh"  // to get the token types from Bison
 #include "RDParseTreeNode.h"
 #include <iostream>
-#line 454 "lex.yy.c"
-#line 455 "lex.yy.c"
+
+// io.h serves as a Win32 available alternative to unistd.h
+// If building for windows, disable the flex import and include it. 
+#if defined(_WIN32)
+#define YY_NO_UNISTD_H
+#include <io.h>
+#endif
+
+
+#line 466 "lex.flex.cc"
+#line 467 "lex.flex.cc"
 
 #define INITIAL 0
 
@@ -669,9 +681,9 @@ YY_DECL
 		}
 
 	{
-#line 7 "lex.l"
+#line 17 "lex.l"
 
-#line 674 "lex.yy.c"
+#line 686 "lex.flex.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -731,68 +743,68 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 8 "lex.l"
+#line 18 "lex.l"
 ; // consume line by line TODO
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 9 "lex.l"
+#line 19 "lex.l"
 { yylval.u.fval = atof(yytext); return FLOAT; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "lex.l"
+#line 20 "lex.l"
 { yylval.u.ival = atoi(yytext); return INT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "lex.l"
+#line 21 "lex.l"
 {
-    yylval.u.vval = strdup(yytext);
+    yylval.u.vval = yytext;
     return VARIABLE;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 15 "lex.l"
+#line 25 "lex.l"
 { return PLUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 16 "lex.l"
+#line 26 "lex.l"
 { return MINUS; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 17 "lex.l"
+#line 27 "lex.l"
 { return MUL; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "lex.l"
+#line 28 "lex.l"
 { return DIV; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 19 "lex.l"
+#line 29 "lex.l"
 { return LPAREN; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 20 "lex.l"
+#line 30 "lex.l"
 { return RPAREN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "lex.l"
+#line 31 "lex.l"
 { return COMMA; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 22 "lex.l"
+#line 32 "lex.l"
 ECHO;
 	YY_BREAK
-#line 795 "lex.yy.c"
+#line 807 "lex.flex.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1797,4 +1809,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 22 "lex.l"
+#line 32 "lex.l"
