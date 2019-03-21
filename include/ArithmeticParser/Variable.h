@@ -16,8 +16,6 @@
     class Variable : public RDParseTreeNode {
         public:
             std::string name;
-            int memory_mapping;
-            bool memory_mapped;
             Variable(std::string name_in);
             TOC_RETURN_VALUE generateThreeOPCode();
             virtual ~Variable() {}
