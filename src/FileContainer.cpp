@@ -26,7 +26,7 @@ FileContainer::FileContainer(std::string file_input){
 }
 
 void FileContainer::dumpFileText(){
-    Logging::logMessage("Begin File Dump(Name=" + file_name + "):");
+    Logging::logMessage("Begin File Dump(Name=" + file_name + "):\n");
     for (std::vector<std::string>::const_iterator i = file_text.begin(); i != file_text.end(); ++i)
         Logging::logMessage(*i + ' ');
     Logging::logMessage("\nEnd File Dump\n");
@@ -116,7 +116,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
     
     bool in_segment_block = false; 
     bool in_main_block = true;
-    SEGMENT_TYPE current_type; 
+    SEGMENT_TYPE current_type = {}; 
     int start_line = 0;
 
     for(std::vector<std::string>::size_type i = 0; i != file_text.size(); i++) {
