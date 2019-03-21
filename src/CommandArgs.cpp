@@ -17,6 +17,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("o,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))
         ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))
         ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))
+        ("b,baseoffset","Base memory offset for bootloader. This is 32 by default.", cxxopts::value<int>(), "N")
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
@@ -26,6 +27,11 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     }
 
     Logging::logMessage("\n:: Loading Command Arguments ::\n\n");
+
+    if(result.count("baseoffset")){
+        Globals::base_memory_offset = result["baseoffset"].as<int>();
+        Logging::logMessage("+base memory offset = " + std::to_string(Globals::base_memory_offset));
+    }
 
     // Handle Boolean Arguments.
     if(result["allextensions"].as<bool>()){

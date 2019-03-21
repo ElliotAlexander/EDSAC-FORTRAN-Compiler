@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
         };
 
         Logging::logMessage("\n --- End Tokenization --- \n\n");
-        ::offsetST(toc_program_body.size());
+        ::offsetST(toc_program_body.size() + Globals::base_memory_offset);
         ::printTOCOutput(toc_program_body);
     }
         
