@@ -5,6 +5,9 @@
 #include <string>
 #include <vector>  
 #include <time.h>
+#include <boost/format.hpp>
+#include <string>
+
 
 #include "Logging.h"
 #include "Constants.h"
@@ -14,5 +17,7 @@
 #include "Globals.h"
 #include "Utils.h"
 #include "ThreeOpCode/ThreeOpCode.h"
+#include "ProgramStructure/FunctionMapping.h"
+#include "ProgramStructure/LineMapping.h"
 
 #endif
