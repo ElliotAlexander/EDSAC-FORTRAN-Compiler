@@ -30,7 +30,7 @@ class ASSIGN : public Token {
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
-            + "TO([0-9]+)(.[0-9]+)?";
+            + "TO(-?[0-9]+)(.[0-9]+)?";
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> assignment_value;
 };
