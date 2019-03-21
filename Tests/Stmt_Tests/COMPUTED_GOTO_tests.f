@@ -1,0 +1,5 @@
+5     ASSIGN X TO 15
+10    ASSIGN X TO 15
+15    ASSIGN X TO 15
+      GOTO (5, 10, 15), X
+      END

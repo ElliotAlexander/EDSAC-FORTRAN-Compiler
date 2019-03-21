@@ -1,4 +1,4 @@
-      ASSIGN HELLOWORLD TO 5
+      ASSIGN Y TO 5
       ASSIGN X TO 5
       ASSIGN TO TO 5
 C     Expected error case -  We need to pass an int into the assignment.
