@@ -158,7 +158,8 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
         } else {
             int index = instruction_values_arr.size();
             for(int i = 0; i < index; i++){
-                instruction_values.push_back(::parseADString(instruction_values_arr.at(i)));
+                // TODO tidy up variable names in this class
+                instruction_values.push_back(std::stoi(instruction_values_arr.at(i)));
                 Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded instruction [" + std::to_string(i) + "]:" + instruction_values_arr.at(i));
             }
             return true;
@@ -171,6 +172,33 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     }
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(){
-    return {};
+std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address){
+    if(IF::statement_type == IF_STATEMENT_TYPE::ARITHMETIC){
+        std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+        
+        // Get a reference to buffer flush
+        ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+        Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
+        TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode();
+        pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
+
+        std::vector<std::shared_ptr<int>> arguments_computed;
+        for(std::vector<int>::iterator it = instruction_values.begin(); it != instruction_values.end(); ++it){
+            arguments_computed.push_back(LineMapping::retrieveLineMapping((*it)));
+        }
+
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(0), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(2), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+        std::shared_ptr<ST_ENTRY> temp_integer = ::addTemp("1", ST_ENTRY_TYPE::INT_T);
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_integer, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(1), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+
+    } else {
+        Logging::logErrorMessage("Behaviour not implemented!");
+        Logging::logErrorMessage("At present, only conventional IF statements are implemented for EDSAC.");
+        return {};
+    }
 }

@@ -23,12 +23,15 @@ class VAR_DECLR : public Token {
         std::string getTokenName(){return "VAR_DECL_TOKEN"; };
         std::string getRegex(){return TO_MATCH;}
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> right_hand_side_parsed;
     private:
-        std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "[=]" 
-        + RegexConstants::ANY_ARG_LIST;
+        std::string TO_MATCH = RegexConstants::VARIABLE_NAME + "=(" 
+        + RegexConstants::ANY_ARG 
+        + "|("
+        + RegexConstants::SUBROUTINE_NAME 
+        + "\\(" + RegexConstants::ANY_ARG + "((," + RegexConstants::ANY_ARG + ")?)+\\)))+";
     };
 
 

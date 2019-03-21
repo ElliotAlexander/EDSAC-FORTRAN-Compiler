@@ -20,7 +20,7 @@ class STOP : public Token {
         std::string getTokenName(){return "STOP_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         std::unique_ptr<RDParseTreeNode> stop_input_variable;
         bool stop_input_variable_set = 0;
     private:

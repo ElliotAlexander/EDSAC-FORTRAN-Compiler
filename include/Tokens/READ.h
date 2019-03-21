@@ -17,9 +17,9 @@ class READ : public Token {
         std::string getTokenName(){return "READ_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
-        std::string TO_MATCH = "READ (T" + RegexConstants::VARIABLE_NAME;
+        std::string TO_MATCH = "READ" + RegexConstants::VARIABLE_NAME;
 };
 
 #endif

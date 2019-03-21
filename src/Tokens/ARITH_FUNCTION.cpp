@@ -1,11 +1,5 @@
 #include "Tokens/ARITH_FUNCTION.h"
 
-ARITH_FUNCTION::ARITH_FUNCTION(){
-    std::string function_name; 
-    RDParseTreeNode* function_resolution;
-    std::vector<RDParseTreeNode*> function_arguments;
-}
-
 bool ARITH_FUNCTION::initaliseToken(std::string input){
 
     std::vector<std::string> equals_split;
@@ -34,12 +28,12 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded zero command arguments");
     } else {
         for(std::vector<std::string>::iterator it = var_list_temp.begin(); it != var_list_temp.end(); ++it){
-            ARITH_FUNCTION::function_arguments.push_back(::parseADString(*it));
+            ARITH_FUNCTION::function_arguments.push_back(*it);
             Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function argument : " + *it);
         }
     }
 
-    ARITH_FUNCTION::function_resolution = std::unique_ptr<RDParseTreeNode>(::parseADString(equals_split[1]));
+    ARITH_FUNCTION::function_resolution = equals_split[1];
     Logging::logConditionalErrorMessage((equals_split[1].length() == 0), "Failed to load right hand side string, length was zero.");
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function name: " + ARITH_FUNCTION::function_name);
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Right hand side " + equals_split[1]);
@@ -47,6 +41,25 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(){
-	return {};
+
+
+// note that arithmetic functions are never declared as a subroutine
+// Handling return values without a stack is a bit of a pain, so they're just dumped into the code everytime they're called.
+// Simple, but effective?
+std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starting_address){
+
+    std::vector<std::shared_ptr<ST_ENTRY> > argument_references; 
+
+    // Assign variables, overwrite if already assigned.
+    for(int argument_index = 0; argument_index < ARITH_FUNCTION::function_arguments.size(); argument_index++){
+        Logging::logConditionalWarnMessage(getVariable(ARITH_FUNCTION::function_arguments.at(argument_index)).found, 
+            "Warning - using variable name " + ARITH_FUNCTION::function_arguments.at(argument_index) + " in Arithmetic Function Call will cause the initial value of " + ARITH_FUNCTION::function_arguments.at(argument_index) + " to be overwritten.");
+        Logging::logInfoMessage("Adding argument in position 1: " + ARITH_FUNCTION::function_arguments.at(argument_index));
+        // Arguments are handled entirely by reference.
+        argument_references.push_back(::addUnDeclaredVariable(ARITH_FUNCTION::function_arguments.at(argument_index), "", ST_ENTRY_TYPE::UNASSIGNED_T));
+    }
+
+    TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode();
+    ::addArithmeticFunctionMapping(function_name, argument_references, res.pre_string, res.call_value);
+    return {};
 }

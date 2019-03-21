@@ -26,14 +26,13 @@ class ASSIGN : public Token {
         std::string getTokenName(){return "ASSIGN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }    
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
-        std::string variable_name;
-        std::unique_ptr<RDParseTreeNode> assignment_value;
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
         std::string TO_MATCH = "ASSIGN"
             + RegexConstants::ANY_ARG 
-            + "TO"
-            + RegexConstants::ANY_ARG_LIST;
+            + "TO([0-9]+)(.[0-9]+)?";
+        std::string variable_name;
+        std::unique_ptr<RDParseTreeNode> assignment_value;
 };
 
 

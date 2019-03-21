@@ -4,6 +4,6 @@ bool COMMON::initaliseToken(std::string input){
     return true;
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> COMMON::generatetoc(){
+std::vector<std::shared_ptr<ThreeOpCode>> COMMON::generatetoc(int starting_address){
     return {};
 }

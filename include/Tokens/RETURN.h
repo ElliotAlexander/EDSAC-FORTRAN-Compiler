@@ -17,7 +17,7 @@ class RETURN : public Token {
         std::string getTokenName(){return "RETURN_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         bool prepareStatements(); 
     private:
         std::string TO_MATCH = "RETURN";

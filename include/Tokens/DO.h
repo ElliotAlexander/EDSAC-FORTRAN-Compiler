@@ -24,15 +24,19 @@ class DO : public Token {
         std::string getTokenName(){return "DO_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         std::unique_ptr<RDParseTreeNode> control_loop_var_toc, main_loop_var_toc;
         std::vector<std::unique_ptr<RDParseTreeNode>> control_vars_right_toc;
     private:
         std::string TO_MATCH = "DO([0-9]+)("
-            + RegexConstants::VARIABLE_NAME + "|"
-            + RegexConstants::INTEGER + 
+            + RegexConstants::ANY_ARG
             + ")="
-            + RegexConstants::ANY_ARG_LIST;
+            + RegexConstants::NO_ARITH_ARG
+            + ","
+            + RegexConstants::NO_ARITH_ARG
+            + "(,"
+            + RegexConstants::NO_ARITH_ARG
+            + ")?";
         bool parseLeftHandSide(std::string lhs_input_string);
         bool parseRightHandSide(std::string rhs_input_string);
 };

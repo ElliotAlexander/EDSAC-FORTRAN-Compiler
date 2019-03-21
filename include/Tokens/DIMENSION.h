@@ -17,7 +17,7 @@ class DIMENSION : public Token {
         std::string getTokenName(){return "DIMENSION_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
         std::string TO_MATCH = "DIMENSION(("
         + RegexConstants::VARIABLE_NAME

@@ -68,6 +68,6 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
     }
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(){
+std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
     return {};
 }

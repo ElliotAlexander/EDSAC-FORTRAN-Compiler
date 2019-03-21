@@ -16,17 +16,16 @@
 
 class PAUSE : public Token {
     public:
-        bool pause_input_variable_set;
-        std::unique_ptr<RDParseTreeNode> pause_input_variable;
         bool isValid(std::string input);
         std::string getTokenName(){return "PAUSE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         bool prepareStatements(); 
     private:
         std::string TO_MATCH = "PAUSE|PAUSE"+RegexConstants::ANY_ARG_LIST;
-
+        bool pause_input_variable_set;
+        std::unique_ptr<RDParseTreeNode> pause_input_variable;
 };
 
 #endif

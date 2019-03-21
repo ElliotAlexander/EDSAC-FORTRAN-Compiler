@@ -81,6 +81,6 @@ bool EQUIVALENCE::initaliseToken(std::string input){
 
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> EQUIVALENCE::generatetoc(){
+std::vector<std::shared_ptr<ThreeOpCode>> EQUIVALENCE::generatetoc(int starting_address){
     return {};
 }

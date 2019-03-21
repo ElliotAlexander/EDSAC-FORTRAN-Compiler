@@ -17,7 +17,7 @@ class SUBROUTINE : public Token {
         std::string getTokenName(){return "SUBROUTINE_TOKEN"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
     // Note that the second section of this regex matches subroutines without arguments
     // i.e. SUBROUTINE HelloWorld 

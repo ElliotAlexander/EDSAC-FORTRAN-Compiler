@@ -21,6 +21,6 @@ bool STOP::initaliseToken(std::string input){
     }
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> STOP::generatetoc(){
+std::vector<std::shared_ptr<ThreeOpCode>> STOP::generatetoc(int starting_address){
     return {};
 }

@@ -18,7 +18,7 @@ class FORMAT : public Token {
         std::string getTokenName(){return "FORMAT_FUNCTION"; };
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
-        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc();
+        std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
         std::string TO_MATCH = "FORMAT\\(([0-9]+)?(((I[0-9]+)|((E|F|H)[0-9]+.[0-9]+)),?)+\\)";
 

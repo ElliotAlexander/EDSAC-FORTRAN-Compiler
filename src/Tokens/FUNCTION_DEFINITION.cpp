@@ -1,6 +1,6 @@
-#include "Tokens/FUNCTION.h"
+#include "Tokens/FUNCTION_DEFINITION.h"
 
-bool FUNCTION::initaliseToken(std::string input){
+bool FUNCTION_DEFINITION::initaliseToken(std::string input){
     std::string input_original = input;
     if(input.substr(0, 8) == "FUNCTION"){
         input.erase(0,8);
@@ -42,6 +42,6 @@ bool FUNCTION::initaliseToken(std::string input){
     }
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION::generatetoc(){
+std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address){
     return {};
 }
