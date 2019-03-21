@@ -26,6 +26,7 @@ namespace RegexConstants {
     const std::string FUNCTION_CALL = "([A-Z]([0-9A-Z]+)?\\(.*\\))";
     const std::string INLINE_OPERATION = "([\\+\\*\\/\\^\\-])";
     const std::string DIRECT_VAL = "((\\-)?[0-9]+(\\.[0-9]+))";
+    const std::string NO_ARITH_ARG = "([0-9]+|[A-Z]([A-Z0-9]+)?)";
 };
 
 #endif
