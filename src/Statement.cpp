@@ -4,7 +4,7 @@ Statement::Statement(std::string statement_body, std::string label, int line_no)
     Statement::statement_body = statement_body;
     Statement::label = label;
     Statement::line_no = line_no;
-    Statement::statement_body_nows = ::stripWhitespaceString(statement_body);
+    Statement::statement_body_no_ws = ::stripWhitespaceString(statement_body);
 }
 
 IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
@@ -25,7 +25,9 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
     EQUIVALENCE* eq_stmt = new EQUIVALENCE();
     FORMAT* format_stmt = new FORMAT();
     PAUSE* pause_stmt = new PAUSE();
-    FUNCTION* function_stmt = new FUNCTION();
+    FUNCTION_DEFINITION* function_stmt = new FUNCTION_DEFINITION();
+    ASSIGNED_GOTO* assigned_goto = new ASSIGNED_GOTO();
+    COMPUTED_GOTO* computed_goto = new COMPUTED_GOTO();
 
 
 
@@ -47,18 +49,25 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
         if_stmt,
         pause_stmt,
         function_stmt,
+        assigned_goto,
+        computed_goto
     };
     bool found = false;
 
 
     Token* result;
 
+    if(Globals::output_regex_matching_strings ){
+        for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
+            Logging::logInfoMessage("[REGEX] " + tokens[i]->getRegex());
+        }
+        Globals::output_regex_matching_strings = false;
+    }
+
     // Iterate through token types.
     for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
         // Check token is valud - parse token type. 
-        if(tokens[i]->isValid(statement_body_nows, (tokens[i]->getRegex()))){
-
-            //
+        if(tokens[i]->isValid(statement_body_no_ws, (tokens[i]->getRegex()))){
             if(found){
                 Logging::logErrorMessage("Error parsing line - line matches two possible tokens [" + std::to_string(Statement::line_no + 1) + "]{" + statement_body + "}");
                 Logging::logErrorMessage("Second matching token: " + tokens[i]->getTokenName());
@@ -68,6 +77,7 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 
             found = true;
             result = tokens[i];
+            tokens[i] = nullptr;
             if(Globals::lazy_tokens){
                 break;
             }
@@ -78,11 +88,18 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
         Logging::logErrorMessage("Cannot find valid token for line [" + std::to_string(Statement::line_no + 1) + "]{" + statement_body + "}");
         return IDENTIFY_STATEMENT_RESULT_T{nullptr, false};
     } else {
+        for(int index = 0; index < tokens.size(); index++){
+            delete(tokens[index]);
+        }
         return IDENTIFY_STATEMENT_RESULT_T{result, true};
     }
 }
 
 
 std::string Statement::getStatementBody(){
-    return Statement::statement_body_nows;
+    return Statement::statement_body_no_ws;
+}
+
+std::string Statement::getStatementLabel(){
+    return Statement::label;
 }

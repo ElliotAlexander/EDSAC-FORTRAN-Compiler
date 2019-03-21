@@ -9,7 +9,6 @@
 #include "Globals.h"
 #include "Token_Headers.h"
 #include "Token.h"
-
 #include "Logging.h"
 
 struct IDENTIFY_STATEMENT_RESULT_T{
@@ -23,10 +22,11 @@ class Statement {
         IDENTIFY_STATEMENT_RESULT_T identifyStatement();
         bool tokenizeStatement(Token* token_type);
         std::string getStatementBody();
+        std::string getStatementLabel();
     private:
         Token* tokentype;
         std::string statement_body;
-        std::string statement_body_nows;
+        std::string statement_body_no_ws;
         std::string label;
         int line_no;
 };
