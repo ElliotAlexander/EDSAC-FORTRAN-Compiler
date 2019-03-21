@@ -12,14 +12,14 @@
 
     using namespace std;   
 
-    extern int yylex();
+
+    extern int yylex(void);
     extern int yyparse(RDParseTreeNode *&result);
     extern FILE *yyin;
 
     void yyerror(RDParseTreeNode *&result, const char *s);
 
 %}
-
 %code requires {
 
     // This is required to force bison to include the parse node structure before the preprocessing of union types and YYTYPE.
@@ -47,7 +47,7 @@
 %token ENDL PLUS MINUS MUL DIV LPAREN RPAREN COMMA
 
 
-%type <u.toc_T> expression1
+%type <u.toc_T> top_level_expression
 %type <u.toc_T> expression
 %type <u.toc_T> start
 %type <toc_args> arguments
@@ -62,9 +62,9 @@
 start:
     expressions;
 expressions:
-    expressions expression1
-    | expression1;
-expression1:
+    expressions top_level_expression
+    | top_level_expression;
+top_level_expression:
     expression {
         RDParseTreeNode* x = $1;
         result = x;
