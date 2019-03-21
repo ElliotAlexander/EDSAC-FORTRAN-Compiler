@@ -1,9 +1,19 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 
-ThreeOpCode::ThreeOpCode(std::shared_ptr<ST_ENTRY> ARG_IN, THREE_OP_CODE_OPERATIONS OP_IN, bool LONG_ARG) : ARGUMENT(ARG_IN), OPERATION(OP_IN), LONG_ADDRESS(LONG_ARG) 
-{};
+std::string ThreeOpCode::printToString(){
+	switch (ThreeOpCode::input_arg_type) {
+		case ARG_TYPE::ARG_IS_LINE_MAPPING:
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(*ThreeOpCode::ARGUMENT_LINE_MAPPING));
+		case ARG_TYPE::ARG_IS_STRING:
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + ThreeOpCode::ARGUMENT_STR);
+		case ARG_TYPE::ARG_IS_ST_ENTRY:
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(ThreeOpCode::ARGUMENT_ST_ENTRY->base_memory_address));
+		default:
+			return std::string("ERROR - ThreeOpCode generation failed");
+	}
+}
 
 
-std::string ThreeOpCode::toString(){
-    return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(ThreeOpCode::ARGUMENT->base_memory_address));
+THREE_OP_CODE_OPERATIONS ThreeOpCode::getOperation(){
+    return ThreeOpCode::OPERATION;
 }

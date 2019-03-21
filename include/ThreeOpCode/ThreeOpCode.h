@@ -29,12 +29,26 @@ enum THREE_OP_CODE_OPERATIONS {
     DATA_SET = 18,
 };
 
+// This is entire encapsulated within the constructors.
+enum ARG_TYPE {
+	ARG_IS_ST_ENTRY,
+	ARG_IS_STRING,
+	ARG_IS_LINE_MAPPING,
+};
+
 class ThreeOpCode {
     public:
-        ThreeOpCode(std::shared_ptr<ST_ENTRY>, THREE_OP_CODE_OPERATIONS, bool);
-        std::string toString();
+        ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_ST_ENTRY(arg1_in_st_entry), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_ST_ENTRY) {};
+		ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_LINE_MAPPING(arg1_in_line_mapping), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_LINE_MAPPING) {};
+		ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_STR(arg_in), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_STRING) {};
+        std::shared_ptr<ST_ENTRY> getAddress();
+        THREE_OP_CODE_OPERATIONS getOperation();
+        std::string printToString();
     private: 
-        std::shared_ptr<ST_ENTRY> ARGUMENT;
+		ARG_TYPE input_arg_type;
+        std::shared_ptr<ST_ENTRY> ARGUMENT_ST_ENTRY;
+		std::shared_ptr<int> ARGUMENT_LINE_MAPPING;
+        std::string ARGUMENT_STR;
         THREE_OP_CODE_OPERATIONS OPERATION;
         bool LONG_ADDRESS;
 };
