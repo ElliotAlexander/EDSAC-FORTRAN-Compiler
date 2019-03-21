@@ -51,7 +51,7 @@ namespace LineMapping {
         if(it != LineMapping::line_mappings.end()) {
             return it->second;
         } else {
-            Logging::logErrorMessage("Failed to retrieve line mapping for " + std::to_string(line));
+            Logging::logWarnMessage("Failed to retrieve line mapping for " + std::to_string(line));
 			line_mappings.insert(std::map<int, std::shared_ptr<int> >::value_type(line, std::make_shared<int>(-1)));
 			return retrieveLineMapping(line);
         }
