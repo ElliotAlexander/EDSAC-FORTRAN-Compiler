@@ -1,8 +1,17 @@
 #include "SymbolTable/SymbolTable.h"
 
-
 SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {  
     Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Initialising " + std::to_string(st) + " Symbol Table. "));
+	if (st == SYMBOL_TABLE_TYPE::DECLARED_VAR) {
+		ST_ENTRY entry = {
+				ST_ENTRY_TYPE::UNASSIGNED_T,
+				false,
+				rolling_memory_addr,
+				std::string("")
+		};
+		SymbolTable::st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(Globals::BUFFER_FLUSH_NAME, std::make_shared<ST_ENTRY>(entry)));
+        SymbolTable::rolling_memory_addr += 1;
+	}
 }
 
 
@@ -63,6 +72,16 @@ void SymbolTable::printSymbolTable(){
         Logging::logMessage(std::string("[" + std::to_string(it->second->base_memory_address) + "] " + it->first + ":" + it->second->value));
     }
     Logging::logNewLine();
+}
+
+
+std::vector<std::string> SymbolTable::buildSymbolTableOutput(){
+    std::vector<std::string> output_str;
+    std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
+    for ( it = st_map.begin(); it != st_map.end(); it++ ){
+        output_str.push_back(std::string("[" + std::to_string(it->second->base_memory_address) + "] " + it->second->value));
+    }
+    return output_str;
 }
 
 

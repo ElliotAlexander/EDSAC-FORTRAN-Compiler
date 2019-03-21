@@ -3,6 +3,8 @@
 
 #include <memory>
 #include "SymbolTable.h"
+#include <vector>
+#include <string>
 
 const std::unique_ptr<SymbolTable> symbol_tables[4] = {
     std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
@@ -26,9 +28,8 @@ ALL_ST_SEARCH_RESULT getVariable(std::string name);
 bool removeVariable(std::string name);
 
 std::shared_ptr<SymbolTable> getST(SYMBOL_TABLE_TYPE type);
-
 bool offsetST(int memory_offset);
-
 void printSymbolTables();
+std::vector<std::string> outputSymbolTable();
 
 #endif

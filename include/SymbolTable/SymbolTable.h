@@ -41,6 +41,7 @@ class SymbolTable {
         bool remove(std::string name);
         std::shared_ptr<ST_ENTRY> add(std::string name, std::string value, ST_ENTRY_TYPE type);
         void printSymbolTable();
+        std::vector<std::string> buildSymbolTableOutput();
         int applyOffset(int memory_offset);
         ST_QUERY_RESULT get(std::string name);
     private:

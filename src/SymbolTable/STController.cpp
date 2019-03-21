@@ -54,12 +54,25 @@ void printSymbolTables(){
             symbol_tables[i]->printSymbolTable();
         }
     }
+
+}
+
+std::vector<std::string> outputSymbolTable(){
+    std::vector<std::string> output;
+    for(int i = 0; i < 4; i++){
+        std::vector<std::string> st_out = symbol_tables[i]->buildSymbolTableOutput();
+        output.insert(output.end(), st_out.begin(), st_out.end());
+    }
+    return output;
 }
 
 
+
 bool offsetST(int memory_offset) {
+    Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
     for(int i = 0; i < 4; i++){
         memory_offset += symbol_tables[i]->applyOffset(memory_offset);
     }
+    Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
     return true;
 }

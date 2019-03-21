@@ -1,9 +1,9 @@
 #ifndef __SYMBOL_TABLE_UTILS_H_
 #define __SYMBOL_TABLE_UTILS_H_
 
-#include "SymbolTable.h"
 #include <string>
 #include <memory>
+#include "SymbolTable/SymbolTable.h"
 
 std::string symbolTableNameToString(int i);
 
