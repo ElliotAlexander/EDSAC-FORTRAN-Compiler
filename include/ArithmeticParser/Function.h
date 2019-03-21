@@ -5,14 +5,14 @@
 #include <vector>
 #include <iostream>
 #include "RDParseTreeNode.h"
+#include "ProgramStructure/FunctionMapping.h"
 
 
     class Function : public RDParseTreeNode {
-        private:
-            std::string function_call;;
         public:
-            std::vector<RDParseTreeNode*> args;
+            std::vector<RDParseTreeNode*> function_arguments;
             std::string function_name;
+            
             Function(std::vector<RDParseTreeNode*> args_in, std::string function_name_in);
             TOC_RETURN_VALUE generateThreeOPCode();
             virtual ~Function() {};

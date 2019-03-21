@@ -19,11 +19,10 @@ enum OPS {
 };
 
 class Operation : public RDParseTreeNode{
-    OPS op;
     public:
+        OPS op;
         RDParseTreeNode* arg1;
         RDParseTreeNode* arg2;
-        int final_var_index = -1;
         Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation);
         std::string toOPType(OPS e);
         TOC_RETURN_VALUE generateThreeOPCode();
