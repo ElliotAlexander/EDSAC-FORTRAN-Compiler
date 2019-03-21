@@ -23,12 +23,9 @@ template <class T> class Value : public RDParseTreeNode {
             }
         }
         TOC_RETURN_VALUE generateThreeOPCode() {
-            return {};
-            //return { { std::string("ASSIGN " + std::to_string(st_entry->base_memory_address) + " to " + st_entry->value)}, st_entry };
+            return {{}, st_entry};   
         }
         virtual ~Value() {}
-    private:
-        int assigned_variable;
 };
 
 #endif
