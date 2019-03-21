@@ -9,7 +9,8 @@ bool lineIsComment(std::string line){
 
 
 bool printErrorLocation(int location, std::string input){
-    Logging::logErrorMessage("Error location: \n" +  input);
+    Logging::logErrorMessage("Error location: ");
+    Logging::logErrorMessage(input);
     Logging::logErrorMessage(std::string(location -1, ' ') + "^");
     return true;
 }
@@ -44,4 +45,18 @@ void print_header(){
 
 void print_footer(){
     Logging::logMessage("\n\n==== End of runtime  ====\n");; 
+}
+
+void printTOCOutput(std::vector<std::shared_ptr<ThreeOpCode> > three_op_code_arr){
+    if(Globals::dump_three_op_code){
+        Logging::logMessage(":: Three Op Code Output :: \n");
+        for(int index = 0; index < three_op_code_arr.size(); index++){
+            Logging::logMessage(std::string("[" + std::to_string(index) + "] " + three_op_code_arr.at(index)->printToString()));
+        }
+        
+        std::vector<std::string> st = ::outputSymbolTable();
+        for(std::vector<std::string>::iterator it = st.begin(); it != st.end(); ++it) {
+            Logging::logMessage((*it));
+        }
+    }
 }
