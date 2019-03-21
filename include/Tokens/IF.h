@@ -19,15 +19,6 @@
 #include <boost/algorithm/string.hpp> 
 #include <memory>
 
-enum IF_STATEMENT_TYPE {
-    SENSELIGHT,
-    SENSESWITCH,
-    ACCUMULATOROVERFLOW,
-    QUOTIENTOVERFLOW,
-    DIVIDECHECK,
-    ARITHMETIC
-};
-
 struct StringOperationContainer{
     std::string input_string;
     bool result;
@@ -41,12 +32,9 @@ class IF : public Token {
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
-        std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::INTEGER + "," + RegexConstants::INTEGER + "(," + RegexConstants::INTEGER + ")?";
+        std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::INTEGER + "," + RegexConstants::INTEGER + "((," + RegexConstants::INTEGER + ")?)+";
         bool parseRightHandSideArguments(std::string right_hand_side_string);
-        StringOperationContainer parseFixedConditionalString(std::string conditional_string);
-        StringOperationContainer parseConditionalArgument(std::string conditional_argument_string);
-        std::string stripIFTag(std::string input);
-        IF_STATEMENT_TYPE statement_type;
+        bool parseConditionalArgument(std::string conditional_argument_string);
         std::vector<int> instruction_values;
         std::unique_ptr<RDParseTreeNode> conditional_variable;
 };
