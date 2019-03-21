@@ -8,13 +8,15 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
         ("x,allextensions", "Allow all file extensions", cxxopts::value<bool>()->default_value("false"))
         ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
-        ("d,dump","Dump data structures at each stage of parsing.", cxxopts::value<bool>()->default_value("false"))
+        ("d,dumpfiles","Dump file contents as they're loaded. This is useful for logging build operations.", cxxopts::value<bool>()->default_value("false"))
         ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"))
         ("p,parsedvalues","Dump Parsed Values from Statements while generating Three Op Codes.", cxxopts::value<bool>()->default_value("false"))
         ("h,help","Print help page", cxxopts::value<bool>()->default_value("false"))
         ("s,stops","Dump Symbol Table operations during parsing.", cxxopts::value<bool>()->default_value("false"))
         ("y,stdump","Dump Symbol Table once Compilation has finished.", cxxopts::value<bool>()->default_value("false"))
         ("o,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))
+        ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))
+        ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
@@ -47,7 +49,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         Globals::disable_line_length_warnings = true;
     }
 
-    if(result["dump"].as<bool>()){
+    if(result["dumpfiles"].as<bool>()){
         Logging::logMessage("+dump data structures");
         Globals::dump_data_structures = true;
     }
@@ -72,6 +74,16 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         Globals::dump_three_op_code = true;
     }
 
+    if(result["functionmappings"].as<bool>()){
+        Logging::logMessage("+output Function Mappings");
+        Globals::output_function_mappings = true;
+    }
+
+
+    if(result["regex"].as<bool>()){
+        Logging::logMessage("+output Regex matching strings");
+        Globals::output_regex_matching_strings = true;
+    }
 
     // Handle positional file arguments.
     options.parse_positional({"f,file"});

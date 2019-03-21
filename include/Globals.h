@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace Globals {
+
     extern std::vector<std::string> file_list;
     extern bool allow_all_types;
     extern bool disable_line_length_warnings;
@@ -15,6 +17,9 @@ namespace Globals {
     extern bool output_symbol_table_operations;
     extern bool dump_three_op_code;
     extern bool dump_symbol_table;
+    extern bool output_function_mappings;
+	extern bool output_regex_matching_strings;
+	extern std::string BUFFER_FLUSH_NAME;
 }
 
 #endif
