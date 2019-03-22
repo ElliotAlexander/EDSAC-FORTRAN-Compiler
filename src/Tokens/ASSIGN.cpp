@@ -47,7 +47,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_addre
     // Add this to our TOC.
     pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
 
-	ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_addre
     // Add our temporary value to the accumulator.
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(res.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     // Copy our temporary value to our new address.
-    std::shared_ptr<ST_ENTRY> add_result = addDeclaredVariable(ASSIGN::variable_name, std::to_string(res.call_value->base_memory_address), ST_ENTRY_TYPE::FLOAT_T);
+    std::shared_ptr<ST_ENTRY> add_result = SymbolTableController::addDeclaredVariable(ASSIGN::variable_name, std::to_string(res.call_value->base_memory_address), ST_ENTRY_TYPE::FLOAT_T);
 
     // Add to TOC.
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(add_result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));

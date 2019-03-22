@@ -1,6 +1,7 @@
 #include "EDSAC.h"
 
 namespace EDSAC {
+
     std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input) {
         std::vector<std::string> output;
         for(std::vector<std::shared_ptr<ThreeOpCode> >::iterator it = input.begin(); it != input.end(); ++it){
@@ -8,7 +9,6 @@ namespace EDSAC {
             std::string build_string;
             build_string.append(convertOperationEnumToString(op));
             build_string.append((*it)->getAddress());
-
             std::string long_string = (*it)->getLongAddress() ? "L" : "S";
             build_string.append(long_string);
             output.push_back(build_string);

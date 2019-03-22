@@ -5,7 +5,7 @@ Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS ope
     arg2(arg2_in), 
     op(operation)
 {
-    Operation::st_entry = addTemp("", ST_ENTRY_TYPE::FLOAT_T);
+    Operation::st_entry = SymbolTableController::addTemp("", ST_ENTRY_TYPE::FLOAT_T);
     tt = TOC_TYPES::OPERATION_E;
 };
 
@@ -38,7 +38,7 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(){
     pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
     pre_string.insert(pre_string.begin(), arg2_ret.pre_string.begin(), arg2_ret.pre_string.end());
 
-	ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
     switch (Operation::op) {

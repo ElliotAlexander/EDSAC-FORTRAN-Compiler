@@ -66,7 +66,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
     std::vector<std::shared_ptr<ThreeOpCode>> pre_string;
 
     // Get a reference to buffer flush
-    ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+    ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
     TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode();
@@ -83,7 +83,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(0), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(2), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-    std::shared_ptr<ST_ENTRY> temp_integer = ::addTemp("1", ST_ENTRY_TYPE::INT_T);
+    std::shared_ptr<ST_ENTRY> temp_integer = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_integer, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(1), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
     return pre_string;

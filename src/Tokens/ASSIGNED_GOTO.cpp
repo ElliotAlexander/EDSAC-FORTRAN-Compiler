@@ -39,10 +39,10 @@ bool ASSIGNED_GOTO::initaliseToken(std::string input){
 std::vector<std::shared_ptr<ThreeOpCode>> ASSIGNED_GOTO::generatetoc(int starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
-	ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    ALL_ST_SEARCH_RESULT goto_control = ::getVariable(ASSIGNED_GOTO::goto_variable);
+    ALL_ST_SEARCH_RESULT goto_control = SymbolTableController::getVariable(ASSIGNED_GOTO::goto_variable);
     Logging::logConditionalErrorMessage(!goto_control.found, "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed.");
     
     // We can't generate our toc without this
@@ -51,7 +51,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGNED_GOTO::generatetoc(int startin
     }
 
     // TODO we can have a global Positive int?
-    std::shared_ptr<ST_ENTRY> temp_int = ::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
+    std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
 
     int index = 0;
     for(std::vector<std::unique_ptr<RDParseTreeNode> >::iterator it = ASSIGNED_GOTO::goto_arg_list.begin(); it < ASSIGNED_GOTO::goto_arg_list.end(); ++it){

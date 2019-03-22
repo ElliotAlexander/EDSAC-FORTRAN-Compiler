@@ -52,11 +52,11 @@ std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starti
 
     // Assign variables, overwrite if already assigned.
     for(int argument_index = 0; argument_index < ARITH_FUNCTION::function_arguments.size(); argument_index++){
-        Logging::logConditionalWarnMessage(getVariable(ARITH_FUNCTION::function_arguments.at(argument_index)).found, 
+        Logging::logConditionalWarnMessage(SymbolTableController::getVariable(ARITH_FUNCTION::function_arguments.at(argument_index)).found, 
             "Warning - using variable name " + ARITH_FUNCTION::function_arguments.at(argument_index) + " in Arithmetic Function Call will cause the initial value of " + ARITH_FUNCTION::function_arguments.at(argument_index) + " to be overwritten.");
         Logging::logInfoMessage("Adding argument in position 1: " + ARITH_FUNCTION::function_arguments.at(argument_index));
         // Arguments are handled entirely by reference.
-        argument_references.push_back(::addUnDeclaredVariable(ARITH_FUNCTION::function_arguments.at(argument_index), "", ST_ENTRY_TYPE::UNASSIGNED_T));
+        argument_references.push_back(SymbolTableController::addUnDeclaredVariable(ARITH_FUNCTION::function_arguments.at(argument_index), "", ST_ENTRY_TYPE::UNASSIGNED_T));
     }
 
     TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode();

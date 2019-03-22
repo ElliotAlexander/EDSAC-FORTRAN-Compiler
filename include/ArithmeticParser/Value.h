@@ -17,9 +17,9 @@ template <class T> class Value : public RDParseTreeNode {
             argument = arg;
             bool is_int;
             if (ceil(arg) == arg){
-                st_entry = ::addTemp(std::to_string(arg), ST_ENTRY_TYPE::INT_T);
+                st_entry = SymbolTableController::addTemp(std::to_string(arg), ST_ENTRY_TYPE::INT_T);
             } else {
-                st_entry = ::addTemp(std::to_string(arg), ST_ENTRY_TYPE::FLOAT_T);
+                st_entry = SymbolTableController::addTemp(std::to_string(arg), ST_ENTRY_TYPE::FLOAT_T);
             }
         }
         TOC_RETURN_VALUE generateThreeOPCode() {

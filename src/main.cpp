@@ -72,7 +72,7 @@ int main(int argc, char* argv[]){
     noaccclear.processProgram(toc_program_body);
 
     // Add the symbol table to the start of memory
-    std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = ::outputSymbolTable();
+    std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
 
     // Offset line mappings by the size of the symbol table
     LineMapping::offsetLineMapping(toc_final_out.size() + Globals::base_memory_offset);
@@ -83,7 +83,7 @@ int main(int argc, char* argv[]){
 
     // Command line output
     ::printTOCOutput(toc_final_out);
-    ::printSymbolTables();
+    SymbolTableController::printSymbolTables();
 
     Logging::logMessage("\n\n:: File Outputs :: \n\n");
     FileOutput::dumpThreeOpCodeFile(toc_program_body);

@@ -22,9 +22,9 @@ std::vector<std::shared_ptr<ThreeOpCode>> VAR_DECLR::generatetoc(int starting_ad
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     TOC_RETURN_VALUE toc_res = VAR_DECLR::right_hand_side_parsed->generateThreeOPCode();
     pre_string.insert(pre_string.begin(), toc_res.pre_string.begin(), toc_res.pre_string.end());
-    std::shared_ptr<ST_ENTRY> result = ::addDeclaredVariable(VAR_DECLR::variable_name, "", ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> result = SymbolTableController::addDeclaredVariable(VAR_DECLR::variable_name, "", ST_ENTRY_TYPE::UNASSIGNED_T);
 
-	ALL_ST_SEARCH_RESULT flush_to = ::getVariable(Globals::BUFFER_FLUSH_NAME);
+	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
     // Clear the accumulator
