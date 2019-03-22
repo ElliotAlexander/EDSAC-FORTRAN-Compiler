@@ -22,5 +22,12 @@ bool STOP::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> STOP::generatetoc(int starting_address){
-    return {};
+    if(stop_input_variable != 0){
+        Logging::logErrorMessage("Stop variables are not implemented!");
+        return {};
+    } else {
+        std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::string(""), THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+        return pre_string;
+    }
 }

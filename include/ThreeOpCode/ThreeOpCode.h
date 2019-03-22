@@ -21,7 +21,7 @@ enum THREE_OP_CODE_OPERATIONS {
     ACCUMULATOR_IF_POSTITIVE = 10, 
     ACCUMULATOR_IF_NEGATIVE = 11,
     READ_NEXT_SYMBOL = 12,
-    PINT_SYMBOL = 13,
+    PRINT_SYMBOL = 13,
     READ_LAST_CHAR = 14,
     NO_OPERATION = 15,
     ROUND_ACCUMULATOR_TO_34_BITS = 16,
@@ -41,9 +41,10 @@ class ThreeOpCode {
         ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_ST_ENTRY(arg1_in_st_entry), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_ST_ENTRY) {};
 		ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_LINE_MAPPING(arg1_in_line_mapping), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_LINE_MAPPING) {};
 		ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_STR(arg_in), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_STRING) {};
-        std::shared_ptr<ST_ENTRY> getAddress();
+        std::string getAddress();
         THREE_OP_CODE_OPERATIONS getOperation();
         std::string printToString();
+        bool getLongAddress();
     private: 
 		ARG_TYPE input_arg_type;
         std::shared_ptr<ST_ENTRY> ARGUMENT_ST_ENTRY;

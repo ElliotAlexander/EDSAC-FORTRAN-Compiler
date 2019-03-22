@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.2.2.  */
+/* A Bison parser, made by GNU Bison 3.0.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,14 +40,11 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 
-/* Undocumented macros, especially those whose name start with YY_,
-   are private implementation details.  Do not rely on them.  */
-
 /* Identify Bison output.  */
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.2.2"
+#define YYBISON_VERSION "3.0"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -64,8 +61,8 @@
 
 
 
-/* First part of user prologue.  */
-#line 1 "parse.y" /* yacc.c:338  */
+/* Copy the first part of user declarations.  */
+#line 1 "parse.y" /* yacc.c:339  */
 
     #include <cstdio>
     #include <iostream>
@@ -88,16 +85,13 @@
     void yyerror(RDParseTreeNode *&result, const char *s);
 
 
-#line 92 "parse.tab.cc" /* yacc.c:338  */
-# ifndef YY_NULLPTR
-#  if defined __cplusplus
-#   if 201103L <= __cplusplus
-#    define YY_NULLPTR nullptr
-#   else
-#    define YY_NULLPTR 0
-#   endif
+#line 89 "parse.tab.cc" /* yacc.c:339  */
+
+# ifndef YY_NULL
+#  if defined __cplusplus && 201103L <= __cplusplus
+#   define YY_NULL nullptr
 #  else
-#   define YY_NULLPTR ((void*)0)
+#   define YY_NULL 0
 #  endif
 # endif
 
@@ -121,7 +115,7 @@
 extern int yydebug;
 #endif
 /* "%code requires" blocks.  */
-#line 23 "parse.y" /* yacc.c:353  */
+#line 23 "parse.y" /* yacc.c:355  */
 
 
     // This is required to force bison to include the parse node structure before the preprocessing of union types and YYTYPE.
@@ -138,7 +132,7 @@ extern int yydebug;
         std::vector<RDParseTreeNode*> toc_args;
     };
 
-#line 142 "parse.tab.cc" /* yacc.c:353  */
+#line 136 "parse.tab.cc" /* yacc.c:355  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -173,7 +167,9 @@ int yyparse (RDParseTreeNode *&result);
 
 #endif /* !YY_YY_PARSE_TAB_HH_INCLUDED  */
 
+/* Copy the second part of user declarations.  */
 
+#line 173 "parse.tab.cc" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -194,13 +190,13 @@ typedef signed char yytype_int8;
 #ifdef YYTYPE_UINT16
 typedef YYTYPE_UINT16 yytype_uint16;
 #else
-typedef unsigned short yytype_uint16;
+typedef unsigned short int yytype_uint16;
 #endif
 
 #ifdef YYTYPE_INT16
 typedef YYTYPE_INT16 yytype_int16;
 #else
-typedef short yytype_int16;
+typedef short int yytype_int16;
 #endif
 
 #ifndef YYSIZE_T
@@ -212,7 +208,7 @@ typedef short yytype_int16;
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned
+#  define YYSIZE_T unsigned int
 # endif
 #endif
 
@@ -230,22 +226,12 @@ typedef short yytype_int16;
 # endif
 #endif
 
-#ifndef YY_ATTRIBUTE
-# if (defined __GNUC__                                               \
-      && (2 < __GNUC__ || (__GNUC__ == 2 && 96 <= __GNUC_MINOR__)))  \
-     || defined __SUNPRO_C && 0x5110 <= __SUNPRO_C
-#  define YY_ATTRIBUTE(Spec) __attribute__(Spec)
-# else
-#  define YY_ATTRIBUTE(Spec) /* empty */
+#ifndef __attribute__
+/* This feature is available in gcc versions 2.5 and later.  */
+# if (! defined __GNUC__ || __GNUC__ < 2 \
+      || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
+#  define __attribute__(Spec) /* empty */
 # endif
-#endif
-
-#ifndef YY_ATTRIBUTE_PURE
-# define YY_ATTRIBUTE_PURE   YY_ATTRIBUTE ((__pure__))
-#endif
-
-#ifndef YY_ATTRIBUTE_UNUSED
-# define YY_ATTRIBUTE_UNUSED YY_ATTRIBUTE ((__unused__))
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
@@ -255,7 +241,7 @@ typedef short yytype_int16;
 # define YYUSE(E) /* empty */
 #endif
 
-#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
 # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
     _Pragma ("GCC diagnostic push") \
@@ -423,7 +409,7 @@ union yyalloc
 #define YYMAXUTOK   268
 
 #define YYTRANSLATE(YYX)                                                \
-  ((unsigned) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
    as returned by yylex, without out-of-bounds checking.  */
@@ -476,7 +462,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "INT", "FLOAT", "VARIABLE", "ENDL",
   "PLUS", "MINUS", "MUL", "DIV", "LPAREN", "RPAREN", "COMMA", "$accept",
   "start", "expressions", "top_level_expression", "expression",
-  "arguments", "single_argument", YY_NULLPTR
+  "arguments", "single_argument", YY_NULL
 };
 #endif
 
@@ -648,38 +634,38 @@ do {                                                                      \
 } while (0)
 
 
-/*-----------------------------------.
-| Print this symbol's value on YYO.  |
-`-----------------------------------*/
+/*----------------------------------------.
+| Print this symbol's value on YYOUTPUT.  |
+`----------------------------------------*/
 
 static void
-yy_symbol_value_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, RDParseTreeNode *&result)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, RDParseTreeNode *&result)
 {
-  FILE *yyoutput = yyo;
-  YYUSE (yyoutput);
+  FILE *yyo = yyoutput;
+  YYUSE (yyo);
   YYUSE (result);
   if (!yyvaluep)
     return;
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
-    YYPRINT (yyo, yytoknum[yytype], *yyvaluep);
+    YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
 # endif
   YYUSE (yytype);
 }
 
 
-/*---------------------------.
-| Print this symbol on YYO.  |
-`---------------------------*/
+/*--------------------------------.
+| Print this symbol on YYOUTPUT.  |
+`--------------------------------*/
 
 static void
-yy_symbol_print (FILE *yyo, int yytype, YYSTYPE const * const yyvaluep, RDParseTreeNode *&result)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, RDParseTreeNode *&result)
 {
-  YYFPRINTF (yyo, "%s %s (",
+  YYFPRINTF (yyoutput, "%s %s (",
              yytype < YYNTOKENS ? "token" : "nterm", yytname[yytype]);
 
-  yy_symbol_value_print (yyo, yytype, yyvaluep, result);
-  YYFPRINTF (yyo, ")");
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, result);
+  YYFPRINTF (yyoutput, ")");
 }
 
 /*------------------------------------------------------------------.
@@ -713,7 +699,7 @@ do {                                                            \
 static void
 yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule, RDParseTreeNode *&result)
 {
-  unsigned long yylno = yyrline[yyrule];
+  unsigned long int yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
@@ -846,7 +832,7 @@ yytnamerr (char *yyres, const char *yystr)
   if (! yyres)
     return yystrlen (yystr);
 
-  return (YYSIZE_T) (yystpcpy (yyres, yystr) - yyres);
+  return yystpcpy (yyres, yystr) - yyres;
 }
 # endif
 
@@ -862,11 +848,11 @@ static int
 yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                 yytype_int16 *yyssp, int yytoken)
 {
-  YYSIZE_T yysize0 = yytnamerr (YY_NULLPTR, yytname[yytoken]);
+  YYSIZE_T yysize0 = yytnamerr (YY_NULL, yytname[yytoken]);
   YYSIZE_T yysize = yysize0;
   enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
   /* Internationalized format string. */
-  const char *yyformat = YY_NULLPTR;
+  const char *yyformat = YY_NULL;
   /* Arguments of yyformat. */
   char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
   /* Number of reported tokens (one for the "unexpected", one per
@@ -923,7 +909,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
                   }
                 yyarg[yycount++] = yytname[yyx];
                 {
-                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULLPTR, yytname[yyx]);
+                  YYSIZE_T yysize1 = yysize + yytnamerr (YY_NULL, yytname[yyx]);
                   if (! (yysize <= yysize1
                          && yysize1 <= YYSTACK_ALLOC_MAXIMUM))
                     return 2;
@@ -939,7 +925,6 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
       case N:                               \
         yyformat = S;                       \
       break
-    default: /* Avoid compiler warnings. */
       YYCASE_(0, YY_("syntax error"));
       YYCASE_(1, YY_("syntax error, unexpected %s"));
       YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
@@ -1089,12 +1074,12 @@ yyparse (RDParseTreeNode *&result)
   yyssp++;
 
  yysetstate:
-  *yyssp = (yytype_int16) yystate;
+  *yyssp = yystate;
 
   if (yyss + yystacksize - 1 <= yyssp)
     {
       /* Get the current used size of the three stacks, in elements.  */
-      YYSIZE_T yysize = (YYSIZE_T) (yyssp - yyss + 1);
+      YYSIZE_T yysize = yyssp - yyss + 1;
 
 #ifdef yyoverflow
       {
@@ -1112,6 +1097,7 @@ yyparse (RDParseTreeNode *&result)
                     &yyss1, yysize * sizeof (*yyssp),
                     &yyvs1, yysize * sizeof (*yyvsp),
                     &yystacksize);
+
         yyss = yyss1;
         yyvs = yyvs1;
       }
@@ -1145,7 +1131,7 @@ yyparse (RDParseTreeNode *&result)
       yyvsp = yyvs + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-                  (unsigned long) yystacksize));
+                  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
         YYABORT;
@@ -1256,128 +1242,128 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 68 "parse.y" /* yacc.c:1660  */
+#line 68 "parse.y" /* yacc.c:1646  */
     {
         RDParseTreeNode* x = (yyvsp[0].u.toc_T);
         result = x;
     }
-#line 1265 "parse.tab.cc" /* yacc.c:1660  */
+#line 1251 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 73 "parse.y" /* yacc.c:1660  */
+#line 73 "parse.y" /* yacc.c:1646  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::ADD);
     }
-#line 1275 "parse.tab.cc" /* yacc.c:1660  */
+#line 1261 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 78 "parse.y" /* yacc.c:1660  */
+#line 78 "parse.y" /* yacc.c:1646  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::SUBTRACT);  
     }
-#line 1285 "parse.tab.cc" /* yacc.c:1660  */
+#line 1271 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 83 "parse.y" /* yacc.c:1660  */
+#line 83 "parse.y" /* yacc.c:1646  */
     {
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::MULTIPLY);
     }
-#line 1295 "parse.tab.cc" /* yacc.c:1660  */
+#line 1281 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 88 "parse.y" /* yacc.c:1660  */
+#line 88 "parse.y" /* yacc.c:1646  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
         (yyval.u.toc_T) = new Operation(a1, a2, OPS::DIVIDE);
     }
-#line 1305 "parse.tab.cc" /* yacc.c:1660  */
+#line 1291 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 93 "parse.y" /* yacc.c:1660  */
+#line 93 "parse.y" /* yacc.c:1646  */
     {
         char* function_name = (yyvsp[-3].u.vval);
         std::vector<RDParseTreeNode*> args = (yyvsp[-1].toc_args);
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1315 "parse.tab.cc" /* yacc.c:1660  */
+#line 1301 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 98 "parse.y" /* yacc.c:1660  */
+#line 98 "parse.y" /* yacc.c:1646  */
     {
         char* function_name = (yyvsp[-2].u.vval);
         std::vector<RDParseTreeNode*> args = {};
         (yyval.u.toc_T) = new Function(args, function_name);
     }
-#line 1325 "parse.tab.cc" /* yacc.c:1660  */
+#line 1311 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 103 "parse.y" /* yacc.c:1660  */
+#line 103 "parse.y" /* yacc.c:1646  */
     { 
         RDParseTreeNode *t = (yyvsp[-1].u.toc_T); 
         (yyval.u.toc_T) =  t;
     }
-#line 1334 "parse.tab.cc" /* yacc.c:1660  */
+#line 1320 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 107 "parse.y" /* yacc.c:1660  */
+#line 107 "parse.y" /* yacc.c:1646  */
     {
         int x = (yyvsp[0].u.ival);
         (yyval.u.toc_T) = new Value<int>(0-x);
     }
-#line 1343 "parse.tab.cc" /* yacc.c:1660  */
+#line 1329 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 111 "parse.y" /* yacc.c:1660  */
+#line 111 "parse.y" /* yacc.c:1646  */
     {
         float x = (yyvsp[0].u.fval);
         (yyval.u.toc_T) = new Value<float>(0-x);
     }
-#line 1352 "parse.tab.cc" /* yacc.c:1660  */
+#line 1338 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 115 "parse.y" /* yacc.c:1660  */
+#line 115 "parse.y" /* yacc.c:1646  */
     { 
         (yyval.u.toc_T) =  new Value<int>((yyvsp[0].u.ival));
     }
-#line 1360 "parse.tab.cc" /* yacc.c:1660  */
+#line 1346 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 118 "parse.y" /* yacc.c:1660  */
+#line 118 "parse.y" /* yacc.c:1646  */
     { 
         (yyval.u.toc_T) = new Value<float>((yyvsp[0].u.fval));
     }
-#line 1368 "parse.tab.cc" /* yacc.c:1660  */
+#line 1354 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 121 "parse.y" /* yacc.c:1660  */
+#line 121 "parse.y" /* yacc.c:1646  */
     {
         char* name = (yyvsp[0].u.vval);
         (yyval.u.toc_T) = new Variable(name);
     }
-#line 1377 "parse.tab.cc" /* yacc.c:1660  */
+#line 1363 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 127 "parse.y" /* yacc.c:1660  */
+#line 127 "parse.y" /* yacc.c:1646  */
     {
         RDParseTreeNode* arg1 = (yyvsp[-2].u.toc_T);
         std::vector<RDParseTreeNode*> return_arr;
@@ -1386,22 +1372,22 @@ yyreduce:
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1390 "parse.tab.cc" /* yacc.c:1660  */
+#line 1376 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 136 "parse.y" /* yacc.c:1660  */
+#line 136 "parse.y" /* yacc.c:1646  */
     {
         RDParseTreeNode* arg1 = (yyvsp[0].u.toc_T);
         std::vector<RDParseTreeNode*> return_arr;
         return_arr.push_back(arg1);
         (yyval.toc_args) = return_arr;
     }
-#line 1401 "parse.tab.cc" /* yacc.c:1660  */
+#line 1387 "parse.tab.cc" /* yacc.c:1646  */
     break;
 
 
-#line 1405 "parse.tab.cc" /* yacc.c:1660  */
+#line 1391 "parse.tab.cc" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1426,13 +1412,14 @@ yyreduce:
   /* Now 'shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
      number reduced by.  */
-  {
-    const int yylhs = yyr1[yyn] - YYNTOKENS;
-    const int yyi = yypgoto[yylhs] + *yyssp;
-    yystate = (0 <= yyi && yyi <= YYLAST && yycheck[yyi] == *yyssp
-               ? yytable[yyi]
-               : yydefgoto[yylhs]);
-  }
+
+  yyn = yyr1[yyn];
+
+  yystate = yypgoto[yyn - YYNTOKENS] + *yyssp;
+  if (0 <= yystate && yystate <= YYLAST && yycheck[yystate] == *yyssp)
+    yystate = yytable[yystate];
+  else
+    yystate = yydefgoto[yyn - YYNTOKENS];
 
   goto yynewstate;
 
@@ -1628,7 +1615,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 142 "parse.y" /* yacc.c:1903  */
+#line 142 "parse.y" /* yacc.c:1906  */
 
 
 void yyerror(RDParseTreeNode *&result, const char *s) {
