@@ -2,7 +2,6 @@
 #define __TOC_HEADER_
 
 #include <memory>
-#include "SymbolTable/STController.h"
 #include "SymbolTable/SymbolTable.h"
 #include "ThreeOpCode/ThreeOpCodeUtils.h"
 
@@ -36,11 +35,17 @@ enum ARG_TYPE {
 	ARG_IS_LINE_MAPPING,
 };
 
+
+// Three Op Code and SymbolTable are cyclic
+// Forward declare everything we use
+struct ST_ENTRY;
+class SymbolTable;
+
 class ThreeOpCode {
     public:
-        ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_ST_ENTRY(arg1_in_st_entry), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_ST_ENTRY) {};
-		ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_LINE_MAPPING(arg1_in_line_mapping), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_LINE_MAPPING) {};
-		ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : ARGUMENT_STR(arg_in), OPERATION(op_in), LONG_ADDRESS(long_addr_in), input_arg_type(ARG_TYPE::ARG_IS_STRING) {};
+        ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
+		ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
+		ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
         std::string getAddress();
         THREE_OP_CODE_OPERATIONS getOperation();
         std::string printToString();

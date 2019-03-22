@@ -2,7 +2,7 @@
 #define _ST_CONTROLLER_H
 
 #include <memory>
-#include "SymbolTable.h"
+#include "SymbolTable/SymbolTable.h"
 #include <vector>
 #include <string>
 
@@ -30,6 +30,6 @@ bool removeVariable(std::string name);
 std::shared_ptr<SymbolTable> getST(SYMBOL_TABLE_TYPE type);
 bool offsetST(int memory_offset);
 void printSymbolTables();
-std::vector<std::string> outputSymbolTable();
+std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable();
 
 #endif

@@ -11,6 +11,7 @@
 namespace LineMapping {
     bool addLineMapping(std::string, int);
     std::shared_ptr<int> retrieveLineMapping(int);
+    bool offsetLineMapping(int offset);
     static std::map<int, std::shared_ptr<int>> line_mappings;
 }
 

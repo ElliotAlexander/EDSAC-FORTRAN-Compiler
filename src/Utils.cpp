@@ -53,11 +53,5 @@ void printTOCOutput(std::vector<std::shared_ptr<ThreeOpCode> > three_op_code_arr
         for(int index = 0; index < three_op_code_arr.size(); index++){
             Logging::logMessage(std::string("[" + std::to_string(index + Globals::base_memory_offset) + "] " + three_op_code_arr.at(index)->printToString()));
         }
-        
-        std::vector<std::string> st = ::outputSymbolTable();
-        
-        for(std::vector<std::string>::iterator it = st.begin(); it != st.end(); ++it) {
-            Logging::logMessage((*it));
-        }
     }
 }

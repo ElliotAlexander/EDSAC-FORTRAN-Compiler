@@ -57,10 +57,10 @@ void printSymbolTables(){
 
 }
 
-std::vector<std::string> outputSymbolTable(){
-    std::vector<std::string> output;
+std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable(){
+    std::vector<std::shared_ptr<ThreeOpCode> > output;
     for(int i = 0; i < 4; i++){
-        std::vector<std::string> st_out = symbol_tables[i]->buildSymbolTableOutput();
+        std::vector<std::shared_ptr<ThreeOpCode> > st_out = symbol_tables[i]->buildSymbolTableOutput();
         output.insert(output.end(), st_out.begin(), st_out.end());
     }
     return output;

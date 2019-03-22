@@ -7,6 +7,7 @@
 #include "Logging.h"
 #include "Globals.h"
 #include "SymbolTable/SymbolTableUtils.h"
+#include "ThreeOpCode/ThreeOpCode.h"
 
 enum SYMBOL_TABLE_TYPE {
     COMMON = 0,
@@ -33,6 +34,8 @@ struct ST_QUERY_RESULT {
     std::shared_ptr<ST_ENTRY> result;
 };
 
+class ThreeOpCode;
+
 class SymbolTable {
     public:
         int rolling_memory_addr = 0;
@@ -41,7 +44,7 @@ class SymbolTable {
         bool remove(std::string name);
         std::shared_ptr<ST_ENTRY> add(std::string name, std::string value, ST_ENTRY_TYPE type);
         void printSymbolTable();
-        std::vector<std::string> buildSymbolTableOutput();
+        std::vector<std::shared_ptr<ThreeOpCode> > buildSymbolTableOutput();
         int applyOffset(int memory_offset);
         ST_QUERY_RESULT get(std::string name);
     private:

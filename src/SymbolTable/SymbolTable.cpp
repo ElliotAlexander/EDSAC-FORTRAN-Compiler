@@ -75,11 +75,11 @@ void SymbolTable::printSymbolTable(){
 }
 
 
-std::vector<std::string> SymbolTable::buildSymbolTableOutput(){
-    std::vector<std::string> output_str;
+std::vector<std::shared_ptr<ThreeOpCode> > SymbolTable::buildSymbolTableOutput(){
+    std::vector<std::shared_ptr<ThreeOpCode> > output_str;
     std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
     for ( it = st_map.begin(); it != st_map.end(); it++ ){
-        output_str.push_back(std::string("[" + std::to_string(it->second->base_memory_address) + "] " + it->second->value));
+        output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(it->second->value, THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
     }
     return output_str;
 }

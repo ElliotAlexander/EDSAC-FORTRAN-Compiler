@@ -56,6 +56,16 @@ namespace LineMapping {
 			return retrieveLineMapping(line);
         }
     }
+
+
+    bool offsetLineMapping(int offset){
+        for(std::map<int, std::shared_ptr<int> >::iterator it = line_mappings.begin(); it != line_mappings.end(); ++it){
+            int new_val = *it->second.get() + offset;
+            *it->second = new_val;
+            Logging::logMessage("Offsetting Line Mapping for " + std::to_string(it->first) + " by " + std::to_string(offset) + " to " + std::to_string(*it->second));
+        }
+        return true;
+    }
 }
 
 
