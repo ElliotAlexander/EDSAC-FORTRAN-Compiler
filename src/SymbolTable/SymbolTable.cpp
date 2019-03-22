@@ -96,3 +96,10 @@ int SymbolTable::applyOffset(int memory_offset){
     }
     return offset_amount;
 }
+
+
+bool SymbolTable::clearSymbolTable(){
+    Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Clearing Symbol Table " + ::symbolTableNameToString(SymbolTable::ST_TYPE));
+    SymbolTable::st_map.clear();
+    return true;
+}

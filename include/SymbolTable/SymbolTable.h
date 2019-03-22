@@ -46,6 +46,7 @@ class SymbolTable {
         void printSymbolTable();
         std::vector<std::shared_ptr<ThreeOpCode> > buildSymbolTableOutput();
         int applyOffset(int memory_offset);
+        bool clearSymbolTable();
         ST_QUERY_RESULT get(std::string name);
     private:
         std::vector<int> freed_vars;

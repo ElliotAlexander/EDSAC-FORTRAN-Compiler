@@ -50,5 +50,4 @@ FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, 
 
     Logging::logErrorMessage("Function " + function_name + " not found!");
     return {false, {}};
-    
 }   
