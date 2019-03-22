@@ -16,5 +16,6 @@ namespace Globals {
     bool dump_symbol_table = false;
     bool output_function_mappings = false;
     bool output_regex_matching_strings = false;
+    int base_memory_offset = 32;
 	std::string BUFFER_FLUSH_NAME = "BUFFER_FLUSH";
 }

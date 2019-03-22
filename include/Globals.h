@@ -21,6 +21,7 @@ namespace Globals {
     extern bool dump_symbol_table;
     extern bool output_function_mappings;
 	extern bool output_regex_matching_strings;
+    extern int base_memory_offset;
 	extern std::string BUFFER_FLUSH_NAME;
 }
 

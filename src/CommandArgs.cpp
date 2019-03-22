@@ -29,6 +29,11 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
 
     Logging::logMessage("\n:: Loading Command Arguments ::\n\n");
 
+    if(result.count("baseoffset")){
+        Globals::base_memory_offset = result["baseoffset"].as<int>();
+        Logging::logMessage("+base memory offset = " + std::to_string(Globals::base_memory_offset));
+    }
+
     // Handle Boolean Arguments.
     if(result["allextensions"].as<bool>()){
         Logging::logMessage("+all-extensions");
