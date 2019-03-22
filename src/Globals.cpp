@@ -3,6 +3,8 @@
 namespace Globals {
 
     std::vector<std::string> file_list;
+    std::string output_file;
+    bool output_file_set = false;
     bool allow_all_types = false;
     bool disable_line_length_warnings = false;
     bool dump_data_structures = false;

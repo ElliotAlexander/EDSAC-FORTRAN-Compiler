@@ -14,9 +14,11 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("h,help","Print help page", cxxopts::value<bool>()->default_value("false"))
         ("s,stops","Dump Symbol Table operations during parsing.", cxxopts::value<bool>()->default_value("false"))
         ("y,stdump","Dump Symbol Table once Compilation has finished.", cxxopts::value<bool>()->default_value("false"))
-        ("o,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))
+        ("c,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))
         ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))
         ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))
+        ("b,baseoffset","Base memory offset for bootloader. This is 32 by default.", cxxopts::value<int>(), "N")
+        ("o,output","EDSAC Output file", cxxopts::value<std::string>(Globals::output_file))
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
 
@@ -87,8 +89,15 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
 
     // Handle positional file arguments.
     options.parse_positional({"f,file"});
+    options.parse_positional({"o,output"});
+
     for(int i =0; i < result.count("file"); i++){
         Logging::logMessage("+load: " + Globals::file_list[i]);
+    }
+
+    if(result.count("output")){
+        Logging::logMessage("+output file " + Globals::output_file);
+        Globals::output_file_set = true;
     }
 
     Logging::logNewLine();

@@ -67,12 +67,26 @@ int main(int argc, char* argv[]){
         };
 
         Logging::logMessage("\n --- End Tokenization --- \n\n");
-        ::offsetST(toc_program_body.size());
-        ::printTOCOutput(toc_program_body);
-    }
-        
-        
+
+
+
+    }        
+
+
+    ::offsetST(toc_program_body.size() + Globals::base_memory_offset);
+    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_program_body);
+    ::printTOCOutput(toc_program_body);
+
     ::printSymbolTables();
+
+    Logging::logMessage("\n:: File Outputs :: ");
+    Logging::logMessage("\n\n --- Beginning file outputs --- \n");
+    FileOutput::dumpThreeOpCodeFile(toc_program_body);
+    FileOutput::dumpEDASCFile(edsac_out);
+    Logging::logMessage("\n --- end file outputs --- \n");
+
+
+
     Logging::logMessage((boost::format("Time taken: %.2fs\n") % ((double)(clock() - tStart)/CLOCKS_PER_SEC)).str());
     Logging::logOutputSummary();
     ::print_footer();
