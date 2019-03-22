@@ -69,6 +69,7 @@ std::vector<std::string> outputSymbolTable(){
 
 
 bool offsetST(int memory_offset) {
+    Logging::logMessage(":: Symbol Table Transformations :: \n");
     Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
     for(int i = 0; i < 4; i++){
         memory_offset += symbol_tables[i]->applyOffset(memory_offset);
