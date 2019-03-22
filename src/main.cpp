@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
         Logging::logConditionalMessage(Globals::dump_tokens, "\n\n:: Beginning Tokenization :: \n");
         // Iterate through each segment of the program.
         for(int segment_index = 0; segment_index < segs.size(); segment_index++){
-            Logging::logConditionalMessage(Globals::dump_data_structures, " --- New Segment type=(" + getEnumString(segs.at(i).getSegmentType()) + ") ---\n" );
+            Logging::logConditionalMessage(Globals::dump_tokens, " --- New Segment type=(" + getEnumString(segs.at(i).getSegmentType()) + ") ---\n" );
 
             // Break each segment down into a list of statements.
             std::vector<Statement*> stmts = segs.at(segment_index).buildStatements();
