@@ -19,5 +19,7 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 #include "ProgramStructure/FunctionMapping.h"
 #include "ProgramStructure/LineMapping.h"
+#include "FileOutput.h"
+#include "EDSAC.h"
 
 #endif

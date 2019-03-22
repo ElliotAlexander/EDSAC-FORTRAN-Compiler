@@ -8,6 +8,8 @@
 namespace Globals {
 
     extern std::vector<std::string> file_list;
+    extern std::string output_file;
+    extern bool output_file_set;
     extern bool allow_all_types;
     extern bool disable_line_length_warnings;
     extern bool dump_data_structures;
