@@ -55,6 +55,8 @@ namespace EDSAC {
                 return "Y";
             case STOP_PROGRAM:
                 return "Z";
+            case DATA_SET:
+                return "P";
             default:
                 Logging::logErrorMessage("Something went wrong - failed to generate EDSAC character codes.");
                 return {};

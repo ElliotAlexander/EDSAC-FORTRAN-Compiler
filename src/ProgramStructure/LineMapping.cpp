@@ -26,16 +26,16 @@ namespace LineMapping {
             if(it != LineMapping::line_mappings.end())
             {
 				if (*(it->second) == -1) {
-					Logging::logInfoMessage("Found temporary reference to line " + line_label + ". Replacing with a new Memory Address of " + std::to_string(memory_address));
+					Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Found temporary reference to line " + line_label + ". Replacing with a new Memory Address of " + std::to_string(memory_address));
 					*(it->second) = memory_address;
 					return true;
 				}
 				else {
-					Logging::logInfoMessage("Warning - line " + line_label + " already exists as address " + std::to_string(*(it->second)));
+					Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Warning - line " + line_label + " already exists as address " + std::to_string(*(it->second)));
 					return false;
 				}
             } else {
-				Logging::logInfoMessage("Line " + std::to_string(line_label_int) + " doesn't exist, adding a temporary reference.");
+				Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Line " + std::to_string(line_label_int) + " doesn't exist, adding a temporary reference.");
 				line_mappings.insert(std::map<int, std::shared_ptr<int> > ::value_type(line_label_int, std::make_shared<int>(memory_address)));
 				return true;
             }
@@ -59,11 +59,13 @@ namespace LineMapping {
 
 
     bool offsetLineMapping(int offset){
+        Logging::logConditionalMessage(Globals::output_line_mappings, "\n\n:: Line Mapping Transformations :: \n\n");
         for(std::map<int, std::shared_ptr<int> >::iterator it = line_mappings.begin(); it != line_mappings.end(); ++it){
             int new_val = *it->second.get() + offset;
             *it->second = new_val;
-            Logging::logMessage("Offsetting Line Mapping for " + std::to_string(it->first) + " by " + std::to_string(offset) + " to " + std::to_string(*it->second));
+            Logging::logConditionalMessage(Globals::output_line_mappings, "Applying Line Mapping Offset of " + std::to_string(offset) + " to " + std::to_string(*it->second));
         }
+        Logging::logConditionalMessage(Globals::output_line_mappings, "\n --- End Line Mapping Transformations --- \n\n");
         return true;
     }
 }

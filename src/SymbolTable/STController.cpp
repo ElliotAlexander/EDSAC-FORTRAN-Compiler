@@ -47,14 +47,14 @@ bool removeVariable(std::string name){
 
 void printSymbolTables(){
     if(Globals::dump_symbol_table){
-        Logging::logMessage("\n:: Symbol Table Dump ::\n");
+        Logging::logMessage("\n\n:: Symbol Table Dump ::\n\n");
         Logging::logMessage("Symbol table format: \n\t[address] <name>:<value>\n");
         for(int i = 0; i < 4; i++){
             Logging::logMessage(std::string("--- " + ::symbolTableNameToString(symbol_tables[i]->ST_TYPE) + " ---"));
             symbol_tables[i]->printSymbolTable();
         }
+        Logging::logMessage(" --- end Symbol Table Dump --- \n");
     }
-
 }
 
 std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable(){
@@ -69,7 +69,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable(){
 
 
 bool offsetST(int memory_offset) {
-    Logging::logMessage(":: Symbol Table Transformations :: \n");
+    Logging::logMessage(":: Symbol Table Transformations :: \n\n");
     Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
     for(int i = 0; i < 4; i++){
         memory_offset += symbol_tables[i]->applyOffset(memory_offset);

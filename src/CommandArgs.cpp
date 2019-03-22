@@ -7,7 +7,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     options.add_options()
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
         ("x,allextensions", "Allow all file extensions", cxxopts::value<bool>()->default_value("false"))
-        ("l,linelengthwarnings", "Disable warnings on short line length", cxxopts::value<bool>()->default_value("false"))
+        ("l,linemappings", "Output line mappings once they are loaded.", cxxopts::value<bool>()->default_value("false"))
         ("d,dumpfiles","Dump file contents as they're loaded. This is useful for logging build operations.", cxxopts::value<bool>()->default_value("false"))
         ("t,tokens","Dump Tokens.", cxxopts::value<bool>()->default_value("false"))
         ("p,parsedvalues","Dump Parsed Values from Statements while generating Three Op Codes.", cxxopts::value<bool>()->default_value("false"))
@@ -51,9 +51,9 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         Globals::lazy_tokens = true;
     }
 
-    if(result["linelengthwarnings"].as<bool>()){
-        Logging::logMessage("+disabled line length warnings");
-        Globals::disable_line_length_warnings = true;
+    if(result["linemappings"].as<bool>()){
+        Logging::logMessage("+line mappings");
+        Globals::output_line_mappings = true;
     }
 
     if(result["dumpfiles"].as<bool>()){
