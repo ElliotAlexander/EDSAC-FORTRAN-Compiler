@@ -36,8 +36,7 @@ int main(int argc, char* argv[]){
         Logging::logMessage(std::string("\nSegment breakdown for " + Globals::file_list[i] + "\n"));
         // Break files down into Segments.
         std::vector<Segment> segs = input_files[i].dissectSegments();
-        // Validate + tokenize each segments
-        Logging::logConditionalMessage(Globals::dump_tokens, "\n:: Beginning Tokenization :: \n");
+        Logging::logConditionalMessage(Globals::dump_tokens, "\n\n:: Beginning Tokenization :: \n");
         // Iterate through each segment of the program.
         for(int segment_index = 0; segment_index < segs.size(); segment_index++){
             Logging::logMessage(" --- New Segment type=(" + getEnumString(segs.at(i).getSegmentType()) + ") ---\n" );
@@ -69,6 +68,8 @@ int main(int argc, char* argv[]){
         Logging::logMessage("\n --- End Tokenization --- \n\n");
     }        
 
+    NoRepeatedAccClear noaccclear;
+    noaccclear.processProgram(toc_program_body);
 
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = ::outputSymbolTable();
@@ -78,17 +79,13 @@ int main(int argc, char* argv[]){
 
     // Add main program body to symbol table
     toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
-
-
-    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_program_body);
+    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out);
 
     // Command line output
     ::printTOCOutput(toc_final_out);
     ::printSymbolTables();
 
-    Logging::logMessage("\n:: File Outputs :: ");
-    Logging::logMessage("\n\n --- Beginning file outputs --- \n");
-    
+    Logging::logMessage("\n\n:: File Outputs :: \n\n");
     FileOutput::dumpThreeOpCodeFile(toc_program_body);
     FileOutput::dumpEDASCFile(edsac_out);
 
