@@ -19,7 +19,6 @@ FileContainer::FileContainer(std::string file_input){
         line_counter++;
     }
 
-    Logging::logMessage("Loaded " + file_name + "[" + std::to_string(file_text.size()) + "] successfully. ");
     if(Globals::dump_data_structures){
         dumpFileText();
     }

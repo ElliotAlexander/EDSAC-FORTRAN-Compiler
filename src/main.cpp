@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
         // Prepare data structures.
         input_files[i].expandContinuations();
 
-        Logging::logMessage(std::string("\nSegment breakdown for " + Globals::file_list[i] + "\n"));
+        Logging::logConditionalMessage(Globals::dump_data_structures, std::string("\nSegment breakdown for " + Globals::file_list[i] + "\n"));
         // Break files down into Segments.
         std::vector<Segment> segs = input_files[i].dissectSegments();
         Logging::logConditionalMessage(Globals::dump_tokens, "\n\n:: Beginning Tokenization :: \n");
@@ -89,8 +89,7 @@ int main(int argc, char* argv[]){
     FileOutput::dumpThreeOpCodeFile(toc_program_body);
     FileOutput::dumpEDASCFile(edsac_out);
 
-    Logging::logMessage("\n --- end file outputs --- \n");
-    Logging::logMessage((boost::format("Time taken: %.2fs\n") % ((double)(clock() - tStart)/CLOCKS_PER_SEC)).str());
+    Logging::logMessage((boost::format("\n\nTime taken: %.2fs") % ((double)(clock() - tStart)/CLOCKS_PER_SEC)).str());
     Logging::logOutputSummary();
     ::print_footer();
 }
