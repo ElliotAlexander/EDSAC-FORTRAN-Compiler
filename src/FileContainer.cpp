@@ -88,7 +88,7 @@ bool FileContainer::expandContinuations(){
 
 std::string FileContainer::removeShortLines(std::string line, int line_counter){
         // If line length warnings are enabled, warn the user on lines < 5 chars long.
-        if((line.length() < 7) && !(Globals::disable_line_length_warnings) && !(::lineIsComment(line))) {
+        if((line.length() < 5) && !(::lineIsComment(line))) {
             Logging::logWarnMessage("Line { " + line + " }[" + std::to_string(line_counter) + "] has an unusually short length. It will be marked as a comment and ignored.");
             line.insert(0, "C");
         }
@@ -137,7 +137,6 @@ std::vector<Segment> FileContainer::dissectSegments(){
                         segment_text.push_back(file_text.at(x));
                     }
                     Logging::logMessage("+" + ::getEnumString(SEGMENT_TYPE::PROGRAM) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]");
-                    Logging::logInfoMessage("Found end of Program [" + std::to_string(i + 1) + "].");
                     segment_arr.push_back(Segment(current_type, start_line, i, segment_text));
                 } else {
                     Logging::logWarnMessage("END detected outside of Main Program Block[" + std::to_string(i) + "]");
