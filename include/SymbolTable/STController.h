@@ -5,21 +5,8 @@
 #include "SymbolTable/SymbolTable.h"
 #include <vector>
 #include <string>
+#include <map>
 
-const std::unique_ptr<SymbolTable> symbol_tables[4] = {
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON))
-};
-
-
-const std::unique_ptr<SymbolTable> function_scope_symbol_table[4] = {
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)),
-    std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON))
-};
 
 struct ALL_ST_SEARCH_RESULT {
     int table_found;
@@ -29,7 +16,9 @@ struct ALL_ST_SEARCH_RESULT {
 
 namespace SymbolTableController {
 
-    static bool in_function_scope = false;
+    extern std::unique_ptr<SymbolTable> symbol_tables[4];
+    extern std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
+    extern bool in_function_scope;
 
     
     bool enterFunctionScope();
