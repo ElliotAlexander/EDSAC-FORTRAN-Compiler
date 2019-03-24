@@ -18,7 +18,7 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(){
     }
 
 
-    FUNCTION_MAPPING_RETURN function_mapping = ::getArithmeticFunctionMapping(function_name, arguments);
+    ARITH_FUNCTION_MAPPING_RETURN function_mapping = ::getArithmeticFunctionMapping(function_name, arguments);
     return_string.insert(return_string.end(), function_mapping.function_body.begin(), function_mapping.function_body.end());
     return {function_mapping.function_body, function_mapping.return_val};
 }
