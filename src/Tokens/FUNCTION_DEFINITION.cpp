@@ -34,6 +34,7 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
         } else {
             Logging::logErrorMessage("Failed to load function name. ");
             ::printErrorLocation(8, input_original);
+            return false;
         }
     } else {
         Logging::logErrorMessage("Failed to parse function Token. ");
