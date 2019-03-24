@@ -1,8 +1,9 @@
 #include "ProgramStructure/FunctionMapping.h"
 
+std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings;
 
-FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr){
-    std::map<std::string,FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
+ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr){
+    std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
     if(it != arithmetic_function_mappings.end())
     {
         Logging::logErrorMessage("Function " + function_name + " already exists!");
@@ -12,21 +13,21 @@ FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, s
     Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Adding function " + function_name + ".");
     Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Function " + function_name + " has " + std::to_string(arguments.size()) + " argument(s).");
 
-    FUNCTION_MAPPING_ENTRY entry = {
+    ARITH_FUNCTION_MAPPING_ENTRY entry = {
         return_addr,
         function_body,
         arguments
     };
 
-    arithmetic_function_mappings.insert(std::map<std::string, FUNCTION_MAPPING_ENTRY>::value_type(function_name, entry));
+    arithmetic_function_mappings.insert(std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY>::value_type(function_name, entry));
     return entry;
 }
 
-FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments) {
+ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments) {
     std::vector<std::shared_ptr<ThreeOpCode> > return_arr;
 
-    std::map<std::string,FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
-    FUNCTION_MAPPING_ENTRY entry;
+    std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
+    ARITH_FUNCTION_MAPPING_ENTRY entry;
     Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
     if(it != arithmetic_function_mappings.end())
     {

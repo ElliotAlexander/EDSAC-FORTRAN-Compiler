@@ -2,50 +2,30 @@
 
 namespace SymbolTableController{
 
-    bool enterFunctionScope() {
-        in_function_scope = true;
-        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Entered Function Scope.");
-        return true;
-    }
+    bool in_function_scope;
+    std::unique_ptr<SymbolTable> symbol_tables[4] = {
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)),
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)),
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON))
+    };
 
-    bool exitFunctionScope() {
-        for(int i = 0; i < 4; i++){
-            function_scope_symbol_table[i]->clearSymbolTable();
-        }
-        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Exited Function Scope.");
-        return true;
-    }
+    std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
 
     std::shared_ptr<ST_ENTRY> addCommon(std::string name, std::string value, ST_ENTRY_TYPE type) {
-        if(in_function_scope) {
-            return function_scope_symbol_table[3]->add(name, value, type);
-        } else {
-            return symbol_tables[3]->add(name, value, type);
-        }
+        return symbol_tables[3]->add(name, value, type);
     }
 
     std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type){
-        if(in_function_scope) {
-            return function_scope_symbol_table[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
-        } else {
-            return symbol_tables[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
-        }
+        return symbol_tables[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
     }
 
     std::shared_ptr<ST_ENTRY> addDeclaredVariable(std::string name, std::string value, ST_ENTRY_TYPE type){
-        if(in_function_scope) {
-            return function_scope_symbol_table[0]->add(name, value, type);
-        } else {
-            return symbol_tables[0]->add(name, value, type);
-        }
+        return symbol_tables[0]->add(name, value, type);
     }
 
     std::shared_ptr<ST_ENTRY> addUnDeclaredVariable(std::string name, std::string value, ST_ENTRY_TYPE type){
-        if(in_function_scope) {
-            return function_scope_symbol_table[1]->add(name, value, type);
-        } else {
-            return symbol_tables[1]->add(name, value, type);
-        }
+        return symbol_tables[1]->add(name, value, type);
     }
 
     ALL_ST_SEARCH_RESULT getVariable(std::string name){
@@ -59,23 +39,7 @@ namespace SymbolTableController{
                 Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in undeclared varaibles."));
                 return {1, true, res.result};
             } else {
-                if(in_function_scope){
-                    ST_QUERY_RESULT res = function_scope_symbol_table[0]->get(name);
-                    if(res.found == 1){
-                        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in declared variables"));
-                        return {0, true, res.result};
-                    } else {
-                        ST_QUERY_RESULT res = function_scope_symbol_table[1]->get(name);
-                        if(res.found == 1){
-                            Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in undeclared varaibles."));
-                            return {1, true, res.result};
-                        } else {
-                            return {-1, false, nullptr};
-                        }
-                    }
-                } else {
-                    return {-1, false, nullptr};
-                }
+                return {-1, false, nullptr};
             }
         }
     }
@@ -113,8 +77,6 @@ namespace SymbolTableController{
         return output;
     }
 
-
-
     bool offsetST(int memory_offset) {
         Logging::logMessage(":: Symbol Table Transformations :: \n\n");
         Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
@@ -124,4 +86,26 @@ namespace SymbolTableController{
         Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
         return true;
     }
+
+    bool enterFunctionScope(std::string function_name){
+        std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.find(function_name);
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
+        if(it != function_symbol_tables.end()) {
+            Logging::logInfoMessage("Loaded function symbol table for function " + function_name);
+        } else {
+            Logging::logInfoMessage("Adding new function symbol table for function " + function_name);
+            std::vector<std::shared_ptr<SymbolTable> > vect;
+            vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)));
+            vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)));
+            vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)));
+            vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON)));
+            function_symbol_tables.insert(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::value_type(function_name, vect));
+        }
+    }
+
+
+    bool exitFunctionScope(){
+
+    }
+
 } // SymbolTableController
