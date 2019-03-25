@@ -13,6 +13,14 @@ namespace SymbolTableController{
 
     std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
 
+    bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name){
+        if(in_function_scope){
+            Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
+            return function_symbol_tables.find(function_scope_name)->second.at(0)->addLinkedVariable(value, name);
+        }
+        return symbol_tables[0]->addLinkedVariable(value, name);
+    }
+
     std::shared_ptr<ST_ENTRY> addCommon(std::string name, std::string value, ST_ENTRY_TYPE type) {
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
@@ -170,6 +178,7 @@ namespace SymbolTableController{
     bool exitFunctionScope(){
         Logging::logInfoMessage("Leaving function scope.");
         in_function_scope = false;
+        function_scope_name = "";
         return true;
     }
 

@@ -80,6 +80,9 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return
         entry = it->second;
         if(entry.arguments.size() != arguments.size()){
             Logging::logErrorMessage("Warning - function " + function_name + " takes " + std::to_string(entry.arguments.size())  + ". Found " + std::to_string(arguments.size()));
+            for(int argument_index = 0; argument_index < arguments.size(); argument_index++){
+                SymbolTableController::addLinkedVariable(arguments.at(argument_index), entry.arguments.at(argument_index));
+            }
             return {
                 {},
                 false

@@ -31,8 +31,8 @@ namespace SymbolTableController {
     std::shared_ptr<ST_ENTRY> addCommon(std::string name, std::string value, ST_ENTRY_TYPE type);
     std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type);
     
-    std::shared_ptr<ST_ENTRY> copyValue(int st_from, int addr_from, int st_to, int addr_to);
     ALL_ST_SEARCH_RESULT getVariable(std::string name);
+    bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name);
     bool removeVariable(std::string name);
 
     std::shared_ptr<SymbolTable> getST(SYMBOL_TABLE_TYPE type);
