@@ -163,12 +163,14 @@ namespace SymbolTableController{
         in_function_scope = true;
         function_scope_name = function_name;
         Logging::logInfoMessage("Entering Function Scope");
+        return true;
     }
 
 
     bool exitFunctionScope(){
         Logging::logInfoMessage("Leaving function scope.");
         in_function_scope = false;
+        return true;
     }
 
 } // SymbolTableController
