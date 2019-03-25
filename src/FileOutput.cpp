@@ -25,13 +25,13 @@ namespace FileOutput {
         std::ofstream output_file;
         std::string file_name = Globals::output_file_set ? Globals::output_file : std::string("out.edsac");
         output_file.open(file_name);
-        Logging::logMessage("Writing EDSAC output to " + file_name);
+        Logging::logInfoMessage("Writing EDSAC output to " + file_name);
         for(std::vector<std::string>::iterator it = input.begin(); it != input.end(); ++it){
             // no newline for edsac codes
             output_file << (*it);
         }
         output_file.close();
-        Logging::logMessage("Finished writing " + file_name);
+        Logging::logInfoMessage("Finished writing " + file_name);
         return true;
     }
 }
