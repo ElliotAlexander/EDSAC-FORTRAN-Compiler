@@ -10,6 +10,7 @@
 #include <vector>
 #include <memory>
 #include "Constants.h"
+#include "ProgramStructure/FunctionMapping.h"
 
 class RETURN : public Token {
     public:
