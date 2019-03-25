@@ -2,6 +2,9 @@
 
 namespace LineMapping {
 
+    std::map<int, std::shared_ptr<int>> line_mappings;
+    std::vector<std::shared_ptr<int>> temporary_line_mappings;
+
     bool addLineMapping(std::string line_label, int memory_address){
         // Remove whitespace so we can accurately compare lengths.
         line_label = ::stripWhitespaceString(line_label);
@@ -67,6 +70,14 @@ namespace LineMapping {
         }
         Logging::logConditionalMessage(Globals::output_line_mappings, "\n --- End Line Mapping Transformations --- \n\n");
         return true;
+    }
+
+
+    std::shared_ptr<int> addTemporaryLineMapping(int input){
+        Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Adding temporary line mapping for line " + std::to_string(input));
+        std::shared_ptr<int> ptr = std::make_shared<int>(input);
+        temporary_line_mappings.push_back(ptr);
+        return ptr;
     }
 }
 
