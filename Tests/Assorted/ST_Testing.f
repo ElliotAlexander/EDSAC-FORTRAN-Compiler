@@ -1,6 +1,5 @@
-15    ASSIGN X TO 50      
-      FUNCTION HELLO(X
+      FUNCTION HELLO(X)
       ASSIGN X TO 45
       RETURN
-      GOTO 15
+      CALL HELLO(5)
       END
