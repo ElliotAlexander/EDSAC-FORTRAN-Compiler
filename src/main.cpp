@@ -69,7 +69,7 @@ int main(int argc, char* argv[]){
     }        
 
     NoRepeatedAccClear noaccclear;
-    noaccclear.processProgram(toc_program_body);
+    toc_program_body = noaccclear.processProgram(toc_program_body);
 
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
     SymbolTableController::printSymbolTables();
 
     Logging::logMessage("\n\n:: File Outputs :: \n\n");
-    FileOutput::dumpThreeOpCodeFile(toc_program_body);
+    FileOutput::dumpThreeOpCodeFile(toc_final_out);
     FileOutput::dumpEDASCFile(edsac_out);
 
     Logging::logMessage((boost::format("\n\nTime taken: %.2fs") % ((double)(clock() - tStart)/CLOCKS_PER_SEC)).str());
