@@ -147,7 +147,7 @@ namespace SymbolTableController{
 
     bool enterFunctionScope(std::string function_name){
         std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.find(function_name);
-        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
+        Logging::logInfoMessage("Calling function " + function_name + ".");
         if(it != function_symbol_tables.end()) {
             Logging::logInfoMessage("Loaded function symbol table for function " + function_name);
         } else {
