@@ -51,5 +51,7 @@ ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_n
 ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
 
 bool addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line);
+std::vector<std::shared_ptr<ThreeOpCode> > exitFunction();
+FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
 
 #endif
