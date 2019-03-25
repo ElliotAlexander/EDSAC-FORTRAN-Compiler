@@ -14,6 +14,7 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
         {
             std::string function_name_string = char_matches[2];
             Logging::logInfoMessage("Loaded Function Name: " + function_name_string);
+            FUNCTION_DEFINITION::function_name = function_name_string;
 
             std::string function_arguments_string = char_matches[3];
             Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded Function Arguments String: " + function_arguments_string);
@@ -26,6 +27,7 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
             std::vector<std::string> comma_split_string;
             boost::split(comma_split_string, function_arguments_string, boost::is_any_of(","));
             for(std::vector<std::string>::iterator it = comma_split_string.begin(); it != comma_split_string.end(); ++it){
+                FUNCTION_DEFINITION::function_arguments.push_back((*it));
                 Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded function argument: " + (*it));
             }
 
@@ -44,5 +46,6 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address){
+    addFunctionMapping(function_name, function_arguments, starting_address);
     return {};
 }

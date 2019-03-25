@@ -10,6 +10,7 @@
 #include "Logging.h"
 #include "Constants.h"
 #include "ThreeOpCode/ThreeOpCode.h"
+#include "ProgramStructure/FunctionMapping.h"
 
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
@@ -25,6 +26,8 @@ class FUNCTION_DEFINITION : public Token {
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
         std::string TO_MATCH = "FUNCTION" + RegexConstants::SUBROUTINE_NAME + "\\((" + RegexConstants::ANY_ARG_LIST + ")?\\)";
+        std::string function_name;
+        std::vector<std::string> function_arguments;
 
 };
 
