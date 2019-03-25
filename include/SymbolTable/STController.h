@@ -22,7 +22,7 @@ namespace SymbolTableController {
     extern std::string function_scope_name;
 
     
-    bool enterFunctionScope();
+    bool enterFunctionScope(std::string function_name);
     bool exitFunctionScope();
 
 
