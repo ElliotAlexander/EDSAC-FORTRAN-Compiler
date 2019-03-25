@@ -64,6 +64,14 @@ namespace SymbolTableController{
                 Logging::logMessage(std::string("--- " + ::symbolTableNameToString(symbol_tables[i]->ST_TYPE) + " ---"));
                 symbol_tables[i]->printSymbolTable();
             }
+
+            for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
+                Logging::logMessage("--- Function " + it->first + " ---");
+                for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                    Logging::logMessage(std::string("--- " + ::symbolTableNameToString((*s_it)->ST_TYPE) + " ---"));
+                    (*s_it)->printSymbolTable();
+                }
+            }
             Logging::logMessage(" --- end Symbol Table Dump --- \n");
         }
     }
@@ -74,6 +82,14 @@ namespace SymbolTableController{
             std::vector<std::shared_ptr<ThreeOpCode> > st_out = symbol_tables[i]->buildSymbolTableOutput();
             output.insert(output.end(), st_out.begin(), st_out.end());
         }
+
+        for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
+            for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                std::vector<std::shared_ptr<ThreeOpCode> > st_func = (*s_it)->buildSymbolTableOutput();
+                output.insert(output.end(), st_func.begin(), st_func.end());
+            }
+        }
+
         return output;
     }
 
@@ -83,6 +99,14 @@ namespace SymbolTableController{
         for(int i = 0; i < 4; i++){
             memory_offset += symbol_tables[i]->applyOffset(memory_offset);
         }
+
+
+        for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
+            for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                memory_offset += (*s_it)->applyOffset(memory_offset);
+            }
+        }
+
         Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
         return true;
     }
@@ -101,11 +125,15 @@ namespace SymbolTableController{
             vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON)));
             function_symbol_tables.insert(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::value_type(function_name, vect));
         }
+
+        in_function_scope = true;
+        Logging::logInfoMessage("Entering Function Scope");
     }
 
 
     bool exitFunctionScope(){
-
+        Logging::logInfoMessage("Leaving function scope.");
+        in_function_scope = false;
     }
 
 } // SymbolTableController
