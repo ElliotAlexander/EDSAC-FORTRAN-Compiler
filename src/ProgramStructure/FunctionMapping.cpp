@@ -66,6 +66,7 @@ bool addFunctionMapping(std::string name, std::vector<std::string> arguments, in
         FUNCTION_ENTRY_TYPE::FUNCTION_TYPE,
     };
 
+    SymbolTableController::enterFunctionScope(name);
     function_mappings.insert(std::map<std::string, FUNCTION_MAPPING_ENTRY>::value_type(name, entry));
     Logging::logInfoMessage("Adding function mapping for function " + name);
     return true;
@@ -106,8 +107,8 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return
 }
 
 std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(){
-    if(*return_address_mapping != -1){
-        SymbolTableController::exitFunctionScope();
+    int* compare = new int (-1);
+    if(!(return_address_mapping.get() == compare)){
         std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
         std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
         std::shared_ptr<ST_ENTRY> temp = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
@@ -117,10 +118,10 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(){
         return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
         return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
         return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-        Logging::logInfoMessage("Exiting function...");
         SymbolTableController::exitFunctionScope();
         return return_toc;
     } else {
-        Logging::logErrorMessage("Error - atempted to exit a function while not inside one.");
+        Logging::logErrorMessage("Error - attempted to exit a function while not inside one.");
+        return {};
     }
 }
