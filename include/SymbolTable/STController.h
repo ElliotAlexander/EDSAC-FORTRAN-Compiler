@@ -19,6 +19,7 @@ namespace SymbolTableController {
     extern std::unique_ptr<SymbolTable> symbol_tables[4];
     extern std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
     extern bool in_function_scope;
+    extern std::string function_scope_name;
 
     
     bool enterFunctionScope();

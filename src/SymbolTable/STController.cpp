@@ -3,6 +3,7 @@
 namespace SymbolTableController{
 
     bool in_function_scope;
+    std::string function_scope_name;
     std::unique_ptr<SymbolTable> symbol_tables[4] = {
         std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
         std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)),
@@ -13,22 +14,55 @@ namespace SymbolTableController{
     std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
 
     std::shared_ptr<ST_ENTRY> addCommon(std::string name, std::string value, ST_ENTRY_TYPE type) {
+        if(in_function_scope){
+            Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
+            return function_symbol_tables.find(function_scope_name)->second.at(3)->add(name, value, type);
+        }
         return symbol_tables[3]->add(name, value, type);
     }
 
-    std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type){
+    std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type) {
+        if(in_function_scope){
+            Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
+            return function_symbol_tables.find(function_scope_name)->second.at(2)->add(std::to_string(function_symbol_tables.find(function_scope_name)->second.at(2)->rolling_memory_addr), value, type);
+        }
         return symbol_tables[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
     }
 
     std::shared_ptr<ST_ENTRY> addDeclaredVariable(std::string name, std::string value, ST_ENTRY_TYPE type){
+        if(in_function_scope){
+            Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
+            return function_symbol_tables.find(function_scope_name)->second.at(0)->add(name, value, type);
+        }
         return symbol_tables[0]->add(name, value, type);
     }
 
     std::shared_ptr<ST_ENTRY> addUnDeclaredVariable(std::string name, std::string value, ST_ENTRY_TYPE type){
+        if(in_function_scope){
+            Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
+            return function_symbol_tables.find(function_scope_name)->second.at(0)->add(name, value, type);
+        }
         return symbol_tables[1]->add(name, value, type);
     }
 
     ALL_ST_SEARCH_RESULT getVariable(std::string name){
+        if(in_function_scope){
+            std::vector<std::shared_ptr<SymbolTable> > func_st = function_symbol_tables.find(function_scope_name)->second;
+            ST_QUERY_RESULT func_declared_res = func_st.at(0)->get(name);
+            if(func_declared_res.found){
+                Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in declared variables for function " + function_scope_name));
+                return {0, true, func_declared_res.result};
+            } else {
+                func_declared_res = func_st.at(1)->get(name);
+                if(func_declared_res.found){
+                    Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in declared variables for function " + function_scope_name));
+                    return {0, true, func_declared_res.result};
+                }
+            }
+            Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Failed to find variable " + name + " in function scope. Checking Global Scope next."));
+        }
+
+
         ST_QUERY_RESULT res = symbol_tables[0]->get(name);
         if(res.found == 1){
             Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in declared variables"));
