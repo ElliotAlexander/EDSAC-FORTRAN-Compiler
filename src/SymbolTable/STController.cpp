@@ -125,8 +125,12 @@ namespace SymbolTableController{
             output.insert(output.end(), st_out.begin(), st_out.end());
         }
 
+
+        int offset = output.size();
+
         for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
             for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                offset += (*s_it)->applyOffset(offset);
                 std::vector<std::shared_ptr<ThreeOpCode> > st_func = (*s_it)->buildSymbolTableOutput();
                 output.insert(output.end(), st_func.begin(), st_func.end());
             }
@@ -145,6 +149,7 @@ namespace SymbolTableController{
 
         for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
             for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                Logging::logInfoMessage("Applying offset of " + std::to_string(memory_offset) + " to function ST for " + it->first);
                 memory_offset += (*s_it)->applyOffset(memory_offset);
             }
         }
