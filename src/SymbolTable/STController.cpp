@@ -139,25 +139,6 @@ namespace SymbolTableController{
         return output;
     }
 
-    bool offsetST(int memory_offset) {
-        Logging::logMessage(":: Symbol Table Transformations :: \n\n");
-        Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
-        for(int i = 0; i < 4; i++){
-            memory_offset += symbol_tables[i]->applyOffset(memory_offset);
-        }
-
-
-        for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
-            for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
-                Logging::logInfoMessage("Applying offset of " + std::to_string(memory_offset) + " to function ST for " + it->first);
-                memory_offset += (*s_it)->applyOffset(memory_offset);
-            }
-        }
-
-        Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
-        return true;
-    }
-
     bool enterFunctionScope(std::string function_name){
         std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.find(function_name);
         Logging::logInfoMessage("Calling function " + function_name + ".");

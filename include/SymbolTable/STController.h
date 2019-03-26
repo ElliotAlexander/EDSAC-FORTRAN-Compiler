@@ -35,8 +35,6 @@ namespace SymbolTableController {
     bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name);
     bool removeVariable(std::string name);
 
-    std::shared_ptr<SymbolTable> getST(SYMBOL_TABLE_TYPE type);
-    bool offsetST(int memory_offset);
     void printSymbolTables();
     std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable();
 
