@@ -64,7 +64,11 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
     for(std::vector<std::unique_ptr<RDParseTreeNode> >::iterator it = COMPUTED_GOTO::goto_arg_list.begin(); it < COMPUTED_GOTO::goto_arg_list.end(); ++it){
 
-        std::shared_ptr<int> goto_line_mapping = LineMapping::retrieveLineMapping(std::stoi(COMPUTED_GOTO::goto_arg_list_string.at(index)));
+
+
+        LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping(std::stoi(COMPUTED_GOTO::goto_arg_list_string.at(index)));
+        Logging::logConditionalErrorMessage(!mapping.result, "Warning - Failed to load line mapping for " + COMPUTED_GOTO::goto_arg_list_string.at(index));
+        std::shared_ptr<int> goto_line_mapping = mapping.value;
     
 
         TOC_RETURN_VALUE toc_ret = (*it)->generateThreeOPCode();
