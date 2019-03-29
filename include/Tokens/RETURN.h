@@ -11,6 +11,8 @@
 #include <memory>
 #include "Constants.h"
 #include "ProgramStructure/FunctionMapping.h"
+#include "ArithmeticRDParser.h"
+
 
 class RETURN : public Token {
     public:
@@ -21,7 +23,9 @@ class RETURN : public Token {
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         bool prepareStatements(); 
     private:
-        std::string TO_MATCH = "RETURN";
+        std::unique_ptr<RDParseTreeNode> return_value;
+        bool return_value_set;
+        std::string TO_MATCH = "RETURN|RETURN" + RegexConstants::ANY_ARG;
 };
 
 

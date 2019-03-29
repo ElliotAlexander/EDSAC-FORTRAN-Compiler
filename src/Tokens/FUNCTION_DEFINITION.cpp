@@ -46,6 +46,5 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address){
-    addFunctionMapping(function_name, function_arguments, starting_address);
     return {};
 }

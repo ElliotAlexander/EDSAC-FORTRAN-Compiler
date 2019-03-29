@@ -76,7 +76,9 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
 
     for (std::vector<int>::iterator it = instruction_values.begin(); it != instruction_values.end(); ++it)
     {
-        arguments_computed.push_back(LineMapping::retrieveLineMapping((*it)));
+        LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping((*it));
+        Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to find line mapping for " + std::to_string((*it)));
+        arguments_computed.push_back(mapping.value);
     }
 
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
