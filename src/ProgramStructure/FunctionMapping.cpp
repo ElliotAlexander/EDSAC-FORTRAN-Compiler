@@ -4,6 +4,7 @@ std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings
 std::map<std::string, SUBROUTINE_MAPPING_ENTRY> subroutine_mappings;
 std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
 std::shared_ptr<int> return_address_mapping = std::shared_ptr<int>(new int(-1));
+std::string current_function_name;
 
 
 
@@ -149,6 +150,7 @@ bool addFunctionMapping(std::string name, std::vector<std::string> arguments, in
     SymbolTableController::enterFunctionScope(name);
     function_mappings.insert(std::map<std::string, FUNCTION_MAPPING_ENTRY>::value_type(name, entry));
     Logging::logInfoMessage("Adding function mapping for function " + name);
+    current_function_name = name;
     return true;
 }
 
@@ -187,4 +189,33 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return
 
 std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY> return_value) {
 
+    if(current_function_name.empty()){
+        Logging::logErrorMessage("Warning - attempting to exit a function while not inside one.");
+    }
+
+    std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(current_function_name);
+    FUNCTION_MAPPING_ENTRY entry;
+    if( it != function_mappings.end()){
+        Logging::logInfoMessage("Set return value for function " + current_function_name);
+        it->second.value_return_address = return_value;
+        it->second.return_val_set = true;
+    } else {
+        Logging::logErrorMessage("Failed to find function " + current_function_name + ". ");
+    }
+
+    int* compare = new int (-1);
+    if(!(return_address_mapping.get() == compare)){
+        std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
+        std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
+        
+        std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
+        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+        SymbolTableController::exitFunctionScope();
+        return return_toc;
+    } else {
+        Logging::logErrorMessage("Error - attempted to exit a Function while not inside one.");
+        return {};
+    }
 }

@@ -60,6 +60,7 @@ ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_
 extern std::map<std::string, SUBROUTINE_MAPPING_ENTRY> subroutine_mappings;
 extern std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
 extern std::shared_ptr<int> return_address_mapping;
+extern std::string current_function_name;
 
 bool addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line);
 SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
