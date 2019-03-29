@@ -13,10 +13,6 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 #include "ProgramStructure/LineMapping.h"
 
-enum FUNCTION_ENTRY_TYPE {
-    SUBROUTINE_TYPE = 0,
-    FUNCTION_TYPE = 0
-};
 
 struct ARITH_FUNCTION_MAPPING_ENTRY {
     // The return value for the function exists at this address.
@@ -34,24 +30,44 @@ struct ARITH_FUNCTION_MAPPING_RETURN {
 struct FUNCTION_MAPPING_ENTRY {
     std::shared_ptr<int> start_line;
     std::vector<std::string> arguments;
-    FUNCTION_ENTRY_TYPE type;
+    std::shared_ptr<ST_ENTRY> value_return_address;
+    bool return_val_set;
 };
 
+struct FUNCTION_MAPPING_RETURN{
+    bool result;
+    std::vector<std::shared_ptr<ThreeOpCode> > toc_inject;
+    std::shared_ptr<ST_ENTRY> return_val;
+};
 
-struct FUNCTION_MAPPING_RETURN {
+struct SUBROUTINE_MAPPING_ENTRY {
+    std::shared_ptr<int> start_line;
+    std::vector<std::string> arguments;
+};
+
+struct SUBROUTINE_MAPPING_RETURN {
     std::vector<std::shared_ptr<ThreeOpCode> > toc_inject;
     bool result;
 };
 
-extern std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings;
-extern std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
-extern std::shared_ptr<int> return_address_mapping;
 
+
+extern std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings;
 ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr);
 ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
 
+
+extern std::map<std::string, SUBROUTINE_MAPPING_ENTRY> subroutine_mappings;
+extern std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
+extern std::shared_ptr<int> return_address_mapping;
+
+bool addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line);
+SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
+std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine();
+
+
 bool addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line);
-std::vector<std::shared_ptr<ThreeOpCode> > exitFunction();
 FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
+std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY> return_value);
 
 #endif
