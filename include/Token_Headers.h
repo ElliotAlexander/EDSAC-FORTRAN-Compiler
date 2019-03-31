@@ -17,6 +17,7 @@
 #include "Tokens/GOTO.h"
 #include "Tokens/IF.h"
 #include "Tokens/PAUSE.h"
+#include "Tokens/PRINT.h"
 #include "Tokens/READ.h"
 #include "Tokens/RETURN.h"
 #include "Tokens/REWIND.h"
