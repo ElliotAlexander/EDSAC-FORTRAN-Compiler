@@ -9,8 +9,15 @@
 #include "Logging.h"
 
 namespace LineMapping {
+
+
+    struct LineMappingReturn{
+        bool result;
+        std::shared_ptr<int> value;
+    };
+
     bool addLineMapping(std::string, int);
-    std::shared_ptr<int> retrieveLineMapping(int);
+    LineMappingReturn retrieveLineMapping(int);
     bool offsetLineMapping(int offset);
     std::shared_ptr<int> addTemporaryLineMapping(int);
     extern std::map<int, std::shared_ptr<int>> line_mappings;

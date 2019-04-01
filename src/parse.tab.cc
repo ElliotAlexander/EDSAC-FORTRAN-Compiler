@@ -1307,9 +1307,9 @@ yyreduce:
   case 10:
 #line 93 "parse.y" /* yacc.c:1660  */
     {
-        char* function_name = (yyvsp[-3].u.vval);
+        char* function_name  = (yyvsp[-3].u.vval);
         std::vector<RDParseTreeNode*> args = (yyvsp[-1].toc_args);
-        (yyval.u.toc_T) = new Function(args, function_name);
+        (yyval.u.toc_T) = new Function(args, string(function_name));
     }
 #line 1315 "parse.tab.cc" /* yacc.c:1660  */
     break;

@@ -48,11 +48,11 @@ namespace LineMapping {
 
     }
 
-    std::shared_ptr<int> retrieveLineMapping(int line){
+    LineMappingReturn retrieveLineMapping(int line){
         std::map<int, std::shared_ptr<int> >::iterator it = line_mappings.find(line);
         int entry;
         if(it != LineMapping::line_mappings.end()) {
-            return it->second;
+            return { true, it->second };
         } else {
             Logging::logWarnMessage("Failed to retrieve line mapping for " + std::to_string(line));
 			line_mappings.insert(std::map<int, std::shared_ptr<int> >::value_type(line, std::make_shared<int>(-1)));

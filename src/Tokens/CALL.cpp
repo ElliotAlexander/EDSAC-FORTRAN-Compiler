@@ -55,12 +55,12 @@ std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address
     std::vector<std::shared_ptr<ThreeOpCode> > toc_return;
     std::vector<std::shared_ptr<ST_ENTRY> > args;
     for(std::vector<std::unique_ptr<RDParseTreeNode> >::iterator it = subroutine_arguments.begin(); it != subroutine_arguments.end(); ++it){
-        TOC_RETURN_VALUE ret_val = (*it)->generateThreeOPCode();
+        TOC_RETURN_VALUE ret_val = (*it)->generateThreeOPCode(starting_address);
         args.push_back(ret_val.call_value);
         toc_return.insert(toc_return.end(), ret_val.pre_string.begin(), ret_val.pre_string.end());
     }
-    FUNCTION_MAPPING_RETURN func_return = ::getFunctionMapping(subroutine_name, starting_address, args);
-    Logging::logConditionalErrorMessage(!func_return.result, "Error - failed to add function " + subroutine_name);
-    toc_return.insert(toc_return.end(), func_return.toc_inject.begin(), func_return.toc_inject.end());
+    SUBROUTINE_MAPPING_RETURN sub_return = ::getSubroutineMapping(subroutine_name, starting_address, args);
+    Logging::logConditionalErrorMessage(!sub_return.result, "Error - failed to add function " + subroutine_name);
+    toc_return.insert(toc_return.end(), sub_return.toc_inject.begin(), sub_return.toc_inject.end());
     return toc_return;
 }

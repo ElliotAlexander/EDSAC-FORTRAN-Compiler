@@ -91,9 +91,9 @@ expression:
         $$ = new Operation(a1, a2, OPS::DIVIDE);
     }
     | VARIABLE LPAREN arguments RPAREN {
-        char* function_name = $1;
+        char* function_name  = $1;
         std::vector<RDParseTreeNode*> args = $3;
-        $$ = new Function(args, function_name);
+        $$ = new Function(args, string(function_name));
     }
     | VARIABLE LPAREN RPAREN {
         char* function_name = $1;

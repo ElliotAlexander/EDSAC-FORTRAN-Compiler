@@ -14,7 +14,7 @@ Variable::Variable(std::string name_in)
     }    
 }
 
-TOC_RETURN_VALUE Variable::generateThreeOPCode(){
+TOC_RETURN_VALUE Variable::generateThreeOPCode(int &starting_address){
     ALL_ST_SEARCH_RESULT x = SymbolTableController::getVariable(name);
     if(x.found){
         st_entry = x.result;
@@ -27,6 +27,7 @@ TOC_RETURN_VALUE Variable::generateThreeOPCode(){
     } else {
         std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+        starting_address += pre_string.size();
         return {
                 pre_string,
                 st_entry

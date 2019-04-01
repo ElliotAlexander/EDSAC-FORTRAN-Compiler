@@ -28,11 +28,11 @@ std::string Operation::toOPType(OPS e)
     }
 }
 
-TOC_RETURN_VALUE Operation::generateThreeOPCode(){
+TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
-    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode();
-    TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode();
+    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);
+    TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
 
 
     pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
@@ -64,6 +64,9 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(){
         default:
             std::cout << "Error - operation not implemented" << std::endl;
     }
+
+    Logging::logInfoMessage("Incrementing starting address by " + std::to_string(pre_string.size()));
+    starting_address += pre_string.size();
     
     return {pre_string, st_entry};
 }

@@ -19,7 +19,9 @@ std::vector<std::shared_ptr<ThreeOpCode>> GOTO::generatetoc(int starting_address
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
-    std::shared_ptr<int> goto_mapping = LineMapping::retrieveLineMapping(GOTO::goto_single_arg);
+    LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping(GOTO::goto_single_arg); 
+    Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to load line mapping for " + std::to_string(GOTO::goto_single_arg));
+    std::shared_ptr<int> goto_mapping = mapping.value;
 
 
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);

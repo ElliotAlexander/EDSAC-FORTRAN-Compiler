@@ -69,14 +69,16 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode();
+    TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode(starting_address);
 
     pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
     std::vector<std::shared_ptr<int>> arguments_computed;
 
     for (std::vector<int>::iterator it = instruction_values.begin(); it != instruction_values.end(); ++it)
     {
-        arguments_computed.push_back(LineMapping::retrieveLineMapping((*it)));
+        LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping((*it));
+        Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to find line mapping for " + std::to_string((*it)));
+        arguments_computed.push_back(mapping.value);
     }
 
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));

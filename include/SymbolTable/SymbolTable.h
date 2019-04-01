@@ -43,6 +43,7 @@ class SymbolTable {
         SymbolTable(SYMBOL_TABLE_TYPE st);
         bool remove(std::string name);
         std::shared_ptr<ST_ENTRY> add(std::string name, std::string value, ST_ENTRY_TYPE type);
+        bool addLinkedVariable(std::shared_ptr<ST_ENTRY> linked_var, std::string name);
         void printSymbolTable();
         std::vector<std::shared_ptr<ThreeOpCode> > buildSymbolTableOutput();
         int applyOffset(int memory_offset);

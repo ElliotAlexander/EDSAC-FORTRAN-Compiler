@@ -43,7 +43,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_addre
 
 
     // Generate a temporary address for the value we'll be placing in $1
-    TOC_RETURN_VALUE res = ASSIGN::assignment_value->generateThreeOPCode();
+    TOC_RETURN_VALUE res = ASSIGN::assignment_value->generateThreeOPCode(starting_address);
     // Add this to our TOC.
     pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
 

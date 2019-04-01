@@ -15,7 +15,7 @@ bool PRINT::initaliseToken(std::string input){
 std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_address){
 	std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
-	TOC_RETURN_VALUE toc_ret = PRINT::print_val->generateThreeOPCode();
+	TOC_RETURN_VALUE toc_ret = PRINT::print_val->generateThreeOPCode(starting_address);
 	pre_string.insert(pre_string.begin(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::PRINT_SYMBOL, false)));
 	return pre_string;

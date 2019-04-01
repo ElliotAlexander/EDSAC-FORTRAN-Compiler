@@ -84,6 +84,21 @@ std::vector<std::shared_ptr<ThreeOpCode> > SymbolTable::buildSymbolTableOutput()
     return output_str;
 }
 
+bool SymbolTable::addLinkedVariable(std::shared_ptr<ST_ENTRY> linked_var, std::string name){
+    std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it = SymbolTable::st_map.find(name);
+    std::shared_ptr<ST_ENTRY> ptr;
+    if(it != SymbolTable::st_map.end()) {
+        Logging::logConditionalWarnMessage(Globals::output_symbol_table_operations, "Warning - variable " + name + " already exists in Symbol Table. It's value will be overwritten.");
+        it->second = linked_var;
+        return false;
+    } else {
+        st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(name, linked_var));
+        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Adding linked variable " + name);
+        return true;
+    }
+
+}
+
 
 int SymbolTable::applyOffset(int memory_offset){
     Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Applying memory offset of " + std::to_string(memory_offset) + " to Symbol Table " + ::symbolTableNameToString(SymbolTable::ST_TYPE));
