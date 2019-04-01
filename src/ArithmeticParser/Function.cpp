@@ -5,8 +5,6 @@ Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_
     function_name(function_name_in.substr(0, function_name_in.find_first_of('(')))
 {
     // TODO implement arguments
-    Logging::logInfoMessage(function_name);
-    Logging::logInfoMessage(std::to_string(args_in.size()));
     tt = TOC_TYPES::FUNCTION_E;
 }
 
