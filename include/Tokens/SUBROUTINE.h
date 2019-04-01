@@ -6,6 +6,7 @@
 #include "Token.h"
 #include "ThreeOpCode/ThreeOpCode.h"
 #include "RDParseTreeNode.h"
+#include "ProgramStructure/FunctionMapping.h"
 
 #include <string>
 #include <vector>

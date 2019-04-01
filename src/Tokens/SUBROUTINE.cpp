@@ -3,7 +3,7 @@
 bool SUBROUTINE::initaliseToken(std::string input){
     std::string input_original = input;
     if(input.substr(0, 10) == "SUBROUTINE"){
-        input.erase(0,8);
+        input.erase(0,10);
 
         const char* target = input.c_str();
         boost::regex subroutine_name_regex("(^([A-Z]+))(.*)");
@@ -46,5 +46,6 @@ bool SUBROUTINE::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> SUBROUTINE::generatetoc(int starting_address){
+    bool res = ::addSubroutineMapping(SUBROUTINE::subroutine_name, SUBROUTINE::subroutine_arguments, starting_address);
     return {};
 }
