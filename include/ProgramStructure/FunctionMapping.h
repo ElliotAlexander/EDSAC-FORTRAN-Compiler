@@ -68,7 +68,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine();
 
 
 bool addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line);
-FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
+FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, int return_address);
 std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY> return_value);
 
 #endif

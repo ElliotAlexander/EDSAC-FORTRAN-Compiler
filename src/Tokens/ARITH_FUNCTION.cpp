@@ -59,7 +59,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starti
         argument_references.push_back(SymbolTableController::addUnDeclaredVariable(ARITH_FUNCTION::function_arguments.at(argument_index), "", ST_ENTRY_TYPE::UNASSIGNED_T));
     }
 
-    TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode();
+    TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode(starting_address);
     ::addArithmeticFunctionMapping(function_name, argument_references, res.pre_string, res.call_value);
     return {};
 }

@@ -21,7 +21,7 @@ bool RETURN::initaliseToken(std::string input){
 std::vector<std::shared_ptr<ThreeOpCode>> RETURN::generatetoc(int starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     if(RETURN::return_value_set){
-        TOC_RETURN_VALUE x = RETURN::return_value->generateThreeOPCode();
+        TOC_RETURN_VALUE x = RETURN::return_value->generateThreeOPCode(starting_address);
         pre_string.insert(pre_string.begin(), x.pre_string.begin(), x.pre_string.end());
         ::exitFunction(x.call_value);
     } else {

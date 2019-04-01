@@ -69,7 +69,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode();
+    TOC_RETURN_VALUE toc_ret = IF::conditional_variable->generateThreeOPCode(starting_address);
 
     pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
     std::vector<std::shared_ptr<int>> arguments_computed;

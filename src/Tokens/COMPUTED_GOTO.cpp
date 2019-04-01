@@ -71,7 +71,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
         std::shared_ptr<int> goto_line_mapping = mapping.value;
     
 
-        TOC_RETURN_VALUE toc_ret = (*it)->generateThreeOPCode();
+        TOC_RETURN_VALUE toc_ret = (*it)->generateThreeOPCode(starting_address);
         pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
 
         // Clear acc

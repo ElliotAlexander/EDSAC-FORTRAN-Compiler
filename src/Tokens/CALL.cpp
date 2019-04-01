@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address
     std::vector<std::shared_ptr<ThreeOpCode> > toc_return;
     std::vector<std::shared_ptr<ST_ENTRY> > args;
     for(std::vector<std::unique_ptr<RDParseTreeNode> >::iterator it = subroutine_arguments.begin(); it != subroutine_arguments.end(); ++it){
-        TOC_RETURN_VALUE ret_val = (*it)->generateThreeOPCode();
+        TOC_RETURN_VALUE ret_val = (*it)->generateThreeOPCode(starting_address);
         args.push_back(ret_val.call_value);
         toc_return.insert(toc_return.end(), ret_val.pre_string.begin(), ret_val.pre_string.end());
     }

@@ -155,7 +155,7 @@ bool addFunctionMapping(std::string name, std::vector<std::string> arguments, in
 }
 
 
-FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments) {
+FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, int return_address) {
     std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(function_name);
     FUNCTION_MAPPING_ENTRY entry;
     if( it != function_mappings.end()){

@@ -27,7 +27,7 @@
         public:
             std::shared_ptr<ST_ENTRY> st_entry;
             TOC_TYPES tt;   
-            virtual TOC_RETURN_VALUE generateThreeOPCode() = 0;
+            virtual TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) = 0;
             virtual ~RDParseTreeNode() {};
     };
 

@@ -20,7 +20,7 @@ bool VAR_DECLR::initaliseToken(std::string input){
 std::vector<std::shared_ptr<ThreeOpCode>> VAR_DECLR::generatetoc(int starting_address){
     
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
-    TOC_RETURN_VALUE toc_res = VAR_DECLR::right_hand_side_parsed->generateThreeOPCode();
+    TOC_RETURN_VALUE toc_res = VAR_DECLR::right_hand_side_parsed->generateThreeOPCode(starting_address);
     pre_string.insert(pre_string.begin(), toc_res.pre_string.begin(), toc_res.pre_string.end());
     std::shared_ptr<ST_ENTRY> result = SymbolTableController::addDeclaredVariable(VAR_DECLR::variable_name, "", ST_ENTRY_TYPE::UNASSIGNED_T);
 
