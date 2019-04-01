@@ -7,7 +7,7 @@ SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {
 				ST_ENTRY_TYPE::UNASSIGNED_T,
 				false,
 				rolling_memory_addr,
-				std::string("")
+				std::string("0")
 		};
 		SymbolTable::st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(Globals::BUFFER_FLUSH_NAME, std::make_shared<ST_ENTRY>(entry)));
         SymbolTable::rolling_memory_addr += 1;

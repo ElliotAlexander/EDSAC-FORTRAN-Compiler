@@ -4,6 +4,12 @@
 namespace FileOutput {
     
     bool dumpThreeOpCodeFile(std::vector<std::shared_ptr<ThreeOpCode> > input){
+
+        if(!Globals::dump_three_op_code){
+            Logging::logInfoMessage("Skipping file output for Three Op Code - dump_three_op_code is disabled.");
+            return true;
+        }
+        
         std::ofstream output_file;
         std::string file_name = Globals::output_file_set ? std::string("toc_") + Globals::output_file : std::string("toc_out.edsac");
         output_file.open(file_name);
@@ -18,9 +24,8 @@ namespace FileOutput {
 
 
     bool dumpEDASCFile(std::vector<std::string> input){
-        if(!Globals::dump_three_op_code){
-            return true;
-        }
+
+
 
         std::ofstream output_file;
         std::string file_name = Globals::output_file_set ? Globals::output_file : std::string("out.edsac");

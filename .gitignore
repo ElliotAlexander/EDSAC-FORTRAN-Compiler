@@ -39,3 +39,7 @@
 logs/
 .vs/
 out/
+
+
+#compiled EDSAC files
+*.edsac
