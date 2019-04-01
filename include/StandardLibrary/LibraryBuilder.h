@@ -12,15 +12,20 @@
 struct LibraryReturnContainer {
 	std::vector<std::string> output;
 	int offset;
+};
+
+namespace Libs {
+
+		extern std::map<std::string, std::shared_ptr<int> > library_line_mappings;
+		extern std::map<std::string, Library*> library_mappings;
+
+		std::map<std::string, Library*> createMap();
+		void enableRoutine(std::string name);
+		LibraryReturnContainer buildLibraries();
+
+	
 }
 
-class LibraryBuilder{
-	public:
-		LibraryBuilder();
-		void enableRoutine(std::string name);
-		std::vector<std::string> buildLibraries();
-	private:
-		std::map<std::string, std::shared_ptr<int> > library_line_mappings;
-		std::map<std::string, Library*> library_mappings;
-};
+
+
 #endif
