@@ -1,3 +1,3 @@
       ASSIGN X TO 5
-      PRINT 5
+      PRINT X
       END
