@@ -36,6 +36,7 @@ namespace SymbolTableController {
     bool removeVariable(std::string name);
 
     void printSymbolTables();
+    bool offsetST(int memory_offset);
     std::vector<std::shared_ptr<ThreeOpCode> > outputSymbolTable();
 
 

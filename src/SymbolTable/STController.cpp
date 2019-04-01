@@ -168,4 +168,23 @@ namespace SymbolTableController{
         return true;
     }
 
+    bool offsetST(int memory_offset) {
+        Logging::logMessage(":: Symbol Table Transformations :: \n\n");
+        Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
+        for(int i = 0; i < 4; i++){
+            memory_offset += symbol_tables[i]->applyOffset(memory_offset);
+        }
+
+
+        for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
+            for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
+                memory_offset += (*s_it)->applyOffset(memory_offset);
+            }
+        }
+
+        Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
+        return true;
+    }
+
+
 } // SymbolTableController
