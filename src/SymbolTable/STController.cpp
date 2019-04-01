@@ -108,7 +108,7 @@ namespace SymbolTableController{
             }
 
             for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
-                Logging::logMessage("--- Function " + it->first + " ---");
+                Logging::logMessage("--- Function " + it->first + " ---\n");
                 for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
                     Logging::logMessage(std::string("--- " + ::symbolTableNameToString((*s_it)->ST_TYPE) + " ---"));
                     (*s_it)->printSymbolTable();
