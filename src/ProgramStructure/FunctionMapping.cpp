@@ -191,6 +191,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY
 
     if(current_function_name.empty()){
         Logging::logErrorMessage("Warning - attempting to exit a function while not inside one.");
+        Logging::logErrorMessage("Have you attempted to use parameterised return values inside a Subroutine? ");
     }
 
     std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(current_function_name);
