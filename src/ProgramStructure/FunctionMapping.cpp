@@ -34,14 +34,15 @@ ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_
 
     std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
     ARITH_FUNCTION_MAPPING_ENTRY entry;
-    Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
     if(it != arithmetic_function_mappings.end())
     {
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + " from Arithmetic Functions..");
         entry = it->second;
         if(entry.arguments.size() != arguments.size()){
             Logging::logWarnMessage("Warning - found " + std::to_string(arguments.size()) + " arguments for function " + function_name + ", expected " + std::to_string(entry.arguments.size()));
         }
 
+        Logging::logInfoMessage("Found function " + function_name + " inside Arithmetic Function tables.");
 
         for(int argument_index = 0; argument_index < entry.arguments.size(); argument_index++){
 
@@ -54,8 +55,7 @@ ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_
         return_arr.insert(return_arr.end(), entry.function_body.begin(), entry.function_body.end());
         return {true, return_arr, entry.value_return_address};
     };
-
-    Logging::logErrorMessage("Function " + function_name + " not found!");
+    Logging::logWarnMessage("Function " + function_name + " not found inside Arithmetic Function Tables.");
     return {false, {}};
 }   
 
@@ -161,13 +161,13 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
     if( it != function_mappings.end()){
         entry = it->second;
         if(entry.arguments.size() != arguments.size()){
-            Logging::logErrorMessage("Warning - Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + ". Found " + std::to_string(arguments.size()));
+            Logging::logErrorMessage("Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + " arguments. Found " + std::to_string(arguments.size()));
             for(int argument_index = 0; argument_index < arguments.size(); argument_index++){
                 SymbolTableController::addLinkedVariable(arguments.at(argument_index), entry.arguments.at(argument_index));
             }
             return {false, {}, nullptr };
         } else if(entry.return_val_set == false){
-            Logging::logErrorMessage("Error - Function " + function_name + " has no return value set.");
+            Logging::logErrorMessage("Function " + function_name + " has no return value set.");
             Logging::logErrorMessage("Use the syntax: \tRETURN <VARIABLE|VALUE|FUNCTION_CALL>");
             return { false, {}, nullptr};
         } else {
@@ -181,7 +181,7 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
             return {true, return_toc, entry.value_return_address};
         }
     } else {
-        Logging::logErrorMessage("Failed to find function " + function_name);
+        Logging::logWarnMessage("Failed to find function " + function_name + " inside Standard function Mappings");
         return {false, {}, nullptr };
     }
 }
@@ -190,7 +190,7 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
 std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY> return_value) {
 
     if(current_function_name.empty()){
-        Logging::logErrorMessage("Warning - attempting to exit a function while not inside one.");
+        Logging::logErrorMessage("Attempting to exit a function while not inside one.");
         Logging::logErrorMessage("Have you attempted to use parameterised return values inside a Subroutine? ");
     }
 

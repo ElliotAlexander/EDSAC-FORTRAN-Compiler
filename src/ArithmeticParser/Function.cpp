@@ -2,10 +2,11 @@
 
 Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_name_in) : 
     function_arguments(args_in), 
-    function_name(function_name_in)
+    function_name(function_name_in.substr(0, function_name_in.find_first_of('(')))
 {
     // TODO implement arguments
     Logging::logInfoMessage(function_name);
+    Logging::logInfoMessage(std::to_string(args_in.size()));
     tt = TOC_TYPES::FUNCTION_E;
 }
 
@@ -34,7 +35,7 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
             starting_address += return_string.size();
             return {return_string, function_mapping.return_val };
         } else {
-            Logging::logErrorMessage("Function " + function_name + " not found!");
+            Logging::logErrorMessage("Function " + function_name + " not found. Exiting Arithmetic Parser unsuccessfully.");
             return {};
         }
     }
