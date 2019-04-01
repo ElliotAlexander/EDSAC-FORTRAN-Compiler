@@ -75,7 +75,12 @@ int main(int argc, char* argv[]){
     std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
 
     // Offset line mappings by the size of the symbol table
-    LineMapping::offsetLineMapping(toc_final_out.size() + Globals::base_memory_offset);
+    int total_offset = toc_final_out.size() + Globals::base_memory_offset;
+    Logging::logInfoMessage("Offsetting final output by " + std::to_string(total_offset));
+    LineMapping::offsetLineMapping(total_offset);
+
+    Logging::logInfoMessage("Offsetting Symbol Table by " + std::to_string(Globals::base_memory_offset));
+    SymbolTableController::offsetST(Globals::base_memory_offset);
 
     // Add main program body to symbol table
     toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
