@@ -22,7 +22,7 @@ template <class T> class Value : public RDParseTreeNode {
                 st_entry = SymbolTableController::addTemp(std::to_string(arg), ST_ENTRY_TYPE::FLOAT_T);
             }
         }
-        TOC_RETURN_VALUE generateThreeOPCode() {
+        TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) {
             return {{}, st_entry};   
         }
         virtual ~Value() {}
