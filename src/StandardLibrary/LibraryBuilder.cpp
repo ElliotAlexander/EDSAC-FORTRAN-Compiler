@@ -17,16 +17,19 @@ namespace Libs {
 	void enableRoutine(std::string name){
 		std::map<std::string, Library*>::iterator it = library_mappings.begin();
 		for(; it != library_mappings.end(); ++it){
-			if(it->second->getName() == name){
-				it->second->setEnabled();
+			if(!((*it).second->getName() == name)){
+				(*it).second->setEnabled();
 				Logging::logInfoMessage("Enabled library " + name);
 				return;
 			}
 		}
+
+		Logging::logErrorMessage("Failed to enable routine " + name);
 	}
 
 
 	LibraryReturnContainer buildLibraries() {
+		Logging::logInfoMessage("Building bundled libraries.");
 		std::vector<std::string> output_string;
 		int output_offset;
 		std::map<std::string, Library*>::iterator it = library_mappings.begin();
