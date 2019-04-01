@@ -72,6 +72,12 @@ int main(int argc, char* argv[]){
         Logging::logConditionalMessage(Globals::dump_tokens, "\n --- End Tokenization --- \n\n");
     }        
 
+    Libs::enableRoutine("P6");
+    LibraryReturnContainer libs = Libs::buildLibraries();
+
+
+
+
     NoRepeatedAccClear noaccclear;
     toc_program_body = noaccclear.processProgram(toc_program_body);
 
@@ -79,7 +85,7 @@ int main(int argc, char* argv[]){
     std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
 
     // Offset line mappings by the size of the symbol table
-    int total_offset = toc_final_out.size() + Globals::base_memory_offset;
+    int total_offset = toc_final_out.size() + Globals::base_memory_offset + libs.offset;
     Logging::logInfoMessage("Offsetting final output by " + std::to_string(total_offset));
     LineMapping::offsetLineMapping(total_offset);
 
@@ -90,7 +96,7 @@ int main(int argc, char* argv[]){
     toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
 
     // generate edsac output
-    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out);
+    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out, libs.output);
 
     // Command line output
     ::printTOCOutput(toc_final_out);
