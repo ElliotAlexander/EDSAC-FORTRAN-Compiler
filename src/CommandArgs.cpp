@@ -18,6 +18,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))
         ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))
         ("b,baseoffset","Base memory offset for bootloader. This is 32 by default.", cxxopts::value<int>(), "N")
+        ("i,initialorders","Specify 1 or 2 for initial orders.", cxxopts::value<int>(), "N")
         ("o,output","EDSAC Output file", cxxopts::value<std::string>(Globals::output_file))
         ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));
     auto result = options.parse(argc, argv);
@@ -32,6 +33,14 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     if(result.count("baseoffset")){
         Globals::base_memory_offset = result["baseoffset"].as<int>();
         Logging::logMessage("+base memory offset = " + std::to_string(Globals::base_memory_offset));
+    }
+
+    if(result.count("initialorders")){
+        int orders = result["baseoffset"].as<int>();
+        if(orders == 2){
+            Logging::logMessage("+initial orders 2");
+            Globals::use_initial_orders_2 = true;
+        }
     }
 
     // Handle Boolean Arguments.
