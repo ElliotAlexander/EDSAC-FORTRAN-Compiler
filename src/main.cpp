@@ -52,8 +52,12 @@ int main(int argc, char* argv[]){
                 IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();
                 // If successfully identified.
                 if(identify_result.result){
+                    // Initialise the token object
                     if(identify_result.token->initaliseToken(s->getStatementBody())){
+                        // generatae three op code object
                         std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(toc_program_body.size());
+
+                        // add to the program body
                         toc_program_body.insert(toc_program_body.end(), statement_three_op_code.begin(), statement_three_op_code.end());
                     } else {
                         Logging::logErrorMessage("Failed to initialise token.");
@@ -79,6 +83,8 @@ int main(int argc, char* argv[]){
 
     // Add main program body to symbol table
     toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
+
+    // generate edsac output
     std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out);
 
     // Command line output
