@@ -22,5 +22,6 @@
 #include "Optimization/NoRepeatedAccClear.h"
 #include "FileOutput.h"
 #include "EDSAC.h"
+#include "StandardLibrary/LibraryBuilder.h"
 
 #endif
