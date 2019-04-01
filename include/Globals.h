@@ -26,4 +26,9 @@ namespace Globals {
 	extern std::string BUFFER_FLUSH_NAME;
 }
 
+
+namespace OutputFlags {
+    extern bool use_p6;
+}
+
 #endif

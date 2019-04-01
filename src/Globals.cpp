@@ -20,3 +20,7 @@ namespace Globals {
     int base_memory_offset = 32;
 	std::string BUFFER_FLUSH_NAME = "BUFFER_FLUSH";
 }
+
+namespace OutputFlags {
+    bool use_p6 = false;
+}

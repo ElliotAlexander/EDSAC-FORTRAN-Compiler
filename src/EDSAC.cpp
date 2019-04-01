@@ -8,7 +8,7 @@ namespace EDSAC {
             THREE_OP_CODE_OPERATIONS op = (*it)->getOperation();
             std::string build_string;
             build_string.append(convertOperationEnumToString(op));
-            build_string.append((*it)->getAddress());
+            build_string.append((*it)->getAddress().empty() ? "0" : (*it)->getAddress());
             std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
             build_string.append(long_string);
             output.push_back(build_string);
