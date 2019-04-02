@@ -80,8 +80,16 @@ int main(int argc, char* argv[]){
     NoRepeatedAccClear noaccclear;
     toc_program_body = noaccclear.processProgram(toc_program_body);
 
+
+
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();
+    symbol_table_toc.insert(symbol_table_toc.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, "K")));
+    symbol_table_toc.insert(symbol_table_toc.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, "")));
+    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, "")));
+    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+
 
     // Offset line mappings by the size of the symbol table
     int program_body_offset = symbol_table_toc.size() + Globals::base_memory_offset + libs.offset;

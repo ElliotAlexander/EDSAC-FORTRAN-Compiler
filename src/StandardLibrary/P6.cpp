@@ -4,7 +4,7 @@
 P6::P6(){
 	P6::subroutine_text  = "[P6]\nGKA3FT25@H29@VFT4DA3@TFH30@S6@T1FV4DU4DAFG26@TFTFO5FA4DF4FS4FL4FT4DA1FS3@G9@EFSFO31@E20@J995FJF!F..PZ";
 	P6::is_enabled = false;
-	P6::instruction_length = 56;
+	P6::instruction_length = 32;
 	P6::calling_value = std::shared_ptr<int>(new int(0));
 	P6::name = "P6";
 	Logging::logInfoMessage("Initialised P6 library.");
