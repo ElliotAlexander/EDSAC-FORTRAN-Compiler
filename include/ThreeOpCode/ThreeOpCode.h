@@ -46,6 +46,11 @@ class ThreeOpCode {
         ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
 		ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
 		ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in);
+        ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, std::string custom_final_bit);
+
+        bool containsCustomBit();
+        std::string getCustomBit();
+
         std::string getAddress();
         THREE_OP_CODE_OPERATIONS getOperation();
         std::string printToString();
@@ -57,6 +62,9 @@ class ThreeOpCode {
         std::string ARGUMENT_STR;
         THREE_OP_CODE_OPERATIONS OPERATION;
         bool LONG_ADDRESS;
+
+        bool CUSTOM_FINAL_BIT_SET;
+        std::string CUSTOM_FINAL_BIT;
 };
 
 
