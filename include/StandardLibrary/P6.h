@@ -14,11 +14,14 @@ class P6 : public Library {
 		int getLength();
 		std::string getName();
 		void setEnabled();
+		std::shared_ptr<int> getCallingValue();
+		bool applyOffset(int offset);
 	private:
 		int instruction_length;
 		std::string subroutine_text;
 		bool is_enabled;
 		std::string name;
+		std::shared_ptr<int> calling_value;
 
 };
 #endif
