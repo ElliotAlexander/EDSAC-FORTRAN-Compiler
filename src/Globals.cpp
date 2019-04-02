@@ -3,6 +3,7 @@
 namespace Globals {
 
     std::vector<std::string> file_list;
+    std::vector<std::string> library_list;
     std::string output_file;
     bool output_file_set = false;
     bool allow_all_types = false;

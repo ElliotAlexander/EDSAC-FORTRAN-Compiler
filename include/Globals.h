@@ -8,6 +8,7 @@
 namespace Globals {
 
     extern std::vector<std::string> file_list;
+    extern std::vector<std::string> library_list;
     extern std::string output_file;
     extern bool output_file_set;
     extern bool allow_all_types;
