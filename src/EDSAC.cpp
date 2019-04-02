@@ -9,7 +9,7 @@ namespace EDSAC {
             THREE_OP_CODE_OPERATIONS op = (*it)->getOperation();
             std::string build_string;
             build_string.append(convertOperationEnumToString(op));
-            build_string.append((*it)->getAddress().empty() ? "0" : (*it)->getAddress());
+            build_string.append((*it)->getAddress());
 
             if((*it)->containsCustomBit()){
                 build_string.append((*it)->getCustomBit());
