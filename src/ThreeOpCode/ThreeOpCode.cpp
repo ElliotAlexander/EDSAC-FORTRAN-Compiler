@@ -1,8 +1,19 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 
+ThreeOpCode::ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, std::string custom_final_bit) : 
+    ARGUMENT_STR(arg_in), 
+    OPERATION(op_in), 
+    CUSTOM_FINAL_BIT(custom_final_bit),
+	CUSTOM_FINAL_BIT_SET(true),
+    input_arg_type(ARG_TYPE::ARG_IS_STRING)
+{
+	CUSTOM_FINAL_BIT_SET = true;
+};
+
 ThreeOpCode::ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : 
     ARGUMENT_ST_ENTRY(arg1_in_st_entry), 
-    OPERATION(op_in), LONG_ADDRESS(long_addr_in),
+    OPERATION(op_in), 
+	LONG_ADDRESS(long_addr_in),
 	CUSTOM_FINAL_BIT_SET(false), 
     input_arg_type(ARG_TYPE::ARG_IS_ST_ENTRY) 
 {};
@@ -10,7 +21,8 @@ ThreeOpCode::ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CO
 
 ThreeOpCode::ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : 
     ARGUMENT_LINE_MAPPING(arg1_in_line_mapping), 
-    OPERATION(op_in), LONG_ADDRESS(long_addr_in), 
+    OPERATION(op_in), 
+	LONG_ADDRESS(long_addr_in), 
 	CUSTOM_FINAL_BIT_SET(false),
     input_arg_type(ARG_TYPE::ARG_IS_LINE_MAPPING) 
 {};
@@ -23,14 +35,7 @@ ThreeOpCode::ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, boo
     input_arg_type(ARG_TYPE::ARG_IS_STRING) 
 {};
 
-ThreeOpCode::ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, std::string custom_final_bit) : 
-    ARGUMENT_STR(arg_in), 
-    OPERATION(op_in), 
-    CUSTOM_FINAL_BIT(custom_final_bit),
-	CUSTOM_FINAL_BIT_SET(true),
-    input_arg_type(ARG_TYPE::ARG_IS_STRING),
-	LONG_ADDRESS(false)
-{};
+
 
 
 
