@@ -11,7 +11,7 @@ namespace EDSAC {
             build_string.append(convertOperationEnumToString(op));
             build_string.append((*it)->getAddress());
 
-            if((*it)->containsCustomBit()){
+            if((*it)->containsCustomBit() == true){
                 build_string.append((*it)->getCustomBit());
             } else {
                 std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
