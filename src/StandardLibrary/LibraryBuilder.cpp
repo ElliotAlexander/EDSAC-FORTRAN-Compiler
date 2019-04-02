@@ -10,8 +10,6 @@ namespace Libs {
 
 		// P6
 		map.insert(std::map<std::string, Library*>::value_type("P6", new P6()));
-
-		Logging::logInfoMessage("Initalised map.");
 		return map;
 	}
 
@@ -32,6 +30,12 @@ namespace Libs {
 			Logging::logInfoMessage("Enabled library " + name);
 		} else {
 			Logging::logWarnMessage("Failed to find library " + name);
+		}
+	}
+
+	void enableCommandLineActivatedRoutines(){
+		for(std::vector<std::string>::iterator it = Globals::library_list.begin(); it != Globals::library_list.end(); ++it){
+			enableRoutine((*it));
 		}
 	}
 
