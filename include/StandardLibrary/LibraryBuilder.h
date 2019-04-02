@@ -23,6 +23,7 @@ namespace Libs {
 		std::map<std::string, Library*> createMap();
 		void enableRoutine(std::string name);
 		LibraryReturnContainer buildLibraries(int offset);
+		std::shared_ptr<int> getLibraryLineMapping(std::string name);
 }
 
 
