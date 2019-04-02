@@ -86,14 +86,14 @@ int main(int argc, char* argv[]){
 
     toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
     toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
-    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, std::string(" "))));
-    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string(" "))));
-    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, std::string(" "))));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string(" "))));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
 
 
     // Offset line mappings by the size of the symbol table
     int program_body_offset = Globals::base_memory_offset + libs.offset;
-    int symbol_table_offset = program_body_offset + toc_program_body.size();
+    int symbol_table_offset = program_body_offset + toc_program_body.size() - 1;
     
     LineMapping::offsetLineMapping(program_body_offset);
     SymbolTableController::offsetST(symbol_table_offset);
