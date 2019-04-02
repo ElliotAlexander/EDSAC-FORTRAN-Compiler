@@ -73,33 +73,32 @@ int main(int argc, char* argv[]){
     }        
 
     Libs::enableRoutine("P6");
-    LibraryReturnContainer libs = Libs::buildLibraries();
-
-
+    LibraryReturnContainer libs = Libs::buildLibraries(Globals::base_memory_offset);
+    Logging::logInfoMessage("Total library size: " + std::to_string(libs.offset));
 
 
     NoRepeatedAccClear noaccclear;
     toc_program_body = noaccclear.processProgram(toc_program_body);
 
     // Add the symbol table to the start of memory
-    std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
+    std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();
 
     // Offset line mappings by the size of the symbol table
-    int total_offset = toc_final_out.size() + Globals::base_memory_offset + libs.offset;
-    Logging::logInfoMessage("Offsetting final output by " + std::to_string(total_offset));
-    LineMapping::offsetLineMapping(total_offset);
+    int program_body_offset = symbol_table_toc.size() + Globals::base_memory_offset + libs.offset;
+    int symbol_table_offset = Globals::base_memory_offset + libs.offset;
+    
+    Logging::logInfoMessage("Offsetting Program Body output by " + std::to_string(program_body_offset));
+    LineMapping::offsetLineMapping(program_body_offset);
 
-    Logging::logInfoMessage("Offsetting Symbol Table by " + std::to_string(Globals::base_memory_offset));
-    SymbolTableController::offsetST(Globals::base_memory_offset);
+    Logging::logInfoMessage("Offsetting Symbol Table by " + std::to_string(symbol_table_offset));
+    SymbolTableController::offsetST(symbol_table_offset);
 
-    // Add main program body to symbol table
+    std::vector<std::shared_ptr<ThreeOpCode>> toc_final_out = symbol_table_toc;
     toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
-
-    // generate edsac output
     std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out, libs.output);
 
     // Command line output
-    ::printTOCOutput(toc_final_out);
+    ::printTOCOutput(toc_final_out, program_body_offset);
     SymbolTableController::printSymbolTables();
 
     Logging::logMessage("\n\n:: File Outputs :: \n\n");
