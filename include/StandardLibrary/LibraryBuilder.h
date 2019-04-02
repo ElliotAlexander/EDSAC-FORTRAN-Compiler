@@ -3,11 +3,13 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 #include "P6.h"
 #include "Logging.h"
 #include "Library.h"
-#include <vector>
+#include "Globals.h"
+
 
 struct LibraryReturnContainer {
 	std::vector<std::string> output;
@@ -16,14 +18,11 @@ struct LibraryReturnContainer {
 
 namespace Libs {
 
-		extern std::map<std::string, std::shared_ptr<int> > library_line_mappings;
 		extern std::map<std::string, Library*> library_mappings;
 
 		std::map<std::string, Library*> createMap();
 		void enableRoutine(std::string name);
-		LibraryReturnContainer buildLibraries();
-
-	
+		LibraryReturnContainer buildLibraries(int offset);
 }
 
 

@@ -2,6 +2,7 @@
 #define _LIBRARY_H_INCLUDED_
 
 #include <string>
+#include <memory>
 
 class Library {
 	public:
@@ -10,6 +11,8 @@ class Library {
 		virtual bool getEnabled() = 0;
 		virtual void setEnabled() = 0;
 		virtual int getLength() = 0;
+		virtual std::shared_ptr<int> getCallingValue() = 0;
+		virtual bool applyOffset(int offset) = 0;
 };
 
 #endif
