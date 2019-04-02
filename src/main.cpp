@@ -72,7 +72,8 @@ int main(int argc, char* argv[]){
         Logging::logConditionalMessage(Globals::dump_tokens, "\n --- End Tokenization --- \n\n");
     }        
 
-    Libs::enableRoutine("P6");
+	Logging::logMessage("\n:: Standard Library Initialisations :: \n\n");
+    Libs::enableCommandLineActivatedRoutines();
     LibraryReturnContainer libs = Libs::buildLibraries(Globals::base_memory_offset);
     Logging::logInfoMessage("Total library size: " + std::to_string(libs.offset));
 
@@ -80,29 +81,25 @@ int main(int argc, char* argv[]){
     NoRepeatedAccClear noaccclear;
     toc_program_body = noaccclear.processProgram(toc_program_body);
 
-
-
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();
-    symbol_table_toc.insert(symbol_table_toc.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, "K")));
-    symbol_table_toc.insert(symbol_table_toc.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
-    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, "")));
-    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, "")));
+
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
+    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, std::string(" "))));
+    toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string(" "))));
     toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
 
 
     // Offset line mappings by the size of the symbol table
-    int program_body_offset = symbol_table_toc.size() + Globals::base_memory_offset + libs.offset;
-    int symbol_table_offset = Globals::base_memory_offset + libs.offset;
+    int program_body_offset = Globals::base_memory_offset + libs.offset;
+    int symbol_table_offset = program_body_offset + toc_program_body.size();
     
-    Logging::logInfoMessage("Offsetting Program Body output by " + std::to_string(program_body_offset));
     LineMapping::offsetLineMapping(program_body_offset);
-
-    Logging::logInfoMessage("Offsetting Symbol Table by " + std::to_string(symbol_table_offset));
     SymbolTableController::offsetST(symbol_table_offset);
 
-    std::vector<std::shared_ptr<ThreeOpCode>> toc_final_out = symbol_table_toc;
-    toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
+    std::vector<std::shared_ptr<ThreeOpCode>> toc_final_out = toc_program_body;
+    toc_final_out.insert(toc_final_out.end(), symbol_table_toc.begin(), symbol_table_toc.end());
     std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out, libs.output);
 
     // Command line output

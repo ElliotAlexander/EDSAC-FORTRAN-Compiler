@@ -170,6 +170,7 @@ namespace SymbolTableController{
 
     bool offsetST(int memory_offset) {
         Logging::logMessage(":: Symbol Table Transformations :: \n\n");
+        Logging::logConditionalMessage(Globals::output_symbol_table_operations, "\n Offsetting symbol table by " + std::to_string(memory_offset) + ".\n");
         Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n--- Beginning Symbol Table Transformations --- \n");
         for(int i = 0; i < 4; i++){
             memory_offset += symbol_tables[i]->applyOffset(memory_offset);

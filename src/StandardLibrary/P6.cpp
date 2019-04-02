@@ -39,6 +39,5 @@ std::shared_ptr<int> P6::getCallingValue(){
 bool P6::applyOffset(int offset) {
 	int new_val = *calling_value + offset;
 	*calling_value = new_val;
-	Logging::logMessage("Offset P6 call value to " + std::to_string(*calling_value));
 	return true;
 }
