@@ -8,7 +8,7 @@ SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {
 				false,
 				rolling_memory_addr,
 				std::string("0")
-		};
+            };
 		SymbolTable::st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(Globals::BUFFER_FLUSH_NAME, std::make_shared<ST_ENTRY>(entry)));
         SymbolTable::rolling_memory_addr += 1;
 	}
@@ -62,7 +62,13 @@ ST_QUERY_RESULT SymbolTable::get(std::string name){
         Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Loaded " + name + " from " + symbolTableNameToString(ST_TYPE));
         return {true, it->second};
     } else {
-        return {false, nullptr };
+        std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it2 = SymbolTable::linked_st_map.find(name);
+        if(it2 != SymbolTable::linked_st_map.end()){
+            Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Loaded Linked Variable" + name + " from " + symbolTableNameToString(ST_TYPE));
+            return {true, it2->second};
+        } else {
+            return {false, nullptr };
+        }
     }
 }
 
@@ -71,6 +77,14 @@ void SymbolTable::printSymbolTable(){
     for ( it = st_map.begin(); it != st_map.end(); it++ ){
         Logging::logMessage(std::string("[" + std::to_string(it->second->base_memory_address) + "] " + it->first + ":" + it->second->value));
     }
+
+
+    // TODO
+    std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it2;
+    for ( it2 = linked_st_map.begin(); it2 != linked_st_map.end(); it2++ ){
+        Logging::logMessage(std::string("[" + std::to_string(it2->second->base_memory_address) + "] " + it2->first + ":" + it2->second->value));
+    }
+
     Logging::logNewLine();
 }
 
@@ -92,7 +106,7 @@ bool SymbolTable::addLinkedVariable(std::shared_ptr<ST_ENTRY> linked_var, std::s
         it->second = linked_var;
         return false;
     } else {
-        st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(name, linked_var));
+        linked_st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(name, linked_var));
         Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Adding linked variable " + name);
         return true;
     }
