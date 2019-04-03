@@ -47,11 +47,11 @@ void print_footer(){
     Logging::logMessage("\n\n==== End of runtime  ====\n");; 
 }
 
-void printTOCOutput(std::vector<std::shared_ptr<ThreeOpCode> > three_op_code_arr){
+void printTOCOutput(std::vector<std::shared_ptr<ThreeOpCode> > three_op_code_arr, int total_offset){
     if(Globals::dump_three_op_code){
         Logging::logMessage("\n\n:: Three Op Code Output :: \n\n");
         for(int index = 0; index < three_op_code_arr.size(); index++){
-            Logging::logMessage(std::string("[" + std::to_string(index + Globals::base_memory_offset) + "] " + three_op_code_arr.at(index)->printToString()));
+            Logging::logMessage(std::string("[" + std::to_string(index + total_offset) + "] " + three_op_code_arr.at(index)->printToString()));
         }
         Logging::logMessage("\n --- end Three Op Code output --- \n");
     }

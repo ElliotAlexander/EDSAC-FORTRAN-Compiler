@@ -33,7 +33,7 @@ namespace FileOutput {
         Logging::logInfoMessage("Writing EDSAC output to " + file_name);
         for(std::vector<std::string>::iterator it = input.begin(); it != input.end(); ++it){
             // no newline for edsac codes
-            output_file << (*it);
+            output_file << (*it) << std::endl;
         }
         output_file.close();
         Logging::logInfoMessage("Finished writing " + file_name);

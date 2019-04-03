@@ -52,6 +52,7 @@ class SymbolTable {
     private:
         std::vector<int> freed_vars;
         std::map<std::string, std::shared_ptr<ST_ENTRY> > st_map;
+        std::map<std::string, std::shared_ptr<ST_ENTRY> > linked_st_map;
 };
 
 #endif

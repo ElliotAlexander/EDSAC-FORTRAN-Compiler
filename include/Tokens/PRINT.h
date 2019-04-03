@@ -9,6 +9,7 @@
 #include "RDParseTreeNode.h"
 #include "Logging.h"
 #include "ProgramStructure/LineMapping.h"
+#include "StandardLibrary/LibraryBuilder.h"
 
 #include <string>
 #include <vector>

@@ -8,6 +8,7 @@
 namespace Globals {
 
     extern std::vector<std::string> file_list;
+    extern std::vector<std::string> library_list;
     extern std::string output_file;
     extern bool output_file_set;
     extern bool allow_all_types;
@@ -24,6 +25,11 @@ namespace Globals {
     extern bool use_initial_orders_2;
     extern int base_memory_offset;
 	extern std::string BUFFER_FLUSH_NAME;
+}
+
+
+namespace OutputFlags {
+    extern bool use_p6;
 }
 
 #endif

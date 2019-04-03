@@ -1,7 +1,3 @@
-      SUBROUTINE HELLOWORLD()
-      ASSIGN X TO 5
-      RETURN
-      SUBROUTINE SQRT(X)
-      ASSIGN X TO 10
-      RETURN
+      X = 50 + 10
+      PRINT X
       END

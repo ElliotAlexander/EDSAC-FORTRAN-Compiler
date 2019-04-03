@@ -1,3 +1,2 @@
-      ASSIGN X TO 5
-      PRINT 5
+      PRINT 100
       END

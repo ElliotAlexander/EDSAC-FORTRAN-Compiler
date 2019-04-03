@@ -2,15 +2,21 @@
 
 namespace EDSAC {
 
-    std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input) {
+    std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries) {
         std::vector<std::string> output;
+        output.insert(output.begin(), libraries.begin(), libraries.end());
         for(std::vector<std::shared_ptr<ThreeOpCode> >::iterator it = input.begin(); it != input.end(); ++it){
             THREE_OP_CODE_OPERATIONS op = (*it)->getOperation();
             std::string build_string;
             build_string.append(convertOperationEnumToString(op));
             build_string.append((*it)->getAddress());
-            std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
-            build_string.append(long_string);
+
+            if((*it)->containsCustomBit() == true){
+                build_string.append((*it)->getCustomBit());
+            } else {
+                std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
+                build_string.append(long_string);
+            }
             output.push_back(build_string);
         }
         return output;

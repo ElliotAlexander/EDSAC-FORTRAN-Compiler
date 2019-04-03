@@ -72,28 +72,38 @@ int main(int argc, char* argv[]){
         Logging::logConditionalMessage(Globals::dump_tokens, "\n --- End Tokenization --- \n\n");
     }        
 
+	Logging::logMessage("\n:: Standard Library Initialisations :: \n\n");
+    Libs::enableCommandLineActivatedRoutines();
+    LibraryReturnContainer libs = Libs::buildLibraries(Globals::base_memory_offset);
+    Logging::logInfoMessage("Total library size: " + std::to_string(libs.offset));
+
+
     NoRepeatedAccClear noaccclear;
     toc_program_body = noaccclear.processProgram(toc_program_body);
 
     // Add the symbol table to the start of memory
-    std::vector<std::shared_ptr<ThreeOpCode> > toc_final_out = SymbolTableController::outputSymbolTable();
+    std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();
+
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, std::string(" "))));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string(" "))));
+    symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+
 
     // Offset line mappings by the size of the symbol table
-    int total_offset = toc_final_out.size() + Globals::base_memory_offset;
-    Logging::logInfoMessage("Offsetting final output by " + std::to_string(total_offset));
-    LineMapping::offsetLineMapping(total_offset);
+    int program_body_offset = Globals::base_memory_offset + libs.offset;
+    int symbol_table_offset = program_body_offset + toc_program_body.size() - 1;
+    
+    LineMapping::offsetLineMapping(program_body_offset);
+    SymbolTableController::offsetST(symbol_table_offset);
 
-    Logging::logInfoMessage("Offsetting Symbol Table by " + std::to_string(Globals::base_memory_offset));
-    SymbolTableController::offsetST(Globals::base_memory_offset);
-
-    // Add main program body to symbol table
-    toc_final_out.insert(toc_final_out.end(), toc_program_body.begin(), toc_program_body.end());
-
-    // generate edsac output
-    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out);
+    std::vector<std::shared_ptr<ThreeOpCode>> toc_final_out = toc_program_body;
+    toc_final_out.insert(toc_final_out.end(), symbol_table_toc.begin(), symbol_table_toc.end());
+    std::vector<std::string> edsac_out = EDSAC::generateEDSAC(toc_final_out, libs.output);
 
     // Command line output
-    ::printTOCOutput(toc_final_out);
+    ::printTOCOutput(toc_final_out, program_body_offset);
     SymbolTableController::printSymbolTables();
 
     Logging::logMessage("\n\n:: File Outputs :: \n\n");

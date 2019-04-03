@@ -1,11 +1,11 @@
 #include "CommandArgs.h"
 CommandArgs::CommandArgs(int argc, char* argv[]){
 
-
     // Configure Options
     cxxopts::Options options("./executable", "FORTRAN II Compiler built for the EDSAC Machine.");
     options.add_options()
         ("f,file", "Input File name", cxxopts::value<std::vector<std::string>>(Globals::file_list))
+        ("e,library", "Add Standard Library", cxxopts::value<std::vector<std::string>>(Globals::library_list))
         ("x,allextensions", "Allow all file extensions", cxxopts::value<bool>()->default_value("false"))
         ("l,linemappings", "Output line mappings once they are loaded.", cxxopts::value<bool>()->default_value("false"))
         ("d,dumpfiles","Dump file contents as they're loaded. This is useful for logging build operations.", cxxopts::value<bool>()->default_value("false"))
@@ -36,7 +36,6 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     }
 
     if(result.count("initialorders")){
-        Logging::logInfoMessage("Loaded initial orders");
         int orders = result["initialorders"].as<int>();
         if(orders == 2){
             Logging::logMessage("+initial orders 2");
@@ -106,6 +105,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
 
     // Handle positional file arguments.
     options.parse_positional({"f,file"});
+    options.parse_positional({"e,library"});
     options.parse_positional({"o,output"});
 
     for(int i =0; i < result.count("file"); i++){
