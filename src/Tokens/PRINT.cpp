@@ -25,6 +25,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_addres
 
 	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
 
+	pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
