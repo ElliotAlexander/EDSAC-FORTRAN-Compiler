@@ -39,26 +39,10 @@ bool ASSIGN::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_address){
-    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
-
-    // Generate a temporary address for the value we'll be placing in $1
-    TOC_RETURN_VALUE res = ASSIGN::assignment_value->generateThreeOPCode(starting_address);
-    // Add this to our TOC.
-    pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
-
-	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
-	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
-
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-
-    // Add our temporary value to the accumulator.
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(res.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-    // Copy our temporary value to our new address.
-    std::shared_ptr<ST_ENTRY> add_result = SymbolTableController::addDeclaredVariable(ASSIGN::variable_name, std::to_string(res.call_value->base_memory_address), ST_ENTRY_TYPE::FLOAT_T);
-
-    // Add to TOC.
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(add_result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-
-    return pre_string;
+	std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+	TOC_RETURN_VALUE toc_res = assignment_value->generateThreeOPCode(starting_address);
+	pre_string.insert(pre_string.begin(), toc_res.pre_string.begin(), toc_res.pre_string.end());
+	SymbolTableController::addLinkedVariable(toc_res.call_value, ASSIGN::variable_name);
+	return pre_string;
 }
