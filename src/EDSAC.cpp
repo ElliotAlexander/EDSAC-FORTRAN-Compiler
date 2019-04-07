@@ -9,14 +9,25 @@ namespace EDSAC {
             THREE_OP_CODE_OPERATIONS op = (*it)->getOperation();
             std::string build_string;
             build_string.append(convertOperationEnumToString(op));
-            build_string.append((*it)->getAddress());
 
-            if((*it)->containsCustomBit() == true){
-                build_string.append((*it)->getCustomBit());
-            } else {
-                std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
-                build_string.append(long_string);
-            }
+
+			std::string address = (*it)->getAddress();
+			if (op == THREE_OP_CODE_OPERATIONS::DATA_SET && 
+				!address.empty()) {
+				build_string.append(convert_int_to_edsac_op(std::stoi(address)));
+			}
+			else {
+				build_string.append(address);
+				if ((*it)->containsCustomBit() == true) {
+					build_string.append((*it)->getCustomBit());
+				}
+				else {
+					std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
+					build_string.append(long_string);
+				}
+			}
+
+
             output.push_back(build_string);
         }
         return output;
@@ -68,4 +79,17 @@ namespace EDSAC {
                 return {};
         }
     }
+
+
+	std::string convert_int_to_edsac_op(int x){
+		if (x == 0) {
+			return std::string("0F");
+		} else if (x == 1) {
+			return std::string("D");
+		} else if (x % 2 == 0) {
+			return std::string(std::to_string(x / 2) + "F");
+		} else {
+			return std::string(std::to_string((x - 1)  / 2) + "D");
+		}
+	}
 }
