@@ -35,7 +35,7 @@ class IF : public Token {
         std::string TO_MATCH = "IF(\\(" + RegexConstants::ANY_ARG + "\\)|ACCUMULATOROVERFLOW|QUOTIENTOVERFLOW|DIVIDECHECK|(\\(SENSELIGHT[0-9]+\\))|(\\(SENSESWITCH[0-9]+\\)))" + RegexConstants::INTEGER + "," + RegexConstants::INTEGER + "((," + RegexConstants::INTEGER + ")?)+";
         bool parseRightHandSideArguments(std::string right_hand_side_string);
         bool parseConditionalArgument(std::string conditional_argument_string);
-        std::vector<int> instruction_values;
+		int instruction_values[3];
         std::unique_ptr<RDParseTreeNode> conditional_variable;
 };
 
