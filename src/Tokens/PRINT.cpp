@@ -1,6 +1,7 @@
 #include "Tokens/PRINT.h"
 
 bool PRINT::initaliseToken(std::string input){
+	Logging::logMessage("Initialised with " + input);
 	if(input.substr(0,5) == "PRINT"){
 		input = input.erase(0,5);
 		PRINT::print_val = ::parseADString(input);
@@ -23,12 +24,13 @@ std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_addres
 
 	std::shared_ptr<int> P6_mapping = Libs::getLibraryLineMapping("P6");
 
-	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
+	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 4);
 
 	pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
+	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(P6_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(P6_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
 	return pre_string;
 }
