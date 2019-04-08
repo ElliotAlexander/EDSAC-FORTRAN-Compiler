@@ -47,12 +47,13 @@ int main(int argc, char* argv[]){
             for(int statement_index = 0; statement_index < stmts.size(); statement_index++){
                 // Build a statement object
                 Statement* s = stmts.at(statement_index);
-                LineMapping::addLineMapping(s->getStatementLabel(), toc_program_body.size());
+                LineMapping::addLineMapping(s->getStatementLabel(), toc_program_body.size() + 1);
                 // Identify (tokenize) the statement.
                 IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();
                 // If successfully identified.
                 if(identify_result.result){
                     // Initialise the token object
+					Logging::logInfoMessage("Statement body : " + s->getStatementBody());
                     if(identify_result.token->initaliseToken(s->getStatementBody())){
                         // generatae three op code object
                         std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(toc_program_body.size());

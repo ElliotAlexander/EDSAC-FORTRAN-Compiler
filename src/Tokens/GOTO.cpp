@@ -26,17 +26,14 @@ std::vector<std::shared_ptr<ThreeOpCode>> GOTO::generatetoc(int starting_address
 
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
 
-    if(GOTO::goto_arg_list.empty()){
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-        
-        
         
         // Make sure the accumulator is positive
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
 
         // There's an edge case here if the index is zero
         // TODO be aware of this
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-    }
+		pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+    
     return pre_string;
 }

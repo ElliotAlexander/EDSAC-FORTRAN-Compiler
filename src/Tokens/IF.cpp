@@ -48,7 +48,7 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
         } else {
             int index = instruction_values_arr.size();
             for(int i = 0; i < index; i++){
-                instruction_values.push_back(std::stoi(instruction_values_arr.at(i)));
+				instruction_values[i] = std::stoi(instruction_values_arr.at(i));
                 Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded instruction [" + std::to_string(i) + "]:" + instruction_values_arr.at(i));
             }
             return true;
@@ -61,8 +61,7 @@ bool IF::parseRightHandSideArguments(std::string rhs_input_string){
     }
 }
 
-std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
-{
+std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address) {
     std::vector<std::shared_ptr<ThreeOpCode>> pre_string;
 
     // Get a reference to buffer flush
@@ -74,19 +73,19 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address)
     pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
     std::vector<std::shared_ptr<int>> arguments_computed;
 
-    for (std::vector<int>::iterator it = instruction_values.begin(); it != instruction_values.end(); ++it)
-    {
-        LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping((*it));
-        Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to find line mapping for " + std::to_string((*it)));
+	for (int i = 0; i < 3; i++) {
+        LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping(instruction_values[i]);
+        Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to find line mapping for " + std::to_string(instruction_values[i]));
         arguments_computed.push_back(mapping.value);
     }
+
+	std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
 
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(0), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(2), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-    std::shared_ptr<ST_ENTRY> temp_integer = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_integer, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(1), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
     return pre_string;
 }

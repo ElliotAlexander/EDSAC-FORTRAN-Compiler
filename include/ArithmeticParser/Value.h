@@ -7,6 +7,7 @@
 #include "RDParseTreeNode.h"
 #include <math.h>
 #include "SymbolTable/STController.h"
+#include "Logging.h"
 #include <memory>
 
 template <class T> class Value : public RDParseTreeNode {

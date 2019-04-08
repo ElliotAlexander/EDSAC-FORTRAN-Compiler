@@ -353,16 +353,21 @@
     <ClCompile Include="src\arithmeticparser\Variable.cpp" />
     <ClCompile Include="src\ArithmeticRDParser.cpp" />
     <ClCompile Include="src\CommandArgs.cpp" />
+    <ClCompile Include="src\EDSAC.cpp" />
     <ClCompile Include="src\FileContainer.cpp" />
+    <ClCompile Include="src\FileOutput.cpp" />
     <ClCompile Include="src\FileVerification.cpp" />
     <ClCompile Include="src\Globals.cpp" />
     <ClCompile Include="src\lex.flex.cc" />
     <ClCompile Include="src\Logging.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Optimisation\NoRepeatedAccClear.cpp" />
     <ClCompile Include="src\parse.tab.cc" />
     <ClCompile Include="src\programstructure\FunctionMapping.cpp" />
     <ClCompile Include="src\ProgramStructure\LineMapping.cpp" />
     <ClCompile Include="src\Segment.cpp" />
+    <ClCompile Include="src\StandardLibrary\LibraryBuilder.cpp" />
+    <ClCompile Include="src\StandardLibrary\P6.cpp" />
     <ClCompile Include="src\Statement.cpp" />
     <ClCompile Include="src\symboltable\STController.cpp" />
     <ClCompile Include="src\symboltable\SymbolTable.cpp" />
@@ -372,8 +377,10 @@
     <ClCompile Include="src\Token.cpp" />
     <ClCompile Include="src\tokens\ARITH_FUNCTION.cpp" />
     <ClCompile Include="src\tokens\ASSIGN.cpp" />
+    <ClCompile Include="src\Tokens\ASSIGNED_GOTO.cpp" />
     <ClCompile Include="src\tokens\CALL.cpp" />
     <ClCompile Include="src\tokens\COMMON.cpp" />
+    <ClCompile Include="src\Tokens\COMPUTED_GOTO.cpp" />
     <ClCompile Include="src\tokens\DIMENSION.cpp" />
     <ClCompile Include="src\tokens\DO.cpp" />
     <ClCompile Include="src\tokens\END.cpp" />
@@ -383,6 +390,7 @@
     <ClCompile Include="src\tokens\GOTO.cpp" />
     <ClCompile Include="src\tokens\IF.cpp" />
     <ClCompile Include="src\tokens\PAUSE.cpp" />
+    <ClCompile Include="src\Tokens\PRINT.cpp" />
     <ClCompile Include="src\tokens\READ.cpp" />
     <ClCompile Include="src\tokens\RETURN.cpp" />
     <ClCompile Include="src\tokens\REWIND.cpp" />
@@ -400,16 +408,22 @@
     <ClInclude Include="include\CommandArgs.h" />
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\cxxopts.hpp" />
+    <ClInclude Include="include\EDSAC.h" />
     <ClInclude Include="include\FileContainer.h" />
+    <ClInclude Include="include\FileOutput.h" />
     <ClInclude Include="include\FileVerification.h" />
     <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\LabelController.h" />
     <ClInclude Include="include\Logging.h" />
     <ClInclude Include="include\main.h" />
+    <ClInclude Include="include\Optimization\NoRepeatedAccClear.h" />
     <ClInclude Include="include\programstructure\FunctionMapping.h" />
     <ClInclude Include="include\programstructure\LineMapping.h" />
     <ClInclude Include="include\RDParseTreeNode.h" />
     <ClInclude Include="include\Segment.h" />
+    <ClInclude Include="include\StandardLibrary\Library.h" />
+    <ClInclude Include="include\StandardLibrary\LibraryBuilder.h" />
+    <ClInclude Include="include\StandardLibrary\P6.h" />
     <ClInclude Include="include\Statement.h" />
     <ClInclude Include="include\symboltable\STController.h" />
     <ClInclude Include="include\symboltable\SymbolTable.h" />
@@ -419,17 +433,21 @@
     <ClInclude Include="include\Token.h" />
     <ClInclude Include="include\tokens\ARITH_FUNCTION.h" />
     <ClInclude Include="include\tokens\ASSIGN.h" />
+    <ClInclude Include="include\Tokens\ASSIGNED_GOTO.h" />
     <ClInclude Include="include\tokens\CALL.h" />
     <ClInclude Include="include\tokens\COMMON.h" />
+    <ClInclude Include="include\Tokens\COMPUTED_GOTO.h" />
     <ClInclude Include="include\tokens\DIMENSION.h" />
     <ClInclude Include="include\tokens\DO.h" />
     <ClInclude Include="include\tokens\END.h" />
     <ClInclude Include="include\tokens\EQUIVALENCE.h" />
     <ClInclude Include="include\tokens\FORMAT.h" />
     <ClInclude Include="include\tokens\FUNCTION.h" />
+    <ClInclude Include="include\Tokens\FUNCTION_DEFINITION.h" />
     <ClInclude Include="include\tokens\GOTO.h" />
     <ClInclude Include="include\tokens\IF.h" />
     <ClInclude Include="include\tokens\PAUSE.h" />
+    <ClInclude Include="include\Tokens\PRINT.h" />
     <ClInclude Include="include\tokens\READ.h" />
     <ClInclude Include="include\tokens\RETURN.h" />
     <ClInclude Include="include\tokens\REWIND.h" />
@@ -446,6 +464,9 @@
   </ItemGroup>
   <ItemGroup>
     <Bison Include="src\parse.y" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\parse.output" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
