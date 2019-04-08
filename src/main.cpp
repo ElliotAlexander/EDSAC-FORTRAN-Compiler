@@ -28,6 +28,9 @@ int main(int argc, char* argv[]){
 
     Logging::logConditionalMessage(Globals::dump_parsed_values, "\n:: Beginning preliminary parsing of files ::\n");
 
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
+
     // Mutate files
     for(std::vector<FileContainer>::size_type i = 0; i != input_files.size(); i++){ 
         // Prepare data structures.
@@ -47,7 +50,7 @@ int main(int argc, char* argv[]){
             for(int statement_index = 0; statement_index < stmts.size(); statement_index++){
                 // Build a statement object
                 Statement* s = stmts.at(statement_index);
-                LineMapping::addLineMapping(s->getStatementLabel(), toc_program_body.size() + 1);
+                LineMapping::addLineMapping(s->getStatementLabel(), toc_program_body.size() - 1);
                 // Identify (tokenize) the statement.
                 IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();
                 // If successfully identified.
@@ -56,7 +59,7 @@ int main(int argc, char* argv[]){
 					Logging::logInfoMessage("Statement body : " + s->getStatementBody());
                     if(identify_result.token->initaliseToken(s->getStatementBody())){
                         // generatae three op code object
-                        std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(toc_program_body.size());
+                        std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(toc_program_body.size() + 1);
 
                         // add to the program body
                         toc_program_body.insert(toc_program_body.end(), statement_three_op_code.begin(), statement_three_op_code.end());
@@ -85,8 +88,6 @@ int main(int argc, char* argv[]){
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();
 
-    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
-    toc_program_body.insert(toc_program_body.begin(), std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
     symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, std::string(" "))));
     symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string(" "))));
     symbol_table_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
