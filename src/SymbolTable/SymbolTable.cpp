@@ -57,7 +57,6 @@ std::shared_ptr<ST_ENTRY> SymbolTable::add(std::string name, std::string value, 
 
 ST_QUERY_RESULT SymbolTable::get(std::string name){
     std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it = SymbolTable::st_map.find(name);
-    std::shared_ptr<ST_ENTRY> ptr;
     if(it != SymbolTable::st_map.end()) {
         Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Loaded " + name + " from " + symbolTableNameToString(ST_TYPE));
         return {true, it->second};
@@ -107,7 +106,7 @@ bool SymbolTable::addLinkedVariable(std::shared_ptr<ST_ENTRY> linked_var, std::s
         return false;
     } else {
         linked_st_map.insert(std::map<std::string, std::shared_ptr<ST_ENTRY> >::value_type(name, linked_var));
-        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Adding linked variable " + name);
+        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Adding linked variable " + name + " to address + " + std::to_string(linked_var->base_memory_address));
         return true;
     }
 
