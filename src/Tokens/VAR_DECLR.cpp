@@ -22,8 +22,15 @@ std::vector<std::shared_ptr<ThreeOpCode>> VAR_DECLR::generatetoc(int starting_ad
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     TOC_RETURN_VALUE toc_res = VAR_DECLR::right_hand_side_parsed->generateThreeOPCode(starting_address);
     pre_string.insert(pre_string.begin(), toc_res.pre_string.begin(), toc_res.pre_string.end());
+
 	ALL_ST_SEARCH_RESULT result = SymbolTableController::getVariable(VAR_DECLR::variable_name);
+    ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
+    Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
 	if (result.found) {
+        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Remapping variable " + VAR_DECLR::variable_name);
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_res.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
 		pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(result.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 	}
 	else
