@@ -22,6 +22,13 @@ std::vector<std::shared_ptr<ThreeOpCode>> VAR_DECLR::generatetoc(int starting_ad
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     TOC_RETURN_VALUE toc_res = VAR_DECLR::right_hand_side_parsed->generateThreeOPCode(starting_address);
     pre_string.insert(pre_string.begin(), toc_res.pre_string.begin(), toc_res.pre_string.end());
-    SymbolTableController::addLinkedVariable(toc_res.call_value, VAR_DECLR::variable_name);
+	ALL_ST_SEARCH_RESULT result = SymbolTableController::getVariable(VAR_DECLR::variable_name);
+	if (result.found) {
+		pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(result.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+	}
+	else
+	{
+		SymbolTableController::addLinkedVariable(toc_res.call_value, VAR_DECLR::variable_name);
+	}
     return pre_string;
 } 
