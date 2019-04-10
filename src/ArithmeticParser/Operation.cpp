@@ -7,24 +7,21 @@ Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS ope
 {
     Operation::st_entry = SymbolTableController::addTemp("", ST_ENTRY_TYPE::FLOAT_T);
     tt = TOC_TYPES::OPERATION_E;
-	Logging::logMessage("Initialised op with " + arg1_in->st_entry->value);
-	Logging::logMessage("Initialised op with " + arg2_in->st_entry->value);
-	Logging::logMessage("initialised with op type " + toOPType(op));
 };
 
 std::string Operation::toOPType(OPS e)
 {
     switch (e)
     {
-    case SUBTRACT:
+    case SUBTRACT_OPERATION:
         return "-";
-    case ADD:
+    case ADD_OPERATION:
         return "+";
-    case MULTIPLY:
+    case MULTIPLY_OPERATION:
         return "*";
-    case DIVIDE:
+    case DIVIDE_OPERATION:
         return "/";
-    case EXPONENT:
+    case EXPONENT_OPERATION:
         return "^";
     default:
         return "[Operation Error!]";
@@ -45,27 +42,64 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
     switch (Operation::op) {
-        case SUBTRACT:
+        case SUBTRACT_OPERATION:
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             break;
-        case ADD:
+        case ADD_OPERATION:
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             break;
-        case MULTIPLY:
+        case MULTIPLY_OPERATION:
         // TODO clear Multiplier?
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::COPY_TO_MULTIPLIER, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::MULTIPLY_AND_ADD, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             break;
-        default:
-            std::cout << "Error - operation not implemented" << std::endl;
+        case EXPONENT_OPERATION:
+            {
+                std::shared_ptr<int> line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 5);
+                std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
+                std::shared_ptr<ST_ENTRY> temp_int_two = SymbolTableController::addTemp("2", ST_ENTRY_TYPE::INT_T);
+                std::shared_ptr<ST_ENTRY> temp_int_rolling = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
+
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_two, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+
+
+
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::COPY_TO_MULTIPLIER, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::MULTIPLY_AND_ADD, false)));
+
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
+
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+
+                break;
+            }
+        default: 
+            Logging::logErrorMessage("Operation not implemented");
     }
 
     Logging::logInfoMessage("Incrementing starting address by " + std::to_string(pre_string.size()));
