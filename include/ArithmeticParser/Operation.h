@@ -8,14 +8,15 @@
 #include "RDParseTreeNode.h"
 #include "Constants.h"
 #include "SymbolTable/STController.h"
+#include "ProgramStructure/LineMapping.h"
 #include <memory>
 
 enum OPS {
-    SUBTRACT,
-    ADD,
-    MULTIPLY,
-    DIVIDE,
-    EXPONENT
+    SUBTRACT_OPERATION,
+    ADD_OPERATION,
+    MULTIPLY_OPERATION,
+    DIVIDE_OPERATION,
+    EXPONENT_OPERATION
 };
 
 class Operation : public RDParseTreeNode{

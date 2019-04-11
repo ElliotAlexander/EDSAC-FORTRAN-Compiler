@@ -65,18 +65,20 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
             break;
         case EXPONENT_OPERATION:
             {
-                std::shared_ptr<int> line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 5);
+                std::shared_ptr<int> loop_start_line_mapping = LineMapping::addTemporaryLineMapping(starting_address - 2);
+                std::shared_ptr<int> loop_end_line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 14);
                 std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
                 std::shared_ptr<ST_ENTRY> temp_int_two = SymbolTableController::addTemp("2", ST_ENTRY_TYPE::INT_T);
                 std::shared_ptr<ST_ENTRY> temp_int_rolling = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
 
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_two, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
 
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_end_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
 
-
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
@@ -87,12 +89,8 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("64", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_LEFT, false)));
 
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+                pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_start_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_rolling, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
                 pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 
