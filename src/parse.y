@@ -44,7 +44,7 @@
 %token <u.fval> FLOAT
 %token <u.vval> VARIABLE
 
-%token ENDL PLUS MINUS MUL DIV LPAREN RPAREN COMMA
+%token ENDL PLUS MINUS MUL DIV LPAREN RPAREN COMMA EXPONENT
 
 
 %type <u.toc_T> top_level_expression
@@ -56,6 +56,7 @@
 
 %left PLUS MINUS
 %left MUL DIV
+%right EXPONENT
 
 %start start
 %%
@@ -73,22 +74,27 @@ expression:
     expression PLUS expression { 
         RDParseTreeNode *a1 = $1;
         RDParseTreeNode *a2 = $3;
-        $$ = new Operation(a1, a2, OPS::ADD);
+        $$ = new Operation(a1, a2, OPS::ADD_OPERATION);
     }
     |expression MINUS expression { 
         RDParseTreeNode *a1 = $1;
         RDParseTreeNode *a2 = $3;
-        $$ = new Operation(a1, a2, OPS::SUBTRACT);  
+        $$ = new Operation(a1, a2, OPS::SUBTRACT_OPERATION);  
     }
     |expression MUL expression {
         RDParseTreeNode *a1 = $1;
         RDParseTreeNode *a2 = $3;
-        $$ = new Operation(a1, a2, OPS::MULTIPLY);
+        $$ = new Operation(a1, a2, OPS::MULTIPLY_OPERATION);
     }
     |expression DIV expression { 
         RDParseTreeNode *a1 = $1;
         RDParseTreeNode *a2 = $3;
-        $$ = new Operation(a1, a2, OPS::DIVIDE);
+        $$ = new Operation(a1, a2, OPS::DIVIDE_OPERATION);
+    }
+    | expression EXPONENT expression {
+        RDParseTreeNode *a1 = $1;
+        RDParseTreeNode *a2 = $3;
+        $$ = new Operation(a1, a2, OPS::EXPONENT_OPERATION);
     }
     | VARIABLE LPAREN arguments RPAREN {
         char* function_name  = $1;

@@ -26,6 +26,7 @@
 \-                { return MINUS; }
 \*                { return MUL; }
 \/                { return DIV; }
+\^                { return EXPONENT; }
 \(                { return LPAREN; }
 \)                { return RPAREN; }
 \,                { return COMMA; }

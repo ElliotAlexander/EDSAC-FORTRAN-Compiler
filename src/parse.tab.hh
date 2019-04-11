@@ -77,7 +77,8 @@ extern int yydebug;
     DIV = 265,
     LPAREN = 266,
     RPAREN = 267,
-    COMMA = 268
+    COMMA = 268,
+    EXPONENT = 269
   };
 #endif
 
