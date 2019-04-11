@@ -84,8 +84,8 @@ std::vector<std::shared_ptr<ThreeOpCode>> IF::generatetoc(int starting_address) 
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(0), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(1), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(2), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments_computed.at(1), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
     return pre_string;
 }
