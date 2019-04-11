@@ -1,0 +1,1 @@
+./out/edsac.out --file working_examples/goto_loops/input.f -l -t -p -s -y -m  -d -b 56 -o working_examples/goto_loops/output.edsac  -c -i 2 -e P6
