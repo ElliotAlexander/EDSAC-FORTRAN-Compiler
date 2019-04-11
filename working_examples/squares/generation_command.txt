@@ -1,0 +1,1 @@
+./out/edsac.out --file working_examples/squares/input.f -l -t -p -s -y -m  -d -b 56 -o working_examples/squares/output.edsac  -c -i 2 -e P6
