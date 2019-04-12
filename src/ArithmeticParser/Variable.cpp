@@ -9,15 +9,11 @@ Variable::Variable(std::string name_in)
 	char symbols[] = { '+', '/', '-', '*' };
 	int symbols_size = sizeof(name_in) / sizeof(char);
 
-	Logging::logMessage("Started with " + name_in);
-
 	for (int j = 0; j < symbols_size; j++)
 		std::replace(name_in.begin(), name_in.end(), symbols[j], ' ');
 
 
 	name_in = ::stripWhitespaceString(name_in);
-
-	Logging::logMessage("Changed name to " + name_in);
 	
 	tt = TOC_TYPES::VARIABLE_E;
     name = name_in;
