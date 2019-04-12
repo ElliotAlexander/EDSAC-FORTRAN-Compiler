@@ -6,7 +6,7 @@ Variable::Variable(std::string name_in)
 	// This is a hotfix for some weird behaviour on MSVC + flex + bison 
 	// When pulling variable names, the next cahracter (the op) is included
 	// Op still processes fine
-	char symbols[] = { '+', '/', '-', '*' };
+	char symbols[] = { '+', '/', '-', '*', '^' };
 	int symbols_size = sizeof(name_in) / sizeof(char);
 
 	for (int j = 0; j < symbols_size; j++)
