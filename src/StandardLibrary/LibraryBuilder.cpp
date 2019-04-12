@@ -10,6 +10,7 @@ namespace Libs {
 
 		// P6
 		map.insert(std::map<std::string, Library*>::value_type("P6", new P6()));
+		map.insert(std::map<std::string, Library*>::value_type("M20", new M20()));
 		return map;
 	}
 

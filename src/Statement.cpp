@@ -29,6 +29,7 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
     ASSIGNED_GOTO* assigned_goto = new ASSIGNED_GOTO();
     COMPUTED_GOTO* computed_goto = new COMPUTED_GOTO();
     PRINT* print_stmt = new PRINT();
+    READ* read_stmt = new READ();
 
 
     // TODO - There msut be a better way to do this. 
@@ -51,7 +52,8 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
         function_stmt,
         assigned_goto,
         computed_goto,
-        print_stmt
+        print_stmt,
+        read_stmt
     };
     bool found = false;
 

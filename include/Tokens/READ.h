@@ -6,6 +6,9 @@
 #include "Utils.h"
 #include "Constants.h"
 #include "ThreeOpCode/ThreeOpCode.h"
+#include "ProgramStructure/LineMapping.h"
+#include "StandardLibrary/LibraryBuilder.h"
+
 #include <boost/algorithm/string.hpp>
 #include <vector>
 #include <string>
@@ -19,6 +22,7 @@ class READ : public Token {
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
+        std::string variable_name;
         std::string TO_MATCH = "READ" + RegexConstants::VARIABLE_NAME;
 };
 

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "P6.h"
+#include "M20.h"
 #include "Logging.h"
 #include "Library.h"
 #include "Globals.h"
