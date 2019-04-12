@@ -26,7 +26,7 @@ class PRINT : public Token {
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
-        std::string TO_MATCH = "PRINT" + RegexConstants::ANY_ARG;
+        std::string TO_MATCH = "PRINT" + RegexConstants::ANY_ARG_LIST;
 		std::unique_ptr<RDParseTreeNode> print_val;
 };
 
