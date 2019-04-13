@@ -24,7 +24,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_addres
 
 	std::shared_ptr<int> P6_mapping = Libs::getLibraryLineMapping("P6");
 
-	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address);
+	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 1);
 
 	pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
 
