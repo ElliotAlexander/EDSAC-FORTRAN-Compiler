@@ -19,7 +19,7 @@ namespace DoLoopMapping {
 
 	struct DO_LOOP_RETURN_VALUE {
 		bool result;
-		std::shared_ptr<int> value;
+		std::vector<std::shared_ptr<ThreeOpCode> > values;
 	};
 
 
