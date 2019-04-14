@@ -63,8 +63,7 @@ int main(int argc, char* argv[]){
 
                         // add to the program body
                         toc_program_body.insert(toc_program_body.end(), statement_three_op_code.begin(), statement_three_op_code.end());
-
-                        DoLoopMapping::DO_LOOP_RETURN_VALUE ret = DoLoopMapping::retrieveDoLoopMapping(s->getStatementLabel(), toc_program_body.size());
+                        DoLoopMapping::DO_LOOP_RETURN_VALUE ret = DoLoopMapping::retrieveDoLoopMapping(s->getStatementLabel(), toc_program_body.size() + 1);
                         if(ret.result){
                             toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
                             toc_program_body.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(ret.value, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
