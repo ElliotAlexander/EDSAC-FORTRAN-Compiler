@@ -39,7 +39,7 @@ bool DO::parseLeftHandSide(std::string lhs_input_string){
 
         // Load Control Variables to the left of the equals sign.
         DO::line_label_loop_end = char_matches[1]; 
-        DO::main_loop_var_toc = ::parseADString(char_matches[3]);
+        DO::main_loop_var_toc = char_matches[3];
 
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Control Loop Variable: " + char_matches[1]);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Main Loop Variable: " +  char_matches[3]);
@@ -85,19 +85,28 @@ std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address - 2);
+    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address + 1);
     int loop_counter = DO::loop_end_value - loop_start_value + 1;
 
 
-    std::shared_ptr<ST_ENTRY> loop_counter_entry = SymbolTableController::addTemp(std::to_string(loop_counter), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> loop_counter_entry = SymbolTableController::addDeclaredVariable(DO::main_loop_var_toc, std::to_string(loop_counter), ST_ENTRY_TYPE::UNASSIGNED_T);
     std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> loop_counter_entry_working = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
+
+
 
     std::shared_ptr<int> loop_end_address = DoLoopMapping::addDoLoopMapping(std::stoi(DO::line_label_loop_end), loop_top_mapping);
 
+    // Pre loop
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+
+
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_end_address, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
     return pre_string;
 

@@ -40,9 +40,8 @@ class DO : public Token {
             + ")?";
         bool parseLeftHandSide(std::string lhs_input_string);
         bool parseRightHandSide(std::string rhs_input_string);
-        std::string line_label_loop_end;
+        std::string line_label_loop_end, main_loop_var_toc;
         int loop_start_value, loop_end_value, loop_iteration_amount = 1;
-        std::unique_ptr<RDParseTreeNode> main_loop_var_toc;
 };
 
 
