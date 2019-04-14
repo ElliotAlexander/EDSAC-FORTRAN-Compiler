@@ -10,6 +10,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > NoRepeatedAccClear::processProgram(st
                 for (int erase_index = index + 1; erase_index < input.size() - 1; ++erase_index) {
                     input[erase_index] = input[erase_index + 1]; 
                 }
+                input.pop_back();
         }
     }
     return input;
