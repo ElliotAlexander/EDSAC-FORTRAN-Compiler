@@ -38,8 +38,9 @@ bool DO::parseLeftHandSide(std::string lhs_input_string){
         }
 
         // Load Control Variables to the left of the equals sign.
-        DO::control_loop_var_toc = ::parseADString(char_matches[1]); 
+        DO::line_label_loop_end = char_matches[1]; 
         DO::main_loop_var_toc = ::parseADString(char_matches[3]);
+
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Control Loop Variable: " + char_matches[1]);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Main Loop Variable: " +  char_matches[3]);
         return true;
@@ -57,11 +58,19 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
     boost::split(control_vars_right, rhs_input_string, boost::is_any_of(","));
     // Iterate through: x,x,x, and so on.
     if(control_vars_right.size() > 0){
-        for(int i = 0; i < control_vars_right.size(); i++){
-            DO::control_vars_right_toc.push_back(::parseADString(control_vars_right.at(i)));
-            Logging::logConditionalInfoMessage(Globals::dump_parsed_values,"Loaded instruction value { " + control_vars_right.at(i) + " }");
+        if(control_vars_right.size() < 2 || control_vars_right.size() > 3){
+            Logging::logErrorMessage("Failed to load control vars. ");
+            // TODO
+        } else if(control_vars_right.size() == 2){
+            DO::loop_start_value = std::stoi(control_vars_right[0]);
+            DO::loop_end_value = std::stoi(control_vars_right[1]);
+            DO::loop_iteration_amount = (control_vars_right.size() > 2) ? std::stoi(control_vars_right[2]) : 1;
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded control loop variables:");
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "DO Loop start: " + std::to_string(DO::loop_start_value));
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "DO Loop end: " + std::to_string(DO::loop_end_value));
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "DO Loop iteration amount: " + std::to_string(DO::loop_iteration_amount));
+            return true;
         }
-        return true;
     } else {
         Logging::logErrorMessage("Syntax Error - Failed to load control variables. {" + rhs_input_string + "}");
         return false;
@@ -69,5 +78,25 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
-    return {};
+    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+
+    ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
+	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
+    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address);
+    int loop_counter = DO::loop_start_value - 2;
+
+
+    std::shared_ptr<ST_ENTRY> loop_counter_entry = SymbolTableController::addTemp(std::to_string(loop_counter), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::UNASSIGNED_T);
+
+    std::shared_ptr<int> loop_end_address = DoLoopMapping::addDoLoopMapping(std::stoi(DO::line_label_loop_end), loop_top_mapping);
+
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+    return pre_string;
+
 }

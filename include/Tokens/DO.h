@@ -9,6 +9,9 @@
 #include "RDParseTreeNode.h"
 #include "Logging.h"
 #include "ThreeOpCode/ThreeOpCode.h"
+#include "ProgramStructure/LineMapping.h"
+#include "ProgramStructure/DoLoopMapping.h"
+
 #include <stdlib.h>
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
@@ -25,8 +28,6 @@ class DO : public Token {
         std::string getRegex(){return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
-        std::unique_ptr<RDParseTreeNode> control_loop_var_toc, main_loop_var_toc;
-        std::vector<std::unique_ptr<RDParseTreeNode>> control_vars_right_toc;
     private:
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::ANY_ARG
@@ -39,6 +40,9 @@ class DO : public Token {
             + ")?";
         bool parseLeftHandSide(std::string lhs_input_string);
         bool parseRightHandSide(std::string rhs_input_string);
+        std::string line_label_loop_end;
+        int loop_start_value, loop_end_value, loop_iteration_amount = 1;
+        std::unique_ptr<RDParseTreeNode> main_loop_var_toc;
 };
 
 
