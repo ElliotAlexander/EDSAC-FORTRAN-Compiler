@@ -3,6 +3,7 @@
 
 #include "Logging.h"
 #include "Utils.h"
+#include "ProgramStructure/LineMapping.h"
 
 #include <vector>
 #include <string>

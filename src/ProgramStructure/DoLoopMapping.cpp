@@ -5,17 +5,16 @@ namespace DoLoopMapping {
 
 
 	std::shared_ptr<int> addDoLoopMapping(int line_label, std::shared_ptr<int> line_mapping) {
-		std::shared_ptr<int> exit_mapping = std::shared_ptr<int>(new int(-1));
 		DO_LOOP_ENTRY x{
 			line_label,
 			line_mapping,
-			exit_mapping
+			LineMapping::addTemporaryLineMapping(0)
 		};
 
 		Logging::logInfoMessage("Adding DO loop mapping for " + std::to_string(line_label));
 		Logging::logInfoMessage("Adding temporary line reference for loop end at " + std::to_string(line_label));
 		do_mappings.push_back(x);
-		return exit_mapping;
+		return x.exit_line_mapping;
 	}
 
 
@@ -28,8 +27,11 @@ namespace DoLoopMapping {
 				return { false, nullptr };
 			}
 			for (std::vector<DO_LOOP_ENTRY>::iterator it = do_mappings.begin(); it != do_mappings.end(); ++it) {
+
+				// A temporary reference is required in order to maintain the correct offset.
 				if ((*it).line_label == std::stoi(line_label)) {
-					(*it).exit_line_mapping = std::make_shared<int>(end_line_mapping);
+					int new_val = *it->exit_line_mapping + end_line_mapping;
+					*it->exit_line_mapping = new_val;
 					return { true, (*it).return_line_mapping };
 				}
 			}
