@@ -23,5 +23,6 @@
 #include "FileOutput.h"
 #include "EDSAC.h"
 #include "StandardLibrary/LibraryBuilder.h"
+#include "ProgramStructure/DoLoopMapping.h"
 
 #endif
