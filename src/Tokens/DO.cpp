@@ -92,7 +92,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
     std::shared_ptr<ST_ENTRY> user_visible_loop_counter = SymbolTableController::addDeclaredVariable(DO::main_loop_var_toc , std::to_string(loop_start_value - 1), ST_ENTRY_TYPE::UNASSIGNED_T);
     
     std::shared_ptr<ST_ENTRY> loop_counter_backup = SymbolTableController::addTemp(std::to_string(loop_start_value - 1), ST_ENTRY_TYPE::UNASSIGNED_T);
-    std::shared_ptr<ST_ENTRY> loop_counter_end_check_backup = SymbolTableController::addTemp(std::to_string(DO::loop_end_value - DO::loop_start_value + 2), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> loop_counter_end_check_backup = SymbolTableController::addTemp(std::to_string(DO::loop_end_value + 1), ST_ENTRY_TYPE::UNASSIGNED_T);
 
 
     std::shared_ptr<int> loop_end_address = DoLoopMapping::addDoLoopMapping(std::stoi(DO::line_label_loop_end), loop_top_mapping);
