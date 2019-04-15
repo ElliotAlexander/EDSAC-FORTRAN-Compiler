@@ -8,10 +8,15 @@
 
 #include "ThreeOpCode/ThreeOpCode.h"
 
+struct NoRepeatedAccClearReturn {
+    int skipped_lines;
+    std::vector<std::shared_ptr<ThreeOpCode> > toc;
+};
+
 class NoRepeatedAccClear {
     public:
         NoRepeatedAccClear();
-        std::vector<std::shared_ptr<ThreeOpCode> > processProgram(std::vector<std::shared_ptr<ThreeOpCode> > input);
+        NoRepeatedAccClearReturn processProgram(std::vector<std::shared_ptr<ThreeOpCode> > input);
 };
 
 #endif

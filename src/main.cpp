@@ -84,8 +84,9 @@ int main(int argc, char* argv[]){
     Logging::logInfoMessage("Total library size: " + std::to_string(libs.offset));
 
 
-    NoRepeatedAccClear noaccclear;
-    toc_program_body = noaccclear.processProgram(toc_program_body);
+    //NoRepeatedAccClear noaccclear;
+    //NoRepeatedAccClearReturn ret = noaccclear.processProgram(toc_program_body);
+    //toc_program_body = ret.toc;
 
     // Add the symbol table to the start of memory
     std::vector<std::shared_ptr<ThreeOpCode> > symbol_table_toc = SymbolTableController::outputSymbolTable();

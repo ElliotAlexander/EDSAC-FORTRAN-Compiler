@@ -85,29 +85,34 @@ std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address + 1);
-    int loop_counter = DO::loop_end_value - loop_start_value + 1;
+    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
 
-
-    std::shared_ptr<ST_ENTRY> loop_counter_entry = SymbolTableController::addDeclaredVariable(DO::main_loop_var_toc, std::to_string(loop_counter), ST_ENTRY_TYPE::UNASSIGNED_T);
-    std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::UNASSIGNED_T);
-    std::shared_ptr<ST_ENTRY> loop_counter_entry_working = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
-
+    std::shared_ptr<ST_ENTRY> loop_counter_end_check = SymbolTableController::addTemp(std::to_string(DO::loop_end_value - DO::loop_start_value + 2), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> loop_iteration_variable = SymbolTableController::addTemp(std::to_string(loop_iteration_amount), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> user_visible_loop_counter = SymbolTableController::addDeclaredVariable(DO::main_loop_var_toc , std::to_string(loop_start_value - 1), ST_ENTRY_TYPE::UNASSIGNED_T);
+    
+    std::shared_ptr<ST_ENTRY> loop_counter_backup = SymbolTableController::addTemp(std::to_string(loop_start_value - 1), ST_ENTRY_TYPE::UNASSIGNED_T);
+    std::shared_ptr<ST_ENTRY> loop_counter_end_check_backup = SymbolTableController::addTemp(std::to_string(DO::loop_end_value - DO::loop_start_value + 2), ST_ENTRY_TYPE::UNASSIGNED_T);
 
 
     std::shared_ptr<int> loop_end_address = DoLoopMapping::addDoLoopMapping(std::stoi(DO::line_label_loop_end), loop_top_mapping);
 
-    // Pre loop
+    // Pre Loop
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_backup, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(user_visible_loop_counter, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_end_check_backup, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_end_check, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 
-
+    // Enter Loop
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int_one, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_entry_working, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_end_address, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(user_visible_loop_counter, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_iteration_variable, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(user_visible_loop_counter, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_counter_end_check, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(loop_end_address, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+
     return pre_string;
 
 }
