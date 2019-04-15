@@ -4,6 +4,12 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <map>
+#include <set>
+#include <algorithm>
+#include <functional>
+
+
 #include "Logging.h"
 #include "Globals.h"
 #include "SymbolTable/SymbolTableUtils.h"

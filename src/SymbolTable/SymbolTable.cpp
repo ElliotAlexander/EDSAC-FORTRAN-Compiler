@@ -90,9 +90,22 @@ void SymbolTable::printSymbolTable(){
 
 std::vector<std::shared_ptr<ThreeOpCode> > SymbolTable::buildSymbolTableOutput(){
     std::vector<std::shared_ptr<ThreeOpCode> > output_str;
-    std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
-    for ( it = st_map.begin(); it != st_map.end(); it++ ){
-        output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(it->second->value, THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+    if(SymbolTable::ST_TYPE == SYMBOL_TABLE_TYPE::TEMP_VAR){
+        typedef std::function<bool(std::pair<std::string, std::shared_ptr<ST_ENTRY> >, std::pair<std::string, std::shared_ptr<ST_ENTRY> >)> Comparator;
+        Comparator compFunctor = [](std::pair<std::string, std::shared_ptr<ST_ENTRY> > elem1 ,std::pair<std::string, std::shared_ptr<ST_ENTRY> > elem2)
+        {
+            return std::stoi(elem1.first) < std::stoi(elem2.first);
+        };
+
+        std::set<std::pair<std::string, std::shared_ptr<ST_ENTRY> >, Comparator> sorted_symbol_table(st_map.begin(), st_map.end(), compFunctor);
+        for (std::pair<std::string, std::shared_ptr<ST_ENTRY> > element : sorted_symbol_table) {
+            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::string(element.second->value), THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+        }
+    } else {
+        std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
+        for ( it = st_map.begin(); it != st_map.end(); it++ ){
+            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::string(it->second->value), THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+        }
     }
     return output_str;
 }
@@ -115,14 +128,33 @@ bool SymbolTable::addLinkedVariable(std::shared_ptr<ST_ENTRY> linked_var, std::s
 
 int SymbolTable::applyOffset(int memory_offset){
     Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, "Applying memory offset of " + std::to_string(memory_offset) + " to Symbol Table " + ::symbolTableNameToString(SymbolTable::ST_TYPE));
-    std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
-    int offset_amount = 0;
-    for ( it = st_map.begin(); it != st_map.end(); it++ ){
-        Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Applying memory offset of " + std::to_string(memory_offset) + ": " + std::to_string(it->second->base_memory_address) + " -> " + std::to_string(it->second->base_memory_address + memory_offset)));
-        it->second->base_memory_address += memory_offset;
-        offset_amount++;
+
+    if(SymbolTable::ST_TYPE == SYMBOL_TABLE_TYPE::TEMP_VAR){
+        typedef std::function<bool(std::pair<std::string, std::shared_ptr<ST_ENTRY> >, std::pair<std::string, std::shared_ptr<ST_ENTRY> >)> Comparator;
+        Comparator compFunctor = [](std::pair<std::string, std::shared_ptr<ST_ENTRY> > elem1 ,std::pair<std::string, std::shared_ptr<ST_ENTRY> > elem2)
+        {
+            return std::stoi(elem1.first) < std::stoi(elem2.first);
+        };
+
+        std::set<std::pair<std::string, std::shared_ptr<ST_ENTRY> >, Comparator> sorted_symbol_table(st_map.begin(), st_map.end(), compFunctor);
+
+        int offset_amount = 0;
+        for (std::pair<std::string, std::shared_ptr<ST_ENTRY> > element : sorted_symbol_table) {
+            Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Applying memory offset of " + std::to_string(memory_offset) + ": " + std::to_string(element.second->base_memory_address) + " -> " + std::to_string(element.second->base_memory_address + memory_offset)));
+            element.second->base_memory_address += memory_offset;
+            offset_amount++;
+        }
+        return offset_amount;
+    } else {
+        std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
+        int offset_amount = 0;
+        for ( it = st_map.begin(); it != st_map.end(); it++ ){
+            Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Applying memory offset of " + std::to_string(memory_offset) + ": " + std::to_string(it->second->base_memory_address) + " -> " + std::to_string(it->second->base_memory_address + memory_offset)));
+            it->second->base_memory_address += memory_offset;
+            offset_amount++;
+        }
+        return offset_amount;
     }
-    return offset_amount;
 }
 
 

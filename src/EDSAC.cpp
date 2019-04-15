@@ -24,10 +24,9 @@ namespace EDSAC {
 				}
 				else {
 					std::string long_string = Globals::use_initial_orders_2 ? ((*it)->getLongAddress() ? "D" : "F") : ((*it)->getLongAddress() ? "L" : "S");
-					build_string.append(long_string);
+                    build_string.append(long_string);
 				}
 			}
-
 
             output.push_back(build_string);
         }
