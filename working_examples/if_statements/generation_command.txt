@@ -1,1 +1,0 @@
-./out/edsac.out --file working_examples/if_statements/input.f -l -t -p -s -y -m  -d -b 56 -o working_examples/if_statements/output.edsac  -c -i 2 -e P6
