@@ -18,7 +18,7 @@ class FileVerification {
     private:
         bool verify_exists(std::string str);
         bool verify_accessible(std::string str);
-        void verify_extension(std::string str);
+        bool verify_extension(std::string str);
         bool verify_regular_file(std::string str);
 };
 #endif
