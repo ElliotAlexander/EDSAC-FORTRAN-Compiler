@@ -25,4 +25,13 @@
 #include "StandardLibrary/LibraryBuilder.h"
 #include "ProgramStructure/DoLoopMapping.h"
 
+
+#define PROGRAM_ERROR_EXIT_VALUE -1
+#define PROGRAM_LINE_MAPPING_RAW_OFFSET 1
+#define PROGRAM_START_THREE_OP_CODE std::vector<std::shared_ptr<ThreeOpCode> >{ \
+	std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)), \
+	std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))) \
+}
+
+
 #endif
