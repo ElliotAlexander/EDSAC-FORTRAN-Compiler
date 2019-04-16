@@ -64,7 +64,7 @@ FILE_VERIFICATION_SUCCESS_FLAG FileVerification::verify_exists(std::string file_
 // This function takes an input file name, and verifies that it's extension is compatiable.
 // Note that this check can be disabled via Globals::allow_all_types.
 // Note that this function is not blocking - only a warning is generated if an invalid file eextension is found.
-void FileVerification::verify_extension(std::string file_input){
+bool FileVerification::verify_extension(std::string file_input){
     size_t i = file_input.rfind('.', file_input.length());                  // Jump to the last instance of a dot in the file name. 
     if ((i != std::string::npos) && (!(Globals::allow_all_types))) {        // If the file has an extension after the dot, and this check is enabled    
         std::string x = file_input.substr(i+1, file_input.length() - i);    // Build up a string of the file extension, not including the dot. 
@@ -76,6 +76,7 @@ void FileVerification::verify_extension(std::string file_input){
         }
         Logging::logWarnMessage(" File " + file_input + " has an unrecognised extension [" + x + "]. Use -x to disable these warnings.");
     }
+    return false;
 }
 
 
