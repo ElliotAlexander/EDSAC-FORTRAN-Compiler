@@ -5,6 +5,9 @@
 #include "Globals.h"
 #include "Logging.h"
 
+
+#define INITIAL_ORDERS_2 2
+
 class CommandArgs {
     public:
         CommandArgs(int argc, char* argv[]);
