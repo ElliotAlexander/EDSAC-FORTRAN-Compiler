@@ -24,7 +24,6 @@ class Statement {
         std::string getStatementBody();
         std::string getStatementLabel();
     private:
-        Token* tokentype;
         std::string statement_body;
         std::string statement_body_no_ws;
         std::string label;

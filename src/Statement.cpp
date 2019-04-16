@@ -1,6 +1,23 @@
 #include "Statement.h"
 
 
+/**
+ * 
+ *   Class Statement:
+ *   
+ *   Member Variables:
+ *           std::string statement_body -> The body of the statement encapsulated within this class
+ *           std::string statement_body_no_ws -> The body of the statement with whitespace removed. This is essential for matching the REGEX strings.
+ *           std::string label -> The label (characters 0->5) of the statement encapsulated within this class. Note that the label is broken down from the body.
+ *           int line_no -> The line number for this statement in the input file. 
+ * 
+ * 
+ *   This class encapsulates a single statement inside the program. It also provides the infastructure for identifying the type of statement, and passing
+ *   the result to the relevant token.
+ * 
+ **/
+
+
 // Statement::Statement(std::string statement_body, std::string label, int line_no)
 //
 // @param std::string statement_body -> The complete statement, with whitespace, without a label or continuation bit.
@@ -129,10 +146,17 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 }
 
 
+
+// std::string Statement::getStatementBody()
+//
+// @return std::String statement_body -> The statement body for the line encapsulated within this class.
 std::string Statement::getStatementBody(){
     return Statement::statement_body_no_ws;
 }
 
+//std::string Statement::getStatementLabel()
+//
+// @return std::String label -> The statement body for the line encapsulated within this class.
 std::string Statement::getStatementLabel(){
     return Statement::label;
 }
