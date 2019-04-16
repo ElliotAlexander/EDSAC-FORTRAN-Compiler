@@ -22,7 +22,6 @@ class Segment {
         Segment(SEGMENT_TYPE input_seg_type, int start_line, int end_line, std::vector<std::string> input_statement_body);
         std::vector<Statement*> buildStatements();
         SEGMENT_TYPE getSegmentType();
-        int getLineLabel();
         void dumpSegment();
     private:
         SEGMENT_TYPE seg_type;
