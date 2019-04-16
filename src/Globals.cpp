@@ -1,5 +1,7 @@
 #include "Globals.h"
 
+
+// Globals represents a list of global flags and options, the majority of which are configured from CommandArgs
 namespace Globals {
 
     std::vector<std::string> file_list;
@@ -22,6 +24,8 @@ namespace Globals {
 	std::string BUFFER_FLUSH_NAME = "BUFFER_FLUSH";
 }
 
+
+// Output flags allows users to enable or disable libraries as they desire.
 namespace OutputFlags {
     bool use_p6 = false;
 }

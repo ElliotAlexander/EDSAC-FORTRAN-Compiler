@@ -11,12 +11,13 @@
 #include <io.h>
 #endif
 
+// This class forms the tokenizer of the arithmetic parser referenced in ArithmeticRDParser.cpp
 
 %}
 %option noyywrap
 %%
 [ \t\n]           ; // consume line by line TODO
-[0-9]+\.[0-9]+    { yylval.u.fval = atof(yytext); return FLOAT; }
+[0-9]+\.[0-9]+    { yylval.u.fval = atof(yytext); return FLOAT; }   
 [0-9]+            { yylval.u.ival = atoi(yytext); return INT; }
 [A-Z]([A-Z0-9]+)? {
     yylval.u.vval = yytext;
