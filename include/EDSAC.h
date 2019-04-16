@@ -35,9 +35,9 @@ namespace EDSAC
     #define EDSAC_DATA_ORDER_INSTRUCTION "P"
 
 
-    std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries);
     std::string convertOperationEnumToString(THREE_OP_CODE_OPERATIONS op);
 	std::string convert_int_to_edsac_op(int x);
+    std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries);
 } // EDSAC
 
 #endif
