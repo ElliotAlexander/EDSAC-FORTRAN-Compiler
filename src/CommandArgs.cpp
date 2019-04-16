@@ -34,7 +34,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("c,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))                                                      // Dump three op code output once compilation has finished.
         ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))                                   // Dump funciton mappings to the command line as they are loaded.
         ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))                                                           // Output a full set of regex used for identifying tokens.
-        ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"));               // Largely irrelevant - mostly used for debugging and development. once the compiler finds a valid token, it assumes its correctness with this flag enabled.
+        ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"))              // Largely irrelevant - mostly used for debugging and development. once the compiler finds a valid token, it assumes its correctness with this flag enabled.
         
         // Integer options
 
