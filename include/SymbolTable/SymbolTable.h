@@ -16,7 +16,7 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 
 enum SYMBOL_TABLE_TYPE {
-    COMMON = 0,
+    COMMON_VAR = 0,
     TEMP_VAR = 1,
     DECLARED_VAR = 2,
     UNDECLARED_VAR = 3
