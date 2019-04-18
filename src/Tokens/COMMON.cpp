@@ -11,13 +11,13 @@ bool COMMON::initaliseToken(std::string input){
         COMMON::common_block_name = input.substr(first_slash, first_slash - last_slash);            // Format is: COMMON/<name>/  We've removed the common, so /<name>/ is what we want.
         Logging::logConditionalInfoMessage(!common_block_name.empty() && Globals::dump_parsed_values, "Loaded named COMMON block " + COMMON::common_block_name);           // If named
         Logging::logConditionalInfoMessage(common_block_name.empty() && Globals::dump_parsed_values, "Loaded default COMMON block. (unnamed) ");                            // If an unnamed common block
-        input.erase(0, last_slash);         // EVerything useful from this section has been removed.
+        input.erase(0, last_slash + 1);         // EVerything useful from this section has been removed.
 
 
         // Extract variables
 
         boost::split(COMMON::common_variable_names, input, boost::is_any_of(","));
-        if(COMMON::common_variable_names.size() == 0 || COMMON::common_variable_names.size() > 10){     
+        if(COMMON::common_variable_names.size() == 0 || COMMON::common_variable_names.size() > 10){                 // Warn the user if they're trying to add more than 10 COMMON block variables
             Logging::logWarnMessage("Warning - loaded an unusual number of COMMON variables (" + std::to_string(COMMON::common_variable_names.size()) + ").");
         }
 

@@ -14,7 +14,7 @@
 class COMMON : public Token {
     public:
         bool isValid(std::string input);
-        std::string getTokenName(){return "DIMENSION_TOKEN"; };
+        std::string getTokenName(){return "COMMON_TOKEN"; };
         std::string getRegex(){ return TO_MATCH; }
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
