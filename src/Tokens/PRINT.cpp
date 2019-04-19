@@ -1,7 +1,6 @@
 #include "Tokens/PRINT.h"
 
 bool PRINT::initaliseToken(std::string input){
-	Logging::logMessage("Initialised with " + input);
 	if(input.substr(0,5) == "PRINT"){
 		input = input.erase(0,5);
 		PRINT::print_val = ::parseADString(input);
