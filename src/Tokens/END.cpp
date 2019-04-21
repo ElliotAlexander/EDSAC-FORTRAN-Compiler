@@ -32,8 +32,7 @@ bool END::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> END::generatetoc(int starting_address){
-    //std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
-    //pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
-    //return pre_string;
-    return {};
+    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+    return pre_string;
 }

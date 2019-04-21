@@ -74,8 +74,8 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGNED_GOTO::generatetoc(int startin
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(toc_ret.call_value, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
         
         // check for zero
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 4), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 3), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 6), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 5), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
         // Ensure that the accumulator is positive
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));

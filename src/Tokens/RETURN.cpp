@@ -25,7 +25,8 @@ std::vector<std::shared_ptr<ThreeOpCode>> RETURN::generatetoc(int starting_addre
         pre_string.insert(pre_string.begin(), x.pre_string.begin(), x.pre_string.end());
         ::exitFunction(x.call_value);
     } else {
-        ::exitSubroutine();
+        std::vector<std::shared_ptr<ThreeOpCode> > res = ::exitSubroutine(starting_address);
+        pre_string.insert(pre_string.begin(), res.begin(), res.end());
         Logging::logInfoMessage("Exiting function");
     }
     return pre_string;
