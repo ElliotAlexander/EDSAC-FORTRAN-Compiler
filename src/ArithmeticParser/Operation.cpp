@@ -33,9 +33,7 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
 
 
 
-    Logging::logMessage("Starting address at arg 1: " + std::to_string(starting_address));
     TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);
-    Logging::logMessage("Starting address at arg 2: " + std::to_string(starting_address));
     TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
 
 
@@ -121,7 +119,6 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
             Logging::logErrorMessage("Operation not implemented");
     }
 
-    Logging::logMessage("Incrementing starting address by " + std::to_string(pre_string.size() - argument_offset_size));
     starting_address += pre_string.size() - argument_offset_size;
     
     return {pre_string, st_entry};
