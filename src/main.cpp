@@ -33,7 +33,6 @@ int main(int argc, char* argv[]){
     std::vector<Segment> segment_list;                              // a list of all segments pulled in from files.
 
 
-
     Logging::logMessage("\n\n:: Loading File Inputs :: \n\n");
     for(int i = 0; i < Globals::file_list.size(); i++){                                     // Globals::file_list is generated from Command Line arguments inside CommandArgs.cpp.
         Logging::logMessage(" --- " + Globals::file_list[i] + " --- ");                     // Output a header for each file
@@ -50,13 +49,12 @@ int main(int argc, char* argv[]){
     for(std::vector<FileContainer>::size_type i = 0; i != input_files.size(); i++){     // Mutate files on at a time - files are ingested in alphabetical order.
         input_files[i].expandContinuations();                                           // Expand continuations into a singe statement. Continuations are treated as a single line, with the lines they previously occupied being replaced by comments.
                                                                                         // This allows a reference to the line number to be maintained.
-
         Logging::logConditionalMessage(Globals::dump_data_structures, std::string("\nSegment breakdown for " + Globals::file_list[i] + "\n"));
         Logging::logConditionalMessage(Globals::dump_tokens, "\n\n:: Beginning Tokenization :: \n");    
 
         std::vector<Segment> temp_segs = input_files[i].dissectSegments();   
         segment_list.insert(segment_list.begin(), temp_segs.begin(), temp_segs.end());
-    }                   // Dissect FileCOntainer object into 'segments' - a breakdown of programm structure into Main Program, Functions and Subroutines.
+    }    // Dissect FileCOntainer object into 'segments' - a breakdown of programm structure into Main Program, Functions and Subroutines.
         
 
     // Note that this is very very C++14 dependent 
@@ -65,15 +63,15 @@ int main(int argc, char* argv[]){
                 return arg2.getSegmentType() == SEGMENT_TYPE::PROGRAM ? true : false;    
             });
 
+
     for(int segment_index = 0; segment_index < segment_list.size(); segment_index++){           // Iterate through each segment of the program.
     
         Logging::logConditionalMessage(Globals::dump_tokens, " --- New Segment type=(" + getEnumString(segment_list.at(segment_index).getSegmentType()) + ") ---\n" );
         std::vector<Statement*> stmts = segment_list.at(segment_index).buildStatements();           // Break each segment of the program down into a series of 'Statement' objects.
 
-        if(segment_list.at(segment_index).getSegmentType() == SEGMENT_TYPE::PROGRAM){       
-            Logging::logInfoMessage("Adding start of program");              
-            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false)));
+        if(segment_list.at(segment_index).getSegmentType() == SEGMENT_TYPE::PROGRAM){
             program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
+            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string("F"))));
         }
 
         for(int statement_index = 0; statement_index < stmts.size(); statement_index++){    // Iterate through each statement, from first to last. stmts represents a FILO queue. 
@@ -83,7 +81,7 @@ int main(int argc, char* argv[]){
             if(identify_result.result){                                                     // If the statement is successfully identified - continue. Else output an error message.
                 if(identify_result.token->initaliseToken(s->getStatementBody())){           // Initialise the token object. Each token object's constructor only contains the necessary values to verify whether the incoming statement is of that tokens type.
                                                                                             // initialiseToken(std::string input) takes the body of the statement, and loads it into it's internal representation. 
-                    std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(program_body_toc.size() + PROGRAM_LINE_MAPPING_RAW_OFFSET);       // Once an internal representation is generated, we can generate a standard ThreeOpCode object from that.
+                    std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET);       // Once an internal representation is generated, we can generate a standard ThreeOpCode object from that.
                     program_body_toc.insert(program_body_toc.end(), statement_three_op_code.begin(), statement_three_op_code.end());                                                          // Add this three OP code to the program body.
                     DoLoopMapping::DO_LOOP_RETURN_VALUE ret = DoLoopMapping::retrieveDoLoopMapping(s->getStatementLabel(), program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET);        // Check that the statement is not at the end of a DO Loop.   
                     program_body_toc.insert(program_body_toc.end(), ret.values.begin(), ret.values.end());                                                                                    // Add the statement to the final program body three op code/
