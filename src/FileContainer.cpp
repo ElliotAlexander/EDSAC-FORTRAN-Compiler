@@ -69,8 +69,8 @@ std::vector<Segment> FileContainer::dissectSegments(){
                     for(int x = start_line; x < ( i+1 ); x++){              // For each line in the segment
                         segment_text.push_back(FileContainer::file_text.at(x));            // Add it to a list
                     }
-                    Logging::logMessage("+" + ::getEnumString(current_type) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]");  // output to the user.
-                    segment_arr.push_back(Segment(current_type, start_line, i, segment_text));  // Build a segment with our list of strings, add it to the overarching data structure.
+                    Logging::logMessage("+" + ::getEnumString(SEGMENT_TYPE::PROGRAM) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]");  // output to the user.
+                    segment_arr.push_back(Segment(SEGMENT_TYPE::PROGRAM, start_line, i, segment_text));  // Build a segment with our list of strings, add it to the overarching data structure.
                 } else {
                     Logging::logWarnMessage("END detected outside of Main Program Block[" + std::to_string(i) + "]");           // THis should only catch if the program starts with END.
                 }
