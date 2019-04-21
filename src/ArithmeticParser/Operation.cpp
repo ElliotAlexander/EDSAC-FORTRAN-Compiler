@@ -31,13 +31,19 @@ std::string Operation::toOPType(OPS e)
 TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
+
+
+    Logging::logMessage("Starting address at arg 1: " + std::to_string(starting_address));
     TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);
+    Logging::logMessage("Starting address at arg 2: " + std::to_string(starting_address));
     TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
 
 
     pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
     pre_string.insert(pre_string.begin(), arg2_ret.pre_string.begin(), arg2_ret.pre_string.end());
 
+    int argument_offset_size = arg1_ret.pre_string.size() + arg2_ret.pre_string.size();
+    
 	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
@@ -65,8 +71,8 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
             break;
         case EXPONENT_OPERATION:
             {
-                std::shared_ptr<int> loop_start_line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 6);
-                std::shared_ptr<int> loop_end_line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 18);
+                std::shared_ptr<int> loop_start_line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 8);
+                std::shared_ptr<int> loop_end_line_mapping = LineMapping::addTemporaryLineMapping(starting_address + 20);
                 std::shared_ptr<ST_ENTRY> temp_int_one = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
                 std::shared_ptr<ST_ENTRY> temp_int_two = SymbolTableController::addTemp("2", ST_ENTRY_TYPE::INT_T);
                 std::shared_ptr<ST_ENTRY> temp_int_rolling = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
@@ -115,8 +121,8 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
             Logging::logErrorMessage("Operation not implemented");
     }
 
-    Logging::logInfoMessage("Incrementing starting address by " + std::to_string(pre_string.size()));
-    starting_address += pre_string.size();
+    Logging::logMessage("Incrementing starting address by " + std::to_string(pre_string.size() - argument_offset_size));
+    starting_address += pre_string.size() - argument_offset_size;
     
     return {pre_string, st_entry};
 }
