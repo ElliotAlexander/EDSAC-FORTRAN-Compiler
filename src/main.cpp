@@ -34,6 +34,7 @@ int main(int argc, char* argv[]){
 
 
     Logging::logMessage("\n\n:: Loading File Inputs :: \n\n");
+
     for(int i = 0; i < Globals::file_list.size(); i++){                                     // Globals::file_list is generated from Command Line arguments inside CommandArgs.cpp.
         Logging::logMessage(" --- " + Globals::file_list[i] + " --- ");                     // Output a header for each file
         if(fv.verify(Globals::file_list[i])){                                               // FileVerification - ensure file is valid FORTRAN, properly formatted, accessible, etc. 
@@ -57,12 +58,11 @@ int main(int argc, char* argv[]){
     }    // Dissect FileCOntainer object into 'segments' - a breakdown of programm structure into Main Program, Functions and Subroutines.
         
 
-    // Note that this is very very C++14 dependent 
+    // Note that this is completely C++14 dependent 
     std::sort(segment_list.begin(), segment_list.end(),     // Sort all segments so that program goes last.
             [] (const Segment& arg1, const Segment& arg2) { // Sort the list so that functions are considered > programs, hence programs go first.
                 return arg2.getSegmentType() == SEGMENT_TYPE::PROGRAM ? true : false;    
             });
-
 
     for(int segment_index = 0; segment_index < segment_list.size(); segment_index++){           // Iterate through each segment of the program.
     
@@ -70,20 +70,19 @@ int main(int argc, char* argv[]){
         std::vector<Statement*> stmts = segment_list.at(segment_index).buildStatements();           // Break each segment of the program down into a series of 'Statement' objects.
 
         if(segment_list.at(segment_index).getSegmentType() == SEGMENT_TYPE::PROGRAM){
-            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("K"))));
-            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, std::string("F"))));
+            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("KZF"))));
         }
 
         for(int statement_index = 0; statement_index < stmts.size(); statement_index++){    // Iterate through each statement, from first to last. stmts represents a FILO queue. 
             Statement* s = stmts.at(statement_index);                                       // Acquire a pointer to each statement, for code clarity. This is not required, but greatly improves the readability of the following code.
-            LineMapping::addLineMapping(s->getStatementLabel(), program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET);        // Offset all line mappings by 1 - program_body.size() does not relate to the index. Subtract 1 to get the index.
+            LineMapping::addLineMapping(s->getStatementLabel(), program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET - subroutine_control_character_count);        // Offset all line mappings by 1 - program_body.size() does not relate to the index. Subtract 1 to get the index.
             IDENTIFY_STATEMENT_RESULT_T identify_result = s->identifyStatement();           // Identify the type of statement - IDENTIFY_STATEMENT_RESULT_T encloses the true result and a boolean return vlaue.
             if(identify_result.result){                                                     // If the statement is successfully identified - continue. Else output an error message.
                 if(identify_result.token->initaliseToken(s->getStatementBody())){           // Initialise the token object. Each token object's constructor only contains the necessary values to verify whether the incoming statement is of that tokens type.
                                                                                             // initialiseToken(std::string input) takes the body of the statement, and loads it into it's internal representation. 
-                    std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET);       // Once an internal representation is generated, we can generate a standard ThreeOpCode object from that.
+                    std::vector<std::shared_ptr<ThreeOpCode> > statement_three_op_code = identify_result.token->generatetoc(program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET - subroutine_control_character_count);       // Once an internal representation is generated, we can generate a standard ThreeOpCode object from that.
                     program_body_toc.insert(program_body_toc.end(), statement_three_op_code.begin(), statement_three_op_code.end());                                                          // Add this three OP code to the program body.
-                    DoLoopMapping::DO_LOOP_RETURN_VALUE ret = DoLoopMapping::retrieveDoLoopMapping(s->getStatementLabel(), program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET);        // Check that the statement is not at the end of a DO Loop.   
+                    DoLoopMapping::DO_LOOP_RETURN_VALUE ret = DoLoopMapping::retrieveDoLoopMapping(s->getStatementLabel(), program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET - subroutine_control_character_count);        // Check that the statement is not at the end of a DO Loop.   
                     program_body_toc.insert(program_body_toc.end(), ret.values.begin(), ret.values.end());                                                                                    // Add the statement to the final program body three op code/
                 } else {
                     Logging::logErrorMessage("Failed to initialise token.");
