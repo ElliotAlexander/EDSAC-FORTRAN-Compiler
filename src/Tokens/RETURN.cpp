@@ -26,7 +26,10 @@ std::vector<std::shared_ptr<ThreeOpCode>> RETURN::generatetoc(int starting_addre
         ::exitFunction(x.call_value);
     } else {
         std::vector<std::shared_ptr<ThreeOpCode> > res = ::exitSubroutine(starting_address);
-        pre_string.insert(pre_string.begin(), res.begin(), res.end());
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        pre_string.insert(pre_string.end(), res.begin(), res.end());
+
+        //Closed subroutines should always leave the accumulator empty
         Logging::logInfoMessage("Exiting function");
     }
     return pre_string;
