@@ -112,10 +112,10 @@ int main(int argc, char* argv[]){
     };   // Generate a three op code array of all the data values in the symbol table.
     symbol_table_toc.insert(symbol_table_toc.end(), symbol_table_end_toc.begin(), symbol_table_end_toc.end());  // All programs end with 'EZPF' - i.e. Return to program start and stop execution.
 
-    int program_body_offset = Globals::base_memory_offset + libs.offset;                // Offset program body by the base memory address (entry point) and the size of libraries. Libraries are appended to the start of the program, soo their size remains important.
+    int program_body_offset = Globals::base_memory_offset + libs.offset + 1;                // Offset program body by the base memory address (entry point) and the size of libraries. Libraries are appended to the start of the program, soo their size remains important.
     LineMapping::offsetLineMapping(program_body_offset);                                 
 
-    int symbol_table_offset = program_body_offset + program_body_toc.size() - 1;        // Offset symvbol table by the size of the program body offset + the size of the program body. 
+    int symbol_table_offset = program_body_offset + program_body_toc.size() - PROGRAM_LINE_MAPPING_RAW_OFFSET;        // Offset symvbol table by the size of the program body offset + the size of the program body. 
     SymbolTableController::offsetST(symbol_table_offset);                               
 
 
