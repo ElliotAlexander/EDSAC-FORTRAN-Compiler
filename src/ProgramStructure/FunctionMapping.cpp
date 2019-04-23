@@ -62,28 +62,43 @@ ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_
 
 
 std::shared_ptr<int> addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line){
-    SUBROUTINE_MAPPING_PAIR.first = LineMapping::addTemporaryLineMapping(start_line + 1);
+    SUBROUTINE_MAPPING_PAIR.first = LineMapping::addTemporaryLineMapping(start_line);
     SUBROUTINE_MAPPING_PAIR.second = LineMapping::addTemporaryLineMapping(start_line);
 
     SUBROUTINE_MAPPING_ENTRY entry = { SUBROUTINE_MAPPING_PAIR.first, arguments };
     SymbolTableController::enterFunctionScope(name);
+    for(int index = 0; index < arguments.size(); index++){
+        SymbolTableController::addDeclaredVariable(arguments.at(index), "", ST_ENTRY_TYPE::UNASSIGNED_T);
+    }
     subroutine_mappings.insert(std::map<std::string, SUBROUTINE_MAPPING_ENTRY>::value_type(name, entry));
-    Logging::logInfoMessage("Adding subroutine mapping for function " + name);
     return SUBROUTINE_MAPPING_PAIR.second;
 }
 
 SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments){
     std::map<std::string, SUBROUTINE_MAPPING_ENTRY>::iterator it = subroutine_mappings.begin(); it = subroutine_mappings.find(subroutine_name);
-    SUBROUTINE_MAPPING_ENTRY entry;
     if( it != subroutine_mappings.end()){
-        entry = it->second;
+        SUBROUTINE_MAPPING_ENTRY entry = it->second;
         if(entry.arguments.size() != arguments.size()){
             Logging::logErrorMessage("Warning - Subroutine " + subroutine_name + " takes " + std::to_string(entry.arguments.size())  + ". Found " + std::to_string(arguments.size()));
             return {{}, false};
         } else {
             SymbolTableController::enterFunctionScope(subroutine_name);
-            std::shared_ptr<int> return_address_mapping = LineMapping::addTemporaryLineMapping(return_address);
+
+
+
+
             std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
+            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            
+            for(int index = 0; index < entry.arguments.size(); index++){
+                return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments.at(index), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                ALL_ST_SEARCH_RESULT arg_var = SymbolTableController::getVariable(entry.arguments.at(index));
+                return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg_var.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            }
+
+            std::shared_ptr<int> return_address_mapping = LineMapping::addTemporaryLineMapping(return_address + return_toc.size());
+
+
             return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(entry.start_line, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
             return {return_toc, true};
@@ -105,7 +120,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine(int end_line){
         std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
         std::shared_ptr<ST_ENTRY> result = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
         SymbolTableController::exitFunctionScope();
-        *SUBROUTINE_MAPPING_PAIR.second = end_line;
+        *SUBROUTINE_MAPPING_PAIR.second = end_line + 1;
         return return_toc;
     } else {
         Logging::logErrorMessage("Error - attempted to exit a Subroutine Program while not inside one.");

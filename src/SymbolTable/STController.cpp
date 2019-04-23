@@ -21,7 +21,7 @@ namespace SymbolTableController{
         return symbol_tables[0]->addLinkedVariable(value, name);
     }
 
-    std::shared_ptr<ST_ENTRY> addCommon(std::string name, std::string value, ST_ENTRY_TYPE type) {
+    std::shared_ptr<ST_ENTRY> addCommon(std::string common_block_label, std::string name, std::string value, ST_ENTRY_TYPE type) {
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
             return function_symbol_tables.find(function_scope_name)->second.at(3)->add(name, value, type);
@@ -63,7 +63,7 @@ namespace SymbolTableController{
             } else {
                 func_declared_res = func_st.at(1)->get(name);
                 if(func_declared_res.found){
-                    Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in declared variables for function " + function_scope_name));
+                    Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Found symbol table entry for " + name + " in undeclared variables for function " + function_scope_name));
                     return {0, true, func_declared_res.result};
                 }
             }
@@ -126,11 +126,9 @@ namespace SymbolTableController{
         }
 
 
-        int offset = output.size();
 
         for(std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.begin(); it != function_symbol_tables.end(); ++it ){
             for(std::vector<std::shared_ptr<SymbolTable> >::iterator s_it = it->second.begin(); s_it != it->second.end(); ++s_it) {
-                offset += (*s_it)->applyOffset(offset);
                 std::vector<std::shared_ptr<ThreeOpCode> > st_func = (*s_it)->buildSymbolTableOutput();
                 output.insert(output.end(), st_func.begin(), st_func.end());
             }
