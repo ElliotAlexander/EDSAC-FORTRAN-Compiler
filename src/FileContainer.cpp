@@ -60,7 +60,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
     for(std::vector<std::string>::size_type i = 0; i != FileContainer::file_text.size(); i++) {
         if(!::lineIsComment(FileContainer::file_text[i])){             // Skip comments
             std::string useful_statement = FileContainer::file_text[i].substr(LINE_LABEL_LENGTH, FileContainer::file_text[i].length());                                                                // Set the program text to a local variable. Ignore the line label i.e. chars 0 -> 6
-            if(useful_statement.substr(0,END_STATEMENT_LENGTH) == "END" and useful_statement.length() == END_STATEMENT_LENGTH){                                          // If the line is an END statement. Note that there might be possible problems here with ENDVARIABLE, for example.
+            if(useful_statement.substr(0,END_STATEMENT_LENGTH) == "END" && useful_statement.length() == END_STATEMENT_LENGTH){                                          // If the line is an END statement. Note that there might be possible problems here with ENDVARIABLE, for example.
                 if(in_function_or_subroutine_block){   // END should signify the END of the program as a whole. If we're inside a segment, the prgorammer needs to RETURN first. This only applies to FUNCTION and SUBROUTINE blocks, as the MAIN program can exit without a return.
                     Logging::logErrorMessage( "END statement found inside a segment block. Are you missing a return? [" + std::to_string(i) + "].");
                 } else if(in_main_block){       // If we're inside the main priogra
