@@ -85,7 +85,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> DO::generatetoc(int starting_address){
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
+    std::shared_ptr<int> loop_top_mapping = LineMapping::addTemporaryLineMapping(starting_address + 5);
 
     std::shared_ptr<ST_ENTRY> loop_counter_end_check = SymbolTableController::addTemp(std::to_string(DO::loop_end_value - DO::loop_start_value + 2), ST_ENTRY_TYPE::UNASSIGNED_T);
     std::shared_ptr<ST_ENTRY> loop_iteration_variable = SymbolTableController::addTemp(std::to_string(loop_iteration_amount), ST_ENTRY_TYPE::UNASSIGNED_T);

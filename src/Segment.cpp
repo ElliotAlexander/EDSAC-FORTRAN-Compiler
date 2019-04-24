@@ -69,7 +69,7 @@ void Segment::dumpSegment(){
 //
 // STUB getter method for seg_type.
 //
-SEGMENT_TYPE Segment::getSegmentType(){
+SEGMENT_TYPE Segment::getSegmentType() const{
     return Segment::seg_type;
 }
 

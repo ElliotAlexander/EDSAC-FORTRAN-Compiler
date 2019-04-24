@@ -46,6 +46,10 @@ bool SUBROUTINE::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> SUBROUTINE::generatetoc(int starting_address){
-    bool res = ::addSubroutineMapping(SUBROUTINE::subroutine_name, SUBROUTINE::subroutine_arguments, starting_address);
-    return {};
+    std::shared_ptr<int> x = ::addSubroutineMapping(SUBROUTINE::subroutine_name, SUBROUTINE::subroutine_arguments, starting_address);
+    
+    return {
+        std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::NO_OPERATION, std::string("GKA3F"))),
+        std::shared_ptr<ThreeOpCode>(new ThreeOpCode(x, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR,false)),
+    };
 }

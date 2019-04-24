@@ -6,6 +6,7 @@
 #include <vector>  
 #include <time.h>
 #include <boost/format.hpp>
+#include <algorithm>    // std::sort
 #include <string>
 
 

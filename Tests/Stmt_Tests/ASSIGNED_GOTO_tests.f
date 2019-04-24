@@ -1,6 +1,10 @@
-1     ASSIGN X TO 5
+1     ASSIGN X TO 10
       GOTO X, (5,10,15)
-10    ASSIGN X TO 10
-15    ASSIGN X TO 15
-5     GOTO 1
-      END
+      STOP
+10    PRINT 10
+      GOTO 55
+15    PRINT 15
+      GOTO 55
+5     PRINT 5
+      GOTO 55
+55    END
