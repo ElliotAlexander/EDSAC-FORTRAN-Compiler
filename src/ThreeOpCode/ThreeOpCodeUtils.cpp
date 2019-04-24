@@ -1,5 +1,12 @@
 #include "ThreeOpCode/ThreeOpCodeUtils.h"
 
+/**
+ * 
+ * This class generates a string output for each three op code instruction.
+ * Three Op COde is outputted both on the command line adn to file - this class transforms the internal representation into the 'user viewable' 
+ * version. 
+ * 
+ **/ 
 std::string TOCOperationToString(int toc_op){
     switch (toc_op) {
         case  0:
