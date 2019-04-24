@@ -2,7 +2,8 @@
 
 
 // See superclass declaration for function definitions.
-// Abstract function implemetation inherited from Token.hstd::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_address){
+// Abstract function implemetation inherited from Token.h
+std::vector<std::shared_ptr<ThreeOpCode>> ASSIGN::generatetoc(int starting_address){
     /**
      * The assignment value is handled by the arithmetic parser, so the first thing we need to do is construct the assignment.
      **/
