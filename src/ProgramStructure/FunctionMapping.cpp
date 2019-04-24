@@ -83,10 +83,6 @@ SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int 
             return {{}, false};
         } else {
             SymbolTableController::enterFunctionScope(subroutine_name);
-
-
-
-
             std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
             return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             
