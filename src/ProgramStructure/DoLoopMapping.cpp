@@ -35,7 +35,7 @@ namespace DoLoopMapping {
 				if ((*it).line_label == std::stoi(line_label)) {
 					int new_val = *it->exit_line_mapping + end_line_mapping + do_loop_return_inject.size() + 2;
 					*it->exit_line_mapping = new_val;
-					do_loop_return_inject.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+					do_loop_return_inject.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("3", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
                     do_loop_return_inject.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode((*it).return_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
 				}
 			}

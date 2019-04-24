@@ -60,7 +60,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
     for(std::vector<std::string>::size_type i = 0; i != FileContainer::file_text.size(); i++) {
         if(!::lineIsComment(FileContainer::file_text[i])){             // Skip comments
             std::string useful_statement = FileContainer::file_text[i].substr(LINE_LABEL_LENGTH, FileContainer::file_text[i].length());                                                                // Set the program text to a local variable. Ignore the line label i.e. chars 0 -> 6
-            if(useful_statement.substr(0,END_STATEMENT_LENGTH) == "END" and useful_statement.length() == END_STATEMENT_LENGTH){                                          // If the line is an END statement. Note that there might be possible problems here with ENDVARIABLE, for example.
+            if(useful_statement.substr(0,END_STATEMENT_LENGTH) == "END" && useful_statement.length() == END_STATEMENT_LENGTH){                                          // If the line is an END statement. Note that there might be possible problems here with ENDVARIABLE, for example.
                 if(in_function_or_subroutine_block){   // END should signify the END of the program as a whole. If we're inside a segment, the prgorammer needs to RETURN first. This only applies to FUNCTION and SUBROUTINE blocks, as the MAIN program can exit without a return.
                     Logging::logErrorMessage( "END statement found inside a segment block. Are you missing a return? [" + std::to_string(i) + "].");
                 } else if(in_main_block){       // If we're inside the main priogra
@@ -70,7 +70,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
                         segment_text.push_back(FileContainer::file_text.at(x));            // Add it to a list
                     }
                     Logging::logMessage("+" + ::getEnumString(SEGMENT_TYPE::PROGRAM) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]");  // output to the user.
-                    segment_arr.push_back(Segment(current_type, start_line, i, segment_text));  // Build a segment with our list of strings, add it to the overarching data structure.
+                    segment_arr.push_back(Segment(SEGMENT_TYPE::PROGRAM, start_line, i, segment_text));  // Build a segment with our list of strings, add it to the overarching data structure.
                 } else {
                     Logging::logWarnMessage("END detected outside of Main Program Block[" + std::to_string(i) + "]");           // THis should only catch if the program starts with END.
                 }

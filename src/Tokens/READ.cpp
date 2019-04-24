@@ -23,7 +23,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> READ::generatetoc(int starting_address
     }
 
     std::shared_ptr<int> m20_mapping = Libs::getLibraryLineMapping("P6");
-    std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 1);
+    std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address - 1);
 
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
