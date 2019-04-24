@@ -52,12 +52,6 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
 
     ALL_ST_SEARCH_RESULT goto_control = SymbolTableController::getVariable(COMPUTED_GOTO::goto_variable);
     Logging::logConditionalErrorMessage(!goto_control.found, "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed.");
-    
-    // We can't generate our toc without this
-    if(!goto_control.found){
-        return {};
-    }
-
 
     int index = 0;
     std::shared_ptr<ST_ENTRY> index_st = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
@@ -74,18 +68,14 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
         TOC_RETURN_VALUE toc_ret = (*it)->generateThreeOPCode(starting_address);
         pre_string.insert(pre_string.end(), toc_ret.pre_string.begin(), toc_ret.pre_string.end());
 
-        // Clear acc
+        std::shared_ptr<int> negative_mapping = LineMapping::addTemporaryLineMapping(pre_string.size() + starting_address + 6);
+
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-        // add to acc
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_control.result, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-        // subtract from acc
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(index_st, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
-        // check for zero
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 4), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(pre_string.size() + starting_address + 3), THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
-        // Ensure that the accumulator is positive
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(index_st, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(negative_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(goto_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
         pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(index_st, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
