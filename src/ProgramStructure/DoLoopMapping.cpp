@@ -69,7 +69,7 @@ namespace DoLoopMapping {
 	 * We don't know where in memory the end of the DO loop is until we see it, so we can't exit the loop until we see the end. This code modifies earlier code to ensure that the 
 	 * value we're exiting too is correct. 
 	 * 2) This function then generates three op code to always jump back to the top of the loop. The do loop can ONLY exit from the top - jumping past this code.
-	 **/
+	 * */
 	DO_LOOP_RETURN_VALUE retrieveDoLoopMapping(std::string line_label, int end_line_mapping) {
 		// This might contain multiple do loops
 		// do_mappings is a FIFO - effectively. 
