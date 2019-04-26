@@ -1,6 +1,0 @@
-      OPEN(UNIT=6,FILE='SMEGMA.DAT',STATUS='NEW')
-      WRITE(6,5000)
-5000  FORMAT(' HELLO,WORLD')
-      STOP
-      END
-

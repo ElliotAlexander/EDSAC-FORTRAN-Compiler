@@ -1,8 +1,0 @@
-1     ASSIGN I TO -1
-      GOTO 1000
-2     ASSIGN I TO 0
-      GOTO 1000
-3     ASSIGN I TO 1
-      GOTO 1000
-1000  IF(I) 2,1,3
-      END

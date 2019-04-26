@@ -1,4 +1,0 @@
-      ASSIGN X TO 5
-1000  STOP
-      GOTO 1000
-      END
