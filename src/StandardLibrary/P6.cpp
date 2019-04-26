@@ -7,7 +7,6 @@ P6::P6(){
 	P6::instruction_length = 32;
 	P6::calling_value = std::shared_ptr<int>(new int(0));
 	P6::name = "P6";
-	Logging::logInfoMessage("Initialised P6 library.");
 }
 
 

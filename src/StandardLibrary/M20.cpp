@@ -7,7 +7,6 @@ M20::M20(){
 	M20::instruction_length = 32;
 	M20::calling_value = std::shared_ptr<int>(new int(0));
 	M20::name = "M20";
-	Logging::logInfoMessage("Initialised M20 library.");
 }
 
 
