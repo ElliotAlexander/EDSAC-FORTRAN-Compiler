@@ -1,5 +1,18 @@
 #include "Tokens/ASSIGN.h"
 
+inline bool isFloat( std::string myString ) {
+    std::istringstream iss(myString);
+    float f;
+    iss >> std::noskipws >> f; // noskipws considers leading whitespace invalid
+    return iss.eof() && !iss.fail(); 
+}
+
+inline bool isInt(const std::string& s)
+{
+    std::string::const_iterator it = s.begin();
+    while (it != s.end() && std::isdigit(*it)) ++it;
+    return !s.empty() && it == s.end();
+}
 
 // See superclass declaration for function definitions.
 // Abstract function implemetation inherited from Token.h
@@ -69,6 +82,7 @@ bool ASSIGN::initaliseToken(std::string input){
         if(variable_name_temp.length() < 1){
             Logging::logErrorMessage("Failed to parse variable name.");
             ::printErrorLocation(found-1, input);
+            return false;
         }        
 
 
@@ -79,18 +93,38 @@ bool ASSIGN::initaliseToken(std::string input){
         if(assignment_string_temp.length() < 1){
             Logging::logErrorMessage("Failed to parse assignment value.");
             ::printErrorLocation(found+1, input_backup);
+            return false;
+        }
+        
+
+
+        // We can't easily check for weird arithmetic if there's a sign in the mix, so remove it. 
+        // Only use this removed copy for checking that the assignment string is indeed a number
+        // This is disregarded once we've checked that it' indeed an int
+        std::string assigminent_string_checking = assignment_string_temp;
+        if(assigminent_string_checking.at(0) == '-'){
+            assigminent_string_checking.erase(0,1);
         }
 
-        // Assign member variables
-        ASSIGN::variable_name = variable_name_temp;
 
-        // The assignment value is handled by the arithmetic parser, and recorded as a member variable to the head of the parse tree.
-        ASSIGN::assignment_value = ::parseADString(assignment_string_temp);
+        if(!(isFloat(assigminent_string_checking) && isInt(assigminent_string_checking))){
+            // Due to some flexibilites in the REGEX of assign, we need to double  check the user hasn't done something like:
+            // ASSIGN X TO -5-500
+            // And throw an error if they have. 
+            Logging::logErrorMessage("Value " + assigminent_string_checking + " could not be parsed - it is not a valid number. Arithmetic statements are not allowed in ASSIGNMENT operations.");
+            return false;
+        } else {
+            // Assign member variables
+            ASSIGN::variable_name = variable_name_temp;
 
-        // If enabled
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable name : " + variable_name_temp);
-        Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable assignment : " + assignment_string_temp);
-        return true;
+            // The assignment value is handled by the arithmetic parser, and recorded as a member variable to the head of the parse tree.
+            ASSIGN::assignment_value = ::parseADString(assignment_string_temp);
+
+            // If enabled
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable name : " + variable_name_temp);
+            Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded variable assignment : " + assignment_string_temp);
+            return true;
+        }
     } else {
 
         /**
