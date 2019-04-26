@@ -18,7 +18,8 @@
 #include <boost/algorithm/string.hpp> 
 #include <string>
 #include <vector>
-
+#include <sstream>
+#include <iostream>
 
 class ASSIGN : public Token {
     public:
@@ -29,8 +30,8 @@ class ASSIGN : public Token {
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
         std::string TO_MATCH = "ASSIGN"
-            + RegexConstants::ANY_ARG 
-            + "TO(-?[0-9]+)(.[0-9]+)?";
+            + RegexConstants::VARIABLE_NAME 
+            + "TO-?([0-9]+)(.[0-9]+)?";
         std::string variable_name;
         std::unique_ptr<RDParseTreeNode> assignment_value;
 };
