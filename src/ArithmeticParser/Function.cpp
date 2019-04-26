@@ -42,13 +42,14 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
     }
 
 
+    /**
     ARITH_FUNCTION_MAPPING_RETURN function_mapping = ::getArithmeticFunctionMapping(function_name, arguments);  
     if(function_mapping.found){
         return_string.insert(return_string.end(), function_mapping.function_body.begin(), function_mapping.function_body.end());
         starting_address += return_string.size();
         return {return_string, function_mapping.return_val};
     } else {
-
+    **/
         // TODO bring both funciton mappings in line with each other
         FUNCTION_MAPPING_RETURN function_mapping = ::getFunctionMapping(function_name, arguments, starting_address);
         if(function_mapping.result){
@@ -59,5 +60,5 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
             Logging::logErrorMessage("Function " + function_name + " not found. Exiting Arithmetic Parser unsuccessfully.");
             return {};
         }
-    }
+    // }
 }
