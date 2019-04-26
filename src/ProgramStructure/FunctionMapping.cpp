@@ -3,13 +3,20 @@
 std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings;
 std::map<std::string, SUBROUTINE_MAPPING_ENTRY> subroutine_mappings;
 std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
-std::shared_ptr<int> return_address_mapping = std::shared_ptr<int>(new int(-1));
-std::pair<std::shared_ptr<int>, std::shared_ptr<int>> SUBROUTINE_MAPPING_PAIR;
-std::string current_function_name;
 
+
+std::shared_ptr<int> return_address_mapping = std::shared_ptr<int>(new int(-1));
+
+
+std::pair<std::shared_ptr<int>, std::shared_ptr<int>> SUBROUTINE_MAPPING_PAIR;
+std::pair<std::shared_ptr<int>, std::shared_ptr<int>> FUNCTION_MAPPING_PAIR;
+
+std::string current_function_name;
+bool inside_function_flag;
 
 
 ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr){
+    /**
     std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
     if(it != arithmetic_function_mappings.end())
     {
@@ -28,9 +35,11 @@ ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_n
 
     arithmetic_function_mappings.insert(std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY>::value_type(function_name, entry));
     return entry;
+    **/
 }
 
 ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments) {
+    /**
     std::vector<std::shared_ptr<ThreeOpCode> > return_arr;
 
     std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
@@ -58,6 +67,7 @@ ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_
     };
     Logging::logWarnMessage("Function " + function_name + " not found inside Arithmetic Function Tables.");
     return {false, {}};
+    **/
 }   
 
 
@@ -126,95 +136,107 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine(int end_line){
     }
 }
 
-bool addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line){
+std::shared_ptr<int> addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line){
+    FUNCTION_MAPPING_PAIR.first = LineMapping::addTemporaryLineMapping(start_line);
+    FUNCTION_MAPPING_PAIR.second = LineMapping::addTemporaryLineMapping(start_line);
+    SymbolTableController::enterFunctionScope(name);
+    std::shared_ptr<ST_ENTRY> return_val = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
 
-    std::shared_ptr<int> line_mapping;
-    // TODO move line mpaping to a proper retunr stucture.
-    LineMapping::LineMappingReturn mapping =  LineMapping::retrieveLineMapping(start_line);
-    if(!mapping.result){
-        line_mapping = LineMapping::addTemporaryLineMapping(start_line);
-    } else {
-        line_mapping = mapping.value;
-        Logging::logWarnMessage("Warning - using already referenced Line Mapping for function " + name);
+    FUNCTION_MAPPING_ENTRY entry = { FUNCTION_MAPPING_PAIR.first, arguments, return_val };
+    for(int index = 0; index < arguments.size(); index++){
+        SymbolTableController::addDeclaredVariable(arguments.at(index), "", ST_ENTRY_TYPE::UNASSIGNED_T);
     }
 
-    FUNCTION_MAPPING_ENTRY entry = {
-        line_mapping, 
-        arguments,
-        nullptr,
-        false,
-    };
-
-    SymbolTableController::enterFunctionScope(name);
-    function_mappings.insert(std::map<std::string, FUNCTION_MAPPING_ENTRY>::value_type(name, entry));
-    Logging::logInfoMessage("Adding function mapping for function " + name);
     current_function_name = name;
-    return true;
+    inside_function_flag = true;
+    Logging::logInfoMessage("Entering function " + current_function_name);
+    function_mappings.insert(std::map<std::string, FUNCTION_MAPPING_ENTRY>::value_type(name, entry));
+    return FUNCTION_MAPPING_PAIR.second;
 }
 
 
 FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, int return_address) {
+    if(inside_function_flag){
+        Logging::logErrorMessage("Function " + function_name + " is nested inside " + current_function_name);
+        Logging::logErrorMessage("Functions cannot be nested.");
+        return {};
+    }
+
+
     std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(function_name);
-    FUNCTION_MAPPING_ENTRY entry;
     if( it != function_mappings.end()){
-        entry = it->second;
+        FUNCTION_MAPPING_ENTRY entry = it->second;
         if(entry.arguments.size() != arguments.size()){
-            Logging::logErrorMessage("Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + " arguments. Found " + std::to_string(arguments.size()));
-            for(int argument_index = 0; argument_index < arguments.size(); argument_index++){
-                SymbolTableController::addLinkedVariable(arguments.at(argument_index), entry.arguments.at(argument_index));
-            }
-            return {false, {}, nullptr };
-        } else if(entry.return_val_set == false){
-            Logging::logErrorMessage("Function " + function_name + " has no return value set.");
-            Logging::logErrorMessage("Use the syntax: \tRETURN <VARIABLE|VALUE|FUNCTION_CALL>");
-            return { false, {}, nullptr};
+            Logging::logErrorMessage("Warning - Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + ". Found " + std::to_string(arguments.size()));
+            return {false, {}, {}};
         } else {
+
+            if(!entry.return_val_set){
+                Logging::logErrorMessage("Error - return value for function " + function_name + " is not set.");
+                return {false, {}, {}};
+            }
+
             SymbolTableController::enterFunctionScope(function_name);
             std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
+            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             
-            std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
-            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::to_string(1), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(entry.start_line, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-            return {true, return_toc, entry.value_return_address};
+            for(int index = 0; index < entry.arguments.size(); index++){
+                return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments.at(index), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                ALL_ST_SEARCH_RESULT arg_var = SymbolTableController::getVariable(entry.arguments.at(index));
+                return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg_var.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            }
+
+            std::shared_ptr<int> return_address_mapping = LineMapping::addTemporaryLineMapping(return_address + return_toc.size());
+
+            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(entry.start_line, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+            return {true, return_toc, entry.return_val};
         }
     } else {
-        Logging::logWarnMessage("Failed to find function " + function_name + " inside Standard function Mappings");
-        return {false, {}, nullptr };
+        Logging::logErrorMessage("Failed to find function " + function_name);
+        return {
+            false, 
+            {},
+            {}
+        };
     }
 }
 
 
-std::vector<std::shared_ptr<ThreeOpCode> > exitFunction(std::shared_ptr<ST_ENTRY> return_value) {
-
-    if(current_function_name.empty()){
-        Logging::logErrorMessage("Attempting to exit a function while not inside one.");
-        Logging::logErrorMessage("Have you attempted to use parameterised return values inside a Subroutine? ");
-    }
-
-    std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(current_function_name);
-    FUNCTION_MAPPING_ENTRY entry;
-    if( it != function_mappings.end()){
-        Logging::logInfoMessage("Set return value for function " + current_function_name);
-        it->second.value_return_address = return_value;
-        it->second.return_val_set = true;
-    } else {
-        Logging::logErrorMessage("Failed to find function " + current_function_name + ". ");
-    }
-
-    int* compare = new int (-1);
-    if(!(return_address_mapping.get() == compare)){
+FUNCTION_EXIT_RETURN exitFunction(std::string return_value, int end_line) {
+    if(inside_function_flag){
         std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
-        std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
+        std::shared_ptr<ST_ENTRY> result = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);
+        ALL_ST_SEARCH_RESULT return_val = SymbolTableController::getVariable(return_value);
         
-        std::vector<std::shared_ptr<ThreeOpCode> > return_toc;
-        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_int, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-        return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+
+
+        if(!return_val.found){
+            Logging::logErrorMessage("Return value " + return_value + " was not found inside Function Scope.");
+            return {};
+        }
+
+        std::vector<std::shared_ptr<ThreeOpCode> > return_toc = {            // This is to be overwritten!!!
+                std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false))
+        };
+
+        std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(current_function_name);
+        if( it != function_mappings.end()){
+            (*it).second.return_val = return_val.result;
+            (*it).second.return_val_set = true;
+        } else {
+            Logging::logErrorMessage("Failed to find function entry for  " + current_function_name);
+            return {};
+        }
+
+        inside_function_flag = false;
+        current_function_name = {};
+        
         SymbolTableController::exitFunctionScope();
-        return return_toc;
+        *FUNCTION_MAPPING_PAIR.second = end_line;
+        return { return_toc };
     } else {
-        Logging::logErrorMessage("Error - attempted to exit a Function while not inside one.");
+        Logging::logErrorMessage("Error - attempted to exit a Function  while not inside one.");
         return {};
     }
 }

@@ -23,7 +23,7 @@ class RETURN : public Token {
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
         bool prepareStatements(); 
     private:
-        std::unique_ptr<RDParseTreeNode> return_value;
+        std::string return_value;
         bool return_value_set;
         std::string TO_MATCH = "RETURN|RETURN" + RegexConstants::ANY_ARG;
 };

@@ -46,6 +46,10 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address){
-    ::addFunctionMapping(FUNCTION_DEFINITION::function_name, FUNCTION_DEFINITION::function_arguments, starting_address);
-    return {};
+    std::shared_ptr<int> x = ::addFunctionMapping(FUNCTION_DEFINITION::function_name, FUNCTION_DEFINITION::function_arguments, starting_address);
+    
+    return {
+        std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::NO_OPERATION, std::string("GKA3F"))),
+        std::shared_ptr<ThreeOpCode>(new ThreeOpCode(x, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR,false)),
+    };
 }
