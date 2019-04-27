@@ -101,7 +101,6 @@ std::shared_ptr<int> addFunctionMapping(std::string name, std::vector<std::strin
 FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, int return_address) {
     if(inside_function_flag){
         Logging::logErrorMessage("Function " + function_name + " is nested inside " + current_function_name);
-        Logging::logErrorMessage("Functions cannot be nested.");
         return {};
     }
 
