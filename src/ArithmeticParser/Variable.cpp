@@ -22,7 +22,7 @@ Variable::Variable(std::string name_in)
 
     // This block of code allivietes this issue by ensuring that no operation characters are pulled into the variable name.
     // Variable names are always Alphanumeric, so this fix should never be detrimental. 
-	char symbols[] = { '+', '/', '-', '*', '^' };
+	char symbols[] = { '+', '/', '-', '*', '^', '(', ')' };
 	int symbols_size = sizeof(name_in) / sizeof(char);
 
 	for (int j = 0; j < symbols_size; j++)
