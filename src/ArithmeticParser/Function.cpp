@@ -48,6 +48,7 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
         return {return_string, function_mapping.return_val };
     } else {
         Logging::logErrorMessage("Function " + function_name + " not found. Exiting Arithmetic Parser unsuccessfully.");
+        exit(-1);
         return {};
     }
 }
