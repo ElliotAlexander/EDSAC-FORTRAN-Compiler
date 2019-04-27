@@ -1,2 +1,28 @@
-      END   (1,2,3,4,5)
-      END (1,2,3,4,6)
+C     This entire example should throw 'END detected outside of prgoram block'
+C     END takes no arguments, so this is the only valid form of the statement.
+      END
+C     This should also parse
+10000 END
+C     This is also valid
+      E
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *N
+     *
+     *
+     *
+     *
+     *
+     *
+     *
+     *D
