@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address
      * once all arguments are mapped, call the symbol table.
      * **/
     SUBROUTINE_MAPPING_RETURN sub_return = ::getSubroutineMapping(subroutine_name, starting_address, args);
-    Logging::logConditionalErrorMessage(!sub_return.result, "Error - failed to add function " + subroutine_name);
+    Logging::logConditionalErrorMessage(!sub_return.result, "Error - failed to load Subroutine " + subroutine_name);
 
     /**
      * 
