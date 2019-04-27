@@ -1,3 +1,0 @@
-      CALL DASHP123(5^6)
-      CALL HEWD4SADD5SS(5)
-      END

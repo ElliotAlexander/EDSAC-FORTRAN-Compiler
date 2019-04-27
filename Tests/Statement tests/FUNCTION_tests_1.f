@@ -1,3 +1,3 @@
-      SQUARE(X) = X^2
-      PRINT SQUARE(5)
+      PRINTSUM(X) = X
+      PRINT PRINTSUM(10)
       END
