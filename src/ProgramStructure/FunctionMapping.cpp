@@ -41,7 +41,6 @@ SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int 
             
             for(int index = 0; index < entry.arguments.size(); index++){
                 return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments.at(index), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-                Logging::logMessage(entry.arguments.at(index));
                 ALL_ST_SEARCH_RESULT arg_var = SymbolTableController::getVariable(entry.arguments.at(index));
                 return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg_var.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             }
