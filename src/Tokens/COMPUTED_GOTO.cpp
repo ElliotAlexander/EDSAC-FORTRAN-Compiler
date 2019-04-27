@@ -52,7 +52,11 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
 
     ALL_ST_SEARCH_RESULT goto_control = SymbolTableController::getVariable(COMPUTED_GOTO::goto_variable);
     Logging::logConditionalErrorMessage(!goto_control.found, "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed.");
+    if(!goto_control.found){
+        return {};
+    }
 
+    
     int index = 0;
     std::shared_ptr<ST_ENTRY> index_st = SymbolTableController::addTemp("1", ST_ENTRY_TYPE::INT_T);
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
