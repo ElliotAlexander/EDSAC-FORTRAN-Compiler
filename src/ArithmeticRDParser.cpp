@@ -23,6 +23,11 @@ std::unique_ptr<RDParseTreeNode> parseADString(std::string input_string)
     RDParseTreeNode* x;     
     // Note - extern int yyparse(RDParseTreeNode *&result);
     int res = yyparse(x);   // x is passed by reference and modified in yyparse. This serves as the main 'return' output of the parser.
+    if(res != 0){
+        Logging::logErrorMessage("Error - arithmetic value " + input_string + " failed to parse correctly.");
+        Logging::logErrorMessage("Arithmeric errors are unrecoverable, the comiler will exit.");
+        exit(-1);
+    }
     std::unique_ptr<RDParseTreeNode> ptr(x);   // x is then converted to a unique ptr,
     yy_delete_buffer(buffer);                  // the token buffer is cleared
     return ptr;                                // responsibility for x is then passed to the calling class, which is responsible for it's management.

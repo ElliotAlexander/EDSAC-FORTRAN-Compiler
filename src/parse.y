@@ -37,6 +37,7 @@
     };
 }
 
+%define parse.error verbose
 %define api.value.type {struct type_vals}
 %parse-param {RDParseTreeNode *&result}
 
@@ -148,6 +149,5 @@ single_argument:
 %%
 
 void yyerror(RDParseTreeNode *&result, const char *s) {
-    cout << "Parser Error:  Message: " << s << endl;
-    exit(-1);
+    cout << "[ERROR] Arithmetic Parser Error. Message: " << s << endl;
 }
