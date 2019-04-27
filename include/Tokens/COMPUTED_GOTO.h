@@ -22,7 +22,7 @@ class COMPUTED_GOTO : public Token {
         bool initaliseToken(std::string input);
         std::vector<std::shared_ptr<ThreeOpCode> > generatetoc(int starting_address);
     private:
-        std::string TO_MATCH = "GOTO\\(([0-9])+(,[0-9]+)+\\)," + RegexConstants::VARIABLE_NAME;
+        std::string TO_MATCH = "GOTO\\(([0-9])+((,[0-9]+)+)?\\)," + RegexConstants::VARIABLE_NAME;
         std::vector<std::unique_ptr<RDParseTreeNode>> goto_arg_list;
         std::vector<std::string> goto_arg_list_string;
         std::string goto_variable;
