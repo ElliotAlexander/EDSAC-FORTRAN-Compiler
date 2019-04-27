@@ -26,4 +26,6 @@ C     This is expected to pass - Negative numbers are valid
       ASSIGN NEWVARIABLE TO -500
 C     This shouldn't pass - we don't allow arithmetic 
       ASSIGN NEWVARIABLE TO -5-100
+C     This should't parse - brackets are a disallowed symbol.
+      ASSIGN NEWVARIABLE() TO 55
       END
