@@ -1,3 +1,0 @@
-1000  STOP
-      GOTO 1000
-      END
