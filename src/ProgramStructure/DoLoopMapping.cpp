@@ -87,10 +87,16 @@ namespace DoLoopMapping {
 			// Else - iterate through all possible DO loops. Note that we iterate BACKWARDS.
 			// Once we've found a loop, we can inject code to jump back to the top of it.
 			// Iterating backwards is important - this is what allows us to handle nested loops.
+			bool at_back = true;
 			for (std::vector<DO_LOOP_ENTRY>::reverse_iterator it = do_mappings.rbegin(); it != do_mappings.rend(); ++it) {
-
 				// A temporary reference is required in order to maintain the correct offset.
 				if ((*it).line_label == std::stoi(line_label)) {
+
+					if(!at_back) {
+						Logging::logErrorMessage("Overlapping DO loops detected. Loop " + line_label + " overlaps with loop " + std::to_string(do_mappings.at(do_mappings.size() - 1).line_label));
+						Logging::logErrorMessage("Overlapping DO loops are not valid.");
+						return { false, {}};
+					}
 					int new_val = *it->exit_line_mapping + end_line_mapping + do_loop_return_inject.size() + 2;
 
 					ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
@@ -105,6 +111,8 @@ namespace DoLoopMapping {
 					// Jump back to the start of the loop
 					do_loop_return_inject.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
                     do_loop_return_inject.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode((*it).return_line_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
+				} else {
+					at_back = false;
 				}
 			}
 			return { true,  do_loop_return_inject };
