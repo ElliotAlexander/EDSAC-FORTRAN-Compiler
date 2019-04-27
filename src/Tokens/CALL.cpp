@@ -117,6 +117,8 @@ std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address
      * This is mostly for moving values in and out of the function scope symbol table.
      **/
     toc_return.insert(toc_return.end(), sub_return.toc_inject.begin(), sub_return.toc_inject.end());
+
+    SymbolTableController::exitFunctionScope();
     
     return toc_return;
 }
