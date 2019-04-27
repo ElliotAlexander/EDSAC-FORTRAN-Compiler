@@ -53,14 +53,6 @@ struct SUBROUTINE_MAPPING_RETURN {
 };
 
 
-
-extern std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY> arithmetic_function_mappings;
-
-
-ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr);
-ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
-
-
 extern std::map<std::string, SUBROUTINE_MAPPING_ENTRY> subroutine_mappings;
 extern std::map<std::string, FUNCTION_MAPPING_ENTRY> function_mappings;
 
@@ -79,5 +71,6 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine(int end_line);
 std::shared_ptr<int> addFunctionMapping(std::string name, std::vector<std::string> arguments, int start_line);
 FUNCTION_MAPPING_RETURN getFunctionMapping(std::string subroutine_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, int return_address);
 FUNCTION_EXIT_RETURN exitFunction(std::string return_value, int end_line);
+FUNCTION_EXIT_RETURN exitFunction(std::shared_ptr<ST_ENTRY> return_value, int end_line);
 
 #endif
