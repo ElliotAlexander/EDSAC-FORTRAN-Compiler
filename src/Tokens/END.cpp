@@ -8,6 +8,8 @@ bool END::initaliseToken(std::string input){
         if(input.length() == 3){
             return true;
         } else if(input.front() == '(' && input.back() == ')'){
+            Logging::logErrorMessage("END arguments are not supported!");
+
             argument_list_set = true;
             input.erase(0,1);
             input.pop_back();
