@@ -175,7 +175,7 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
                 break;
             }
         default: 
-            Logging::logErrorMessage("Operation not implemented");
+            Logging::logErrorMessage("Division operations are not supported.");
     }
 
 
