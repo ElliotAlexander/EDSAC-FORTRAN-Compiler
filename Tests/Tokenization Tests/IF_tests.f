@@ -27,5 +27,6 @@ C     This won't parse - not enough arguments.
 C     This should parse
       IF(IF)5,5,5
 C     This should parse - albeit with semantic errors.
+C     This test will crash the program with semantic errors, so it's last.
       IF (SQRT(X) + 10 * 10 + X + IF) 0, 0, 0
       END
