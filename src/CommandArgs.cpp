@@ -38,7 +38,7 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         
         // Integer options
 
-        ("b,baseoffset","Base memory offset for bootloader. This is 32 by default.", cxxopts::value<int>(), "N")                                                // The base memory offset from which the program will start.
+        ("b,baseoffset","Base memory offset for bootloader. This is 56 by default.", cxxopts::value<int>(), "N")                                                // The base memory offset from which the program will start.
         ("i,initialorders","Specify 1 or 2 for initial orders.", cxxopts::value<int>(), "Z");                                                                   // Specify initial orders 1 or 2. 
     
     
