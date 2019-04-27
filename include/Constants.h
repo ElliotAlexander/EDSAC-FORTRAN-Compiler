@@ -17,6 +17,7 @@ namespace MiscConstants {
 
 namespace RegexConstants {
     const std::string INTEGER = "-?([0-9]+)";
+    const std::string POSITIVE_INTEGER = "([0-9]+)";
     const std::string FLOATING_POINT = "-?[0-9]+(\\.[0-9]+)?";
     const std::string SUBROUTINE_NAME = "([A-Z]([0-9A-Z]+)?)";
     const std::string VARIABLE_NAME = "[A-Z]([0-9A-Z]+)?";

@@ -32,11 +32,11 @@ class DO : public Token {
         std::string TO_MATCH = "DO([0-9]+)("
             + RegexConstants::ANY_ARG
             + ")="
-            + RegexConstants::INTEGER
+            + RegexConstants::POSITIVE_INTEGER
             + ","
-            + RegexConstants::INTEGER
+            + RegexConstants::POSITIVE_INTEGER
             + "(,"
-            + RegexConstants::INTEGER
+            + RegexConstants::POSITIVE_INTEGER
             + ")?";
         bool parseLeftHandSide(std::string lhs_input_string);
         bool parseRightHandSide(std::string rhs_input_string);
