@@ -35,7 +35,7 @@ class GOTO : public Token {
     private:
         int goto_single_arg;
         std::vector<std::unique_ptr<RDParseTreeNode>> goto_arg_list;
-        std::string TO_MATCH = "GOTO" + RegexConstants::INTEGER;
+        std::string TO_MATCH = "GOTO" + RegexConstants::POSITIVE_INTEGER;
         ARG_LIST_WRAPPER loadArgumentString(std::string input_argument_string);
         void loadArgumentListValue(std::string argument_list_string);
         void loadSingleArgumentValue(std::string argument_string);    
