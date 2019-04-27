@@ -14,63 +14,6 @@ std::pair<std::shared_ptr<int>, std::shared_ptr<int>> FUNCTION_MAPPING_PAIR;
 std::string current_function_name;
 bool inside_function_flag;
 
-
-ARITH_FUNCTION_MAPPING_ENTRY addArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments, std::vector<std::shared_ptr<ThreeOpCode> > function_body, std::shared_ptr<ST_ENTRY> return_addr){
-    /**
-    std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
-    if(it != arithmetic_function_mappings.end())
-    {
-        Logging::logErrorMessage("Function " + function_name + " already exists!");
-        Logging::logErrorMessage("The later definition of the function will be used.");
-    }
-
-    Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Adding function " + function_name + ".");
-    Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Function " + function_name + " has " + std::to_string(arguments.size()) + " argument(s).");
-
-    ARITH_FUNCTION_MAPPING_ENTRY entry = {
-        return_addr,
-        function_body,
-        arguments
-    };
-
-    arithmetic_function_mappings.insert(std::map<std::string, ARITH_FUNCTION_MAPPING_ENTRY>::value_type(function_name, entry));
-    return entry;
-    **/
-}
-
-ARITH_FUNCTION_MAPPING_RETURN getArithmeticFunctionMapping(std::string function_name, std::vector<std::shared_ptr<ST_ENTRY> > arguments) {
-    /**
-    std::vector<std::shared_ptr<ThreeOpCode> > return_arr;
-
-    std::map<std::string,ARITH_FUNCTION_MAPPING_ENTRY>::iterator it = arithmetic_function_mappings.find(function_name);
-    ARITH_FUNCTION_MAPPING_ENTRY entry;
-    if(it != arithmetic_function_mappings.end())
-    {
-        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + " from Arithmetic Functions..");
-        entry = it->second;
-        if(entry.arguments.size() != arguments.size()){
-            Logging::logWarnMessage("Warning - found " + std::to_string(arguments.size()) + " arguments for function " + function_name + ", expected " + std::to_string(entry.arguments.size()));
-        }
-
-        Logging::logInfoMessage("Found function " + function_name + " inside Arithmetic Function tables.");
-
-        for(int argument_index = 0; argument_index < entry.arguments.size(); argument_index++){
-
-            // Add argument to accumulator.
-            return_arr.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments.at(argument_index), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-            // Assign argument from accumulator.
-            return_arr.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(entry.arguments.at(argument_index), THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-        }
-
-        return_arr.insert(return_arr.end(), entry.function_body.begin(), entry.function_body.end());
-        return {true, return_arr, entry.value_return_address};
-    };
-    Logging::logWarnMessage("Function " + function_name + " not found inside Arithmetic Function Tables.");
-    return {false, {}};
-    **/
-}   
-
-
 std::shared_ptr<int> addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line){
     SUBROUTINE_MAPPING_PAIR.first = LineMapping::addTemporaryLineMapping(start_line);
     SUBROUTINE_MAPPING_PAIR.second = LineMapping::addTemporaryLineMapping(start_line);
@@ -98,6 +41,7 @@ SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int 
             
             for(int index = 0; index < entry.arguments.size(); index++){
                 return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments.at(index), THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+                Logging::logMessage(entry.arguments.at(index));
                 ALL_ST_SEARCH_RESULT arg_var = SymbolTableController::getVariable(entry.arguments.at(index));
                 return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg_var.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
             }
@@ -161,7 +105,6 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
         Logging::logErrorMessage("Functions cannot be nested.");
         return {};
     }
-
 
     std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(function_name);
     if( it != function_mappings.end()){
@@ -229,6 +172,37 @@ FUNCTION_EXIT_RETURN exitFunction(std::string return_value, int end_line) {
             return {};
         }
 
+        Logging::logMessage("Exiting function");
+        inside_function_flag = false;
+        current_function_name = {};
+        
+        SymbolTableController::exitFunctionScope();
+        *FUNCTION_MAPPING_PAIR.second = end_line;
+        return { return_toc };
+    } else {
+        Logging::logErrorMessage("Error - attempted to exit a Function  while not inside one.");
+        return {};
+    }
+}
+
+
+FUNCTION_EXIT_RETURN exitFunction(std::shared_ptr<ST_ENTRY> return_value, int end_line) {
+    if(inside_function_flag){
+        std::shared_ptr<ST_ENTRY> flush = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME).result;
+        std::shared_ptr<ST_ENTRY> result = SymbolTableController::addTemp("", ST_ENTRY_TYPE::UNASSIGNED_T);        
+
+        std::vector<std::shared_ptr<ThreeOpCode> > return_toc = {            // This is to be overwritten!!!
+                std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false))
+        };
+
+        std::map<std::string, FUNCTION_MAPPING_ENTRY>::iterator it = function_mappings.begin(); it = function_mappings.find(current_function_name);
+        if( it != function_mappings.end()){
+            (*it).second.return_val = return_value;
+            (*it).second.return_val_set = true;
+        } else {
+            Logging::logErrorMessage("Failed to find function entry for  " + current_function_name);
+            return {};
+        }
         inside_function_flag = false;
         current_function_name = {};
         

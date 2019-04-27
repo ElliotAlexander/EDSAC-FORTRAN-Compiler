@@ -4,27 +4,17 @@
 // See superclass declaration for function definitions.
 // Abstract function implemetation inherited from Token.h
 std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starting_address){
-
-    std::vector<std::shared_ptr<ST_ENTRY> > argument_references; 
-
-    // Assign variables, overwrite if already assigned.
-    for(int argument_index = 0; argument_index < ARITH_FUNCTION::function_arguments.size(); argument_index++){
-        // For each argument, assign a variable.
-        Logging::logConditionalWarnMessage(SymbolTableController::getVariable(ARITH_FUNCTION::function_arguments.at(argument_index)).found, 
-            "Warning - using variable name " + ARITH_FUNCTION::function_arguments.at(argument_index) + " in Arithmetic Function Call will cause the initial value of " + ARITH_FUNCTION::function_arguments.at(argument_index) + " to be overwritten.");
-        Logging::logInfoMessage("Adding argument in position 1: " + ARITH_FUNCTION::function_arguments.at(argument_index));
-        // Arguments are handled entirely by reference.
-        argument_references.push_back(SymbolTableController::addUnDeclaredVariable(ARITH_FUNCTION::function_arguments.at(argument_index), "", ST_ENTRY_TYPE::UNASSIGNED_T));
-    }
-
-    // Generate the three op code required for the right hand side.
-    // The arithmeteic parser handles this. 
-    // We just need to include the three op code before calling the function
-    TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode(starting_address);
+    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+    std::shared_ptr<int> x = ::addFunctionMapping(ARITH_FUNCTION::function_name, ARITH_FUNCTION::function_arguments, starting_address);
     
-    // Register the function with the function handler. 
-    ::addArithmeticFunctionMapping(function_name, argument_references, res.pre_string, res.call_value);
-    return {};
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::NO_OPERATION, std::string("GKA3F"))));
+    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(x, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR,false)));
+    TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode(starting_address);
+    pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
+
+    FUNCTION_EXIT_RETURN exit_res = ::exitFunction(res.call_value, starting_address + pre_string.size());
+    pre_string.insert(pre_string.end(), exit_res.toc_inject.begin(), exit_res.toc_inject.end());
+    return pre_string;
 }
 
 // See superclass declaration for function definitions.
