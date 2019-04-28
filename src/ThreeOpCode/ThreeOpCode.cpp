@@ -69,13 +69,18 @@ ThreeOpCode::ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, boo
 
 
 std::string ThreeOpCode::printToString(){
+	std::string final_bit;
+	if(CUSTOM_FINAL_BIT_SET){
+		final_bit = CUSTOM_FINAL_BIT;
+	}
+
 	switch (ThreeOpCode::input_arg_type) {
 		case ARG_TYPE::ARG_IS_LINE_MAPPING:
-			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(*ThreeOpCode::ARGUMENT_LINE_MAPPING));
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(*ThreeOpCode::ARGUMENT_LINE_MAPPING) + " " + final_bit);
 		case ARG_TYPE::ARG_IS_STRING:
-			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + ThreeOpCode::ARGUMENT_STR);
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + ThreeOpCode::ARGUMENT_STR  + " " + final_bit);
 		case ARG_TYPE::ARG_IS_ST_ENTRY:
-			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(ThreeOpCode::ARGUMENT_ST_ENTRY->base_memory_address));
+			return std::string(TOCOperationToString(ThreeOpCode::OPERATION) + " " + std::to_string(ThreeOpCode::ARGUMENT_ST_ENTRY->base_memory_address)  + " " + final_bit);
 		default:
 			return std::string("ERROR - ThreeOpCode generation failed");
 	}
