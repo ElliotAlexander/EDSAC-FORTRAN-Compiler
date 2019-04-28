@@ -139,11 +139,11 @@ namespace SymbolTableController{
 
     bool enterFunctionScope(std::string function_name){
         std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.find(function_name);
-        Logging::logInfoMessage("Calling function " + function_name + ".");
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
         if(it != function_symbol_tables.end()) {
-            Logging::logInfoMessage("Loaded function symbol table for function " + function_name);
+            Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Loaded function symbol table for function " + function_name);
         } else {
-            Logging::logInfoMessage("Adding new function symbol table for function " + function_name);
+            Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Adding new function symbol table for function " + function_name);
             std::vector<std::shared_ptr<SymbolTable> > vect;
             vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)));
             vect.push_back(std::shared_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)));
@@ -154,13 +154,13 @@ namespace SymbolTableController{
 
         in_function_scope = true;
         function_scope_name = function_name;
-        Logging::logInfoMessage("Entering Function Scope");
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings,"Entering Function Scope");
         return true;
     }
 
 
     bool exitFunctionScope(){
-        Logging::logInfoMessage("Leaving function scope.");
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings,"Leaving function scope.");
         in_function_scope = false;
         function_scope_name = "";
         return true;
