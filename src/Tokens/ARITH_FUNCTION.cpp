@@ -9,10 +9,10 @@ std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starti
     
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::NO_OPERATION, std::string("GKA3F"))));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(x, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR,false)));
+    starting_address = starting_address + 2;
     TOC_RETURN_VALUE res = std::unique_ptr<RDParseTreeNode>(::parseADString(ARITH_FUNCTION::function_resolution))->generateThreeOPCode(starting_address);
     pre_string.insert(pre_string.end(), res.pre_string.begin(), res.pre_string.end());
-
-    FUNCTION_EXIT_RETURN exit_res = ::exitFunction(res.call_value, starting_address + pre_string.size());
+    FUNCTION_EXIT_RETURN exit_res = ::exitFunction(res.call_value, starting_address);
     pre_string.insert(pre_string.end(), exit_res.toc_inject.begin(), exit_res.toc_inject.end());
     return pre_string;
 }
