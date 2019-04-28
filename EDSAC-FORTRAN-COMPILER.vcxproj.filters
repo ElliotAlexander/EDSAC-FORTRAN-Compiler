@@ -168,6 +168,12 @@
     <ClCompile Include="src\Tokens\COMPUTED_GOTO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ProgramStructure\DoLoopMapping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StandardLibrary\M20.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ArithmeticRDParser.h">
@@ -342,6 +348,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\FileOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ProgramStructure\DoLoopMapping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

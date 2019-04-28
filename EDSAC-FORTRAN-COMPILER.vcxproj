@@ -363,10 +363,12 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Optimisation\NoRepeatedAccClear.cpp" />
     <ClCompile Include="src\parse.tab.cc" />
+    <ClCompile Include="src\ProgramStructure\DoLoopMapping.cpp" />
     <ClCompile Include="src\programstructure\FunctionMapping.cpp" />
     <ClCompile Include="src\ProgramStructure\LineMapping.cpp" />
     <ClCompile Include="src\Segment.cpp" />
     <ClCompile Include="src\StandardLibrary\LibraryBuilder.cpp" />
+    <ClCompile Include="src\StandardLibrary\M20.cpp" />
     <ClCompile Include="src\StandardLibrary\P6.cpp" />
     <ClCompile Include="src\Statement.cpp" />
     <ClCompile Include="src\symboltable\STController.cpp" />
@@ -417,6 +419,7 @@
     <ClInclude Include="include\Logging.h" />
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\Optimization\NoRepeatedAccClear.h" />
+    <ClInclude Include="include\ProgramStructure\DoLoopMapping.h" />
     <ClInclude Include="include\programstructure\FunctionMapping.h" />
     <ClInclude Include="include\programstructure\LineMapping.h" />
     <ClInclude Include="include\RDParseTreeNode.h" />
