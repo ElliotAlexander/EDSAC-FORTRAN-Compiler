@@ -69,15 +69,15 @@ namespace LineMapping {
             Logging::logConditionalMessage(Globals::output_line_mappings, "Applying Line Mapping Offset of " + std::to_string(offset) + " to " + std::to_string(*it->second));
         }
 
-        Logging::logConditionalMessage(Globals::output_line_mappings, " --- Temporary Line Mapping transformations - ");
+        Logging::logConditionalMessage(Globals::output_line_mappings, "\n --- Temporary Line Mapping transformations ---\n ");
 
         for(int index = 0; index < temporary_line_mappings.size(); index++){
             int new_value = (*temporary_line_mappings.at(index)) + offset;
+            Logging::logConditionalMessage(Globals::output_line_mappings, "Applying Line Mapping Offset of " + std::to_string(offset) + " to " + std::to_string((*temporary_line_mappings.at(index))) + " to " + std::to_string(offset));
             (*temporary_line_mappings.at(index)) = new_value;
-            Logging::logConditionalMessage(Globals::output_line_mappings, "Applying Line Mapping Offset of " + std::to_string(offset) + " to " + std::to_string(new_value));
         }
 
-        Logging::logConditionalMessage(Globals::output_line_mappings, "\n --- End Line Mapping Transformations --- \n\n");
+        Logging::logConditionalMessage(Globals::output_line_mappings, "\n\n --- End Line Mapping Transformations --- \n\n");
         return true;
     }
 
