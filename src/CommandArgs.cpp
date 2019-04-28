@@ -34,13 +34,10 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
         ("c,toc","Dump Three Op Code output once parsed.", cxxopts::value<bool>()->default_value("false"))                                                      // Dump three op code output once compilation has finished.
         ("m,functionmappings","Output function mappings as they are loaded.", cxxopts::value<bool>()->default_value("false"))                                   // Dump funciton mappings to the command line as they are loaded.
         ("r,regex","Output regex for token matching", cxxopts::value<bool>()->default_value("false"))                                                           // Output a full set of regex used for identifying tokens.
-        ("z,lazytokens","Enforce Lazy Tokenization - assume the first matching token is valid.", cxxopts::value<bool>()->default_value("false"))              // Largely irrelevant - mostly used for debugging and development. once the compiler finds a valid token, it assumes its correctness with this flag enabled.
         
         // Integer options
 
-        ("b,baseoffset","Base memory offset for bootloader. This is 56 by default.", cxxopts::value<int>(), "N")                                                // The base memory offset from which the program will start.
-        ("i,initialorders","Specify 1 or 2 for initial orders.", cxxopts::value<int>(), "Z");                                                                   // Specify initial orders 1 or 2. 
-    
+        ("b,baseoffset","Base memory offset for bootloader. This is 56 by default.", cxxopts::value<int>(), "N");                                                // The base memory offset from which the program will start.    
     
 
     // Call cxxopts to parse the command line arguments.
@@ -64,18 +61,6 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     }
 
 
-    // This option is essentiall deprecated, as initial orders 1 is not supported.
-    // 
-    if(result.count("initialorders")){
-        int orders = result["initialorders"].as<int>();
-        if(orders == INITIAL_ORDERS_2){
-            Logging::logMessage("+initial orders 2");
-            Globals::use_initial_orders_2 = true;
-        } else {
-            Logging::logWarnMessage("Failed to load initial orders: value " + std::to_string(orders));
-        }
-    }
-
     if(result["allextensions"].as<bool>()){
         Logging::logMessage("+all-extensions");
         Globals::allow_all_types = true;
@@ -84,12 +69,6 @@ CommandArgs::CommandArgs(int argc, char* argv[]){
     if(result["parsedvalues"].as<bool>()){
         Logging::logMessage("+parsed-values");
         Globals::dump_parsed_values = true;
-    }
-
-        // Handle Boolean Arguments.
-    if(result["lazytokens"].as<bool>()){
-        Logging::logMessage("+lazy tokens");
-        Globals::lazy_tokens = true;
     }
 
     if(result["linemappings"].as<bool>()){
