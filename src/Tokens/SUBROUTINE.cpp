@@ -13,7 +13,7 @@ bool SUBROUTINE::initaliseToken(std::string input){
         if (boost::regex_match(target, char_matches, subroutine_name_regex))
         {
             std::string name_string = char_matches[2];
-            Logging::logInfoMessage("Loaded Subroutine Name: " + name_string);
+            Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Loaded Subroutine Name: " + name_string);
             SUBROUTINE::subroutine_name = name_string;
 
             std::string function_arguments_string = char_matches[3];
