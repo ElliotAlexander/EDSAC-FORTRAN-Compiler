@@ -41,8 +41,8 @@ namespace DoLoopMapping {
 		};
 
 
-		Logging::logInfoMessage("Adding DO loop mapping for " + std::to_string(line_label));
-		Logging::logInfoMessage("Adding temporary line reference for loop end at " + std::to_string(line_label));
+		Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Adding DO loop mapping for " + std::to_string(line_label));
+		Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Adding temporary line reference for loop end at " + std::to_string(line_label));
 		// Add the DO loop mapping to the top of the queue
 		do_mappings.push_back(x);
 		return x.exit_line_mapping;
