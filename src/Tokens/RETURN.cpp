@@ -31,7 +31,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> RETURN::generatetoc(int starting_addre
         pre_string.insert(pre_string.end(), res.begin(), res.end());
 
         //Closed subroutines should always leave the accumulator empty
-        Logging::logInfoMessage("Exiting function");
+        Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Exiting function");
     }
     return pre_string;
 }
