@@ -81,7 +81,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
                         segment_text.push_back(FileContainer::file_text.at(x));// Add each line to the array
                     }
 
-                    Logging::logInfoMessage("+" + ::getEnumString(current_type) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]{" + ::stripWhitespaceString(segment_text.at(0)) + "}.");
+                    Logging::logMessage("+" + ::getEnumString(current_type) + " [" + std::to_string(start_line + 1) + "," + std::to_string(i + 1) + "]{" + ::stripWhitespaceString(segment_text.at(0)) + "}.");
                     
                     segment_arr.push_back(Segment(current_type, start_line, i, segment_text));      // Construct a segment object, add it back to our return array. This segment is now finished with.
                     in_function_or_subroutine_block = false;    // We are no longer in a function or subroutine block, the user has just exited this by calling return.
@@ -122,6 +122,7 @@ std::vector<Segment> FileContainer::dissectSegments(){
         Logging::logWarnMessage("Did you forget to include an END Statement?");
     }
 
+    Logging::logNewLine();
 
     // Returns std::vector<Segment> -> built inside above for loop.
     return segment_arr;
