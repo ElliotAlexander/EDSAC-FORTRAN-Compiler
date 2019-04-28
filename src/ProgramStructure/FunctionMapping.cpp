@@ -170,7 +170,6 @@ FUNCTION_EXIT_RETURN exitFunction(std::string return_value, int end_line) {
             return {};
         }
 
-        Logging::logMessage("Exiting function");
         inside_function_flag = false;
         current_function_name = {};
         
