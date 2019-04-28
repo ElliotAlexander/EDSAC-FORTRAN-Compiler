@@ -27,8 +27,10 @@ namespace Libs {
 	void enableRoutine(std::string name){
 		std::map<std::string, Library*>::iterator it = library_mappings.find(name);
 		if(it != library_mappings.end()){
-			(*it).second->setEnabled();
-			Logging::logInfoMessage("Enabled library " + name);
+			if(!(*it).second->getEnabled()){
+				(*it).second->setEnabled();
+				Logging::logInfoMessage("Enabled library " + name);
+			}
 		} else {
 			Logging::logWarnMessage("Failed to find library " + name);
 		}

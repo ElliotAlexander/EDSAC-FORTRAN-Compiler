@@ -13,6 +13,7 @@ bool PRINT::initaliseToken(std::string input){
 }	
 
 std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_address){
+
 	std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
 	TOC_RETURN_VALUE toc_ret = PRINT::print_val->generateThreeOPCode(starting_address);
@@ -21,6 +22,7 @@ std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_addres
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
 
+	Libs::enableRoutine("P6");
 	std::shared_ptr<int> P6_mapping = Libs::getLibraryLineMapping("P6");
 
 	std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
