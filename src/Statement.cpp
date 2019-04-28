@@ -130,9 +130,6 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
             found = true;                   // Once we've seen a token, set this flag. If we see another token that matches, warn the user.
             result = tokens[i];             // Set the result. Note that if two tokemns are found (are more), the last one will be used.
             tokens[i] = nullptr;            // Dereference the pointer in the array.
-            if(Globals::lazy_tokens){       // If this is enabled, break once we've found a single valid token.
-                break;                      // 
-            }
         }
     };
 
