@@ -33,6 +33,7 @@ Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS ope
 // This is effectively a big macro stackint the correct series of operations ot manipulate both arguments.
 // Depending on the operation, we buiild a big list of the three op code required toi compute the final value.
 TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
+
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
 
@@ -41,9 +42,10 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
     // Compute both these arguments first, and append their three op code to the final output.
     TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);        // Recall that arguments are also Parse tree nodes. 
     TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
+
     // Cnonstruct a complete output
-    pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
     pre_string.insert(pre_string.begin(), arg2_ret.pre_string.begin(), arg2_ret.pre_string.end());
+    pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
 
     // When iterating starting address, we need to ignore the size of the appended three op code.
     // The generateThreeOpCode method for each argument will modify starting_address by reference, so we can ignore that here.

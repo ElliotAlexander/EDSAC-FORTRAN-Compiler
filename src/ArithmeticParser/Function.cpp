@@ -34,17 +34,21 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
     // Construct symbol table entries for each computed argument value
     // Recall that each fucntion argument can be an arithmetic, hence we need to compute a parse tree, build the value and then add a reference in the 
     // symbol table.
+
+    int offset = 0;
     for(std::vector<RDParseTreeNode*>::iterator it = function_arguments.begin(); it != function_arguments.end(); ++it)      // iterate through the functions arguments
     {   
         TOC_RETURN_VALUE toc_res = (*it)->generateThreeOPCode(starting_address);          // The return value of the computef argument - i.e. the instructions required to compute the function argument
         return_string.insert(return_string.end(), toc_res.pre_string.begin(), toc_res.pre_string.end());        // Build the return value
+        offset += toc_res.pre_string.size();
         arguments.push_back(toc_res.call_value);            // Push back the return value  
     }
 
     FUNCTION_MAPPING_RETURN function_mapping = ::getFunctionMapping(function_name, arguments, starting_address);
+
     if(function_mapping.result){
         return_string.insert(return_string.end(), function_mapping.toc_inject.begin(), function_mapping.toc_inject.end());
-        starting_address += return_string.size();
+        starting_address += return_string.size() - offset;
         return {return_string, function_mapping.return_val };
     } else {
         Logging::logErrorMessage("Function " + function_name + " not found. Exiting Arithmetic Parser unsuccessfully.");
