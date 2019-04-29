@@ -1,0 +1,7 @@
+      SUBROUTINE TESTPROCESS(X,Y,Z)
+      A = (X + Y + Z)^2
+      PRINT A
+      CALL TESTPROCESS(A, X, Y)
+      RETURN
+      CALL TESTPROCESS(10, 15, 20)
+      END
