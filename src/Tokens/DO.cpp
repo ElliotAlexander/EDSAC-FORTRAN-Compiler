@@ -62,7 +62,7 @@ bool DO::parseRightHandSide(std::string rhs_input_string){
             Logging::logErrorMessage("Failed to load control vars. ");
             // TODO
             return false;
-        } else if(control_vars_right.size() == 2){
+        } else {
             DO::loop_start_value = std::stoi(control_vars_right[0]);
             DO::loop_end_value = std::stoi(control_vars_right[1]);
             DO::loop_iteration_amount = (control_vars_right.size() > 2) ? std::stoi(control_vars_right[2]) : 1;
