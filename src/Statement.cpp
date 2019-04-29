@@ -73,7 +73,8 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
     COMPUTED_GOTO* computed_goto = new COMPUTED_GOTO();
     PRINT* print_stmt = new PRINT();
     READ* read_stmt = new READ();
-    COMMON* common_stmt = new COMMON();           // There's an ambiguity somewhere with COMMON, s
+    CONTINUE* continue_stmt = new CONTINUE();
+    COMMON* common_stmt = new COMMON();           // There's an ambiguity somewhere with COMMON
 
 
     // TODO - There msut be a better way to do this. 
@@ -103,7 +104,8 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
         computed_goto,
         print_stmt,
         read_stmt,
-        common_stmt
+        common_stmt,
+        continue_stmt
     };
 
 

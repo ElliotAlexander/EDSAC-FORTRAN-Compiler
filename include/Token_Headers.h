@@ -8,6 +8,7 @@
 #include "Tokens/CALL.h"
 #include "Tokens/COMMON.h"
 #include "Tokens/COMPUTED_GOTO.h"
+#include "Tokens/CONTINUE.h"
 #include "Tokens/DIMENSION.h"
 #include "Tokens/DO.h"
 #include "Tokens/END.h"
