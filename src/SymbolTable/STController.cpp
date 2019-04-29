@@ -138,6 +138,12 @@ namespace SymbolTableController{
     }
 
     bool enterFunctionScope(std::string function_name){
+
+        if(in_function_scope){
+            Logging::logErrorMessage("Recursive Function / Subroutine call detected! This is not supported.");
+            Logging::logErrorMessage("Compilation will exit.");
+            exit(1);
+        }
         std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > >::iterator it = function_symbol_tables.find(function_name);
         Logging::logConditionalInfoMessage(Globals::output_function_mappings, "Calling function " + function_name + ".");
         if(it != function_symbol_tables.end()) {
