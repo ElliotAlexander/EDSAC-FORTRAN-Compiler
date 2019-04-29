@@ -1,5 +1,0 @@
-      FUNCTION HELLO(X)
-      ASSIGN X TO 45
-      RETURN
-      CALL HELLO(5)
-      END
