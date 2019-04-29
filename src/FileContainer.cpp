@@ -118,8 +118,8 @@ std::vector<Segment> FileContainer::dissectSegments(){
     // If we find a segment with no statements in it - warn the user.
     // This also catches non-terminated segments - i.e. a Main Program segment without an END.
     if(segment_arr.size() == 0){
-        Logging::logWarnMessage("Warning - failed to load a fail program block from file " + file_name);
-        Logging::logWarnMessage("Did you forget to include an END Statement?");
+        Logging::logErrorMessage("Warning - failed to load a fail program block from file " + file_name);
+        Logging::logErrorMessage("Did you forget to include an END Statement?");
     }
 
     Logging::logNewLine();
