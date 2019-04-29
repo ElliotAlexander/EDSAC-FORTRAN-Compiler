@@ -1,6 +1,7 @@
 #include "Tokens/DIMENSION.h"
 
 bool DIMENSION::initaliseToken(std::string input){
+    Logging::logErrorMessage("Dimension Statements are not supported!");
     return true;
 }
 

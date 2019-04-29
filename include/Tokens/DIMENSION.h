@@ -6,6 +6,7 @@
 #include "RDParseTreeNode.h"
 #include "Constants.h"
 #include "ThreeOpCode/ThreeOpCode.h"
+#include "Logging.h"
 
 #include <string>
 #include <vector>
