@@ -22,17 +22,15 @@ std::vector<std::shared_ptr<ThreeOpCode>> READ::generatetoc(int starting_address
         use_entry = entry.result;
     }
 
-    std::shared_ptr<int> m20_mapping = Libs::getLibraryLineMapping("P6");
-    std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address - 1);
+    Libs::enableRoutine("M20");
+    std::string m20_text = Libs::getLibraryContent("M20");
+
 
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
-
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACCUMULATOR_NO_CLEAR, false)));
-	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(m20_mapping , THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_POSTITIVE, false)));
-    pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("45", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, std::string("F" + m20_text))));
+	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("45", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+	pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("16", THREE_OP_CODE_OPERATIONS::SHIFT_ACCUMULATOR_RIGHT, false)));
     pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(use_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
 
     return pre_string;

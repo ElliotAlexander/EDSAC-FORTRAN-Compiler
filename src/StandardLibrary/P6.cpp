@@ -7,6 +7,7 @@ P6::P6(){
 	P6::instruction_length = 32;
 	P6::calling_value = std::shared_ptr<int>(new int(0));
 	P6::name = "P6";
+	P6::type = LIBRARY_TYPE::CLOSED_LIBRARY;
 }
 
 
@@ -39,4 +40,8 @@ bool P6::applyOffset(int offset) {
 	int new_val = *calling_value + offset;
 	*calling_value = new_val;
 	return true;
+}
+
+LIBRARY_TYPE P6::getType(){
+	return P6::type;
 }

@@ -7,6 +7,7 @@ M20::M20(){
 	M20::instruction_length = 32;
 	M20::calling_value = std::shared_ptr<int>(new int(0));
 	M20::name = "M20";
+	M20::type = LIBRARY_TYPE::SPECIAL_LIBRARY;
 }
 
 
@@ -39,4 +40,8 @@ bool M20::applyOffset(int offset) {
 	int new_val = *calling_value + offset;
 	*calling_value = new_val;
 	return true;
+}
+
+LIBRARY_TYPE M20::getType(){
+	return M20::type;
 }

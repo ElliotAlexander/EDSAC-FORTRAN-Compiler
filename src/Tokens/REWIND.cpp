@@ -1,6 +1,7 @@
 #include "Tokens/REWIND.h"
 
 bool REWIND::initaliseToken(std::string input){
+    Logging::logErrorMessage("REWIND is not implemented on EDSAC!");
     return true;
 }
 

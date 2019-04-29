@@ -42,6 +42,21 @@ namespace Libs {
 		}
 	}
 
+	std::string getLibraryContent(std::string name){
+		std::map<std::string, Library*>::iterator it = library_mappings.find(name);
+		if(it != library_mappings.end()){
+			if(!(*it).second->getEnabled()){
+				Logging::logInfoMessage("Library " + name + " is disabled!");
+			} else {
+				return (*it).second->getRoutine();
+			}
+		} else {
+			Logging::logWarnMessage("Failed to find library " + name);
+			return "";
+		}
+		return "";
+	}
+
 
 	LibraryReturnContainer buildLibraries(int offset) {
 		Logging::logInfoMessage("Building bundled libraries.");
@@ -52,7 +67,7 @@ namespace Libs {
 		std::map<std::string, Library*>::iterator it = library_mappings.begin();
 
 		for(; it != library_mappings.end(); ++it){
-			if((*it).second->getEnabled()){
+			if((*it).second->getEnabled() && (*it).second->getType() == LIBRARY_TYPE::CLOSED_LIBRARY){
 
 				Logging::logInfoMessage("Offsetting " + (*it).second->getName() + " by " + std::to_string(offset));
 				(*it).second->applyOffset(offset);
