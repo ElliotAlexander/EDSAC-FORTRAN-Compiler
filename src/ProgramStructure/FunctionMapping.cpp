@@ -14,7 +14,19 @@ std::pair<std::shared_ptr<int>, std::shared_ptr<int>> FUNCTION_MAPPING_PAIR;
 std::string current_function_name;
 bool inside_function_flag;
 
+
+std::string current_subroutine_name;
+bool inside_subroutine_flag;
+
+
 std::shared_ptr<int> addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line){
+
+    if(inside_subroutine_flag){
+        Logging::logErrorMessage("Nested subroutine detected - Subroutine  " + name + " is declared before the termination of " + current_subroutine_name);
+        Logging::logErrorMessage("This is not supported!");
+        exit(1);
+    }
+
     SUBROUTINE_MAPPING_PAIR.first = LineMapping::addTemporaryLineMapping(start_line);
     SUBROUTINE_MAPPING_PAIR.second = LineMapping::addTemporaryLineMapping(start_line);
 
@@ -23,6 +35,10 @@ std::shared_ptr<int> addSubroutineMapping(std::string name, std::vector<std::str
     for(int index = 0; index < arguments.size(); index++){
         SymbolTableController::addDeclaredVariable(arguments.at(index), "", ST_ENTRY_TYPE::UNASSIGNED_T);
     }
+
+    current_subroutine_name = name;
+    inside_subroutine_flag = true;
+
     subroutine_mappings.insert(std::map<std::string, SUBROUTINE_MAPPING_ENTRY>::value_type(name, entry));
     return SUBROUTINE_MAPPING_PAIR.second;
 }
@@ -62,7 +78,11 @@ SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int 
 }
 
 std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine(int end_line){
-    if(true){
+    if(inside_subroutine_flag){
+
+        current_subroutine_name = "";
+        inside_subroutine_flag = false;
+
         std::vector<std::shared_ptr<ThreeOpCode> > return_toc = {            // This is to be overwritten!!!
                 std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::STOP_PROGRAM, false))
         };
@@ -73,9 +93,7 @@ std::vector<std::shared_ptr<ThreeOpCode> > exitSubroutine(int end_line){
         return return_toc;
     } else {
         Logging::logErrorMessage("Error - attempted to exit a Subroutine Program while not inside one.");
-        return {
-
-        };
+        exit(1);
     }
 }
 

@@ -62,6 +62,10 @@ extern std::shared_ptr<int> return_address_mapping;
 extern std::string current_function_name;
 extern bool inside_function_flag;
 
+extern std::string current_subroutine_name;
+extern bool inside_subroutine_flag;
+
+
 
 std::shared_ptr<int> addSubroutineMapping(std::string name, std::vector<std::string> arguments, int start_line);
 SUBROUTINE_MAPPING_RETURN getSubroutineMapping(std::string subroutine_name, int return_address, std::vector<std::shared_ptr<ST_ENTRY> > arguments);
