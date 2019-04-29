@@ -149,6 +149,7 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
 
             return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(return_address_mapping, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             return_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(entry.start_line, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));
+            SymbolTableController::exitFunctionScope();
             return {true, return_toc, entry.return_val};
         }
     } else {
