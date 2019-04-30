@@ -47,6 +47,7 @@ namespace EDSAC {
             case DATA_SET:
                 return EDSAC_DATA_ORDER_INSTRUCTION;
             default:
+                // Defensive programming - this shouldn't happen.
                 Logging::logErrorMessage("Something went wrong - failed to generate EDSAC character codes.");
                 return {};  // Return no instruction
         }
