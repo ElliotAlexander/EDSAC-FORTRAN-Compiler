@@ -22,55 +22,57 @@ Grammar
     6           | expression MINUS expression
     7           | expression MUL expression
     8           | expression DIV expression
-    9           | VARIABLE LPAREN arguments RPAREN
-   10           | VARIABLE LPAREN RPAREN
-   11           | LPAREN expression RPAREN
-   12           | MINUS INT
-   13           | MINUS FLOAT
-   14           | INT
-   15           | FLOAT
-   16           | VARIABLE
+    9           | expression EXPONENT expression
+   10           | VARIABLE LPAREN arguments RPAREN
+   11           | VARIABLE LPAREN RPAREN
+   12           | LPAREN expression RPAREN
+   13           | MINUS INT
+   14           | MINUS FLOAT
+   15           | INT
+   16           | FLOAT
+   17           | VARIABLE
 
-   17 arguments: single_argument
-   18          | expression COMMA arguments
+   18 arguments: single_argument
+   19          | expression COMMA arguments
 
-   19 single_argument: expression
+   20 single_argument: expression
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-INT (258) 12 14
-FLOAT (259) 13 15
-VARIABLE (260) 9 10 16
+INT (258) 13 15
+FLOAT (259) 14 16
+VARIABLE (260) 10 11 17
 ENDL (261)
 PLUS (262) 5
-MINUS (263) 6 12 13
+MINUS (263) 6 13 14
 MUL (264) 7
 DIV (265) 8
-LPAREN (266) 9 10 11
-RPAREN (267) 9 10 11
-COMMA (268) 18
+LPAREN (266) 10 11 12
+RPAREN (267) 10 11 12
+COMMA (268) 19
+EXPONENT (269) 9
 
 
 Nonterminals, with rules where they appear
 
-$accept (14)
+$accept (15)
     on left: 0
-start (15)
+start (16)
     on left: 1, on right: 0
-expressions (16)
+expressions (17)
     on left: 2 3, on right: 1 2
-top_level_expression (17)
+top_level_expression (18)
     on left: 4, on right: 2 3
-expression (18)
-    on left: 5 6 7 8 9 10 11 12 13 14 15 16, on right: 4 5 6 7 8 11
-    18 19
-arguments (19)
-    on left: 17 18, on right: 9 18
-single_argument (20)
-    on left: 19, on right: 17
+expression (19)
+    on left: 5 6 7 8 9 10 11 12 13 14 15 16 17, on right: 4 5 6 7 8
+    9 12 19 20
+arguments (20)
+    on left: 18 19, on right: 10 19
+single_argument (21)
+    on left: 20, on right: 18
 
 
 State 0
@@ -91,34 +93,34 @@ State 0
 
 State 1
 
-   14 expression: INT .
-
-    $default  reduce using rule 14 (expression)
-
-
-State 2
-
-   15 expression: FLOAT .
+   15 expression: INT .
 
     $default  reduce using rule 15 (expression)
 
 
+State 2
+
+   16 expression: FLOAT .
+
+    $default  reduce using rule 16 (expression)
+
+
 State 3
 
-    9 expression: VARIABLE . LPAREN arguments RPAREN
-   10           | VARIABLE . LPAREN RPAREN
-   16           | VARIABLE .
+   10 expression: VARIABLE . LPAREN arguments RPAREN
+   11           | VARIABLE . LPAREN RPAREN
+   17           | VARIABLE .
 
     LPAREN  shift, and go to state 10
 
-    LPAREN    [reduce using rule 16 (expression)]
-    $default  reduce using rule 16 (expression)
+    LPAREN    [reduce using rule 17 (expression)]
+    $default  reduce using rule 17 (expression)
 
 
 State 4
 
-   12 expression: MINUS . INT
-   13           | MINUS . FLOAT
+   13 expression: MINUS . INT
+   14           | MINUS . FLOAT
 
     INT    shift, and go to state 11
     FLOAT  shift, and go to state 12
@@ -126,7 +128,7 @@ State 4
 
 State 5
 
-   11 expression: LPAREN . expression RPAREN
+   12 expression: LPAREN . expression RPAREN
 
     INT       shift, and go to state 1
     FLOAT     shift, and go to state 2
@@ -175,11 +177,13 @@ State 9
     6           | expression . MINUS expression
     7           | expression . MUL expression
     8           | expression . DIV expression
+    9           | expression . EXPONENT expression
 
-    PLUS   shift, and go to state 16
-    MINUS  shift, and go to state 17
-    MUL    shift, and go to state 18
-    DIV    shift, and go to state 19
+    PLUS      shift, and go to state 16
+    MINUS     shift, and go to state 17
+    MUL       shift, and go to state 18
+    DIV       shift, and go to state 19
+    EXPONENT  shift, and go to state 20
 
     MINUS     [reduce using rule 4 (top_level_expression)]
     $default  reduce using rule 4 (top_level_expression)
@@ -187,33 +191,33 @@ State 9
 
 State 10
 
-    9 expression: VARIABLE LPAREN . arguments RPAREN
-   10           | VARIABLE LPAREN . RPAREN
+   10 expression: VARIABLE LPAREN . arguments RPAREN
+   11           | VARIABLE LPAREN . RPAREN
 
     INT       shift, and go to state 1
     FLOAT     shift, and go to state 2
     VARIABLE  shift, and go to state 3
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
-    RPAREN    shift, and go to state 20
+    RPAREN    shift, and go to state 21
 
-    expression       go to state 21
-    arguments        go to state 22
-    single_argument  go to state 23
+    expression       go to state 22
+    arguments        go to state 23
+    single_argument  go to state 24
 
 
 State 11
 
-   12 expression: MINUS INT .
+   13 expression: MINUS INT .
 
-    $default  reduce using rule 12 (expression)
+    $default  reduce using rule 13 (expression)
 
 
 State 12
 
-   13 expression: MINUS FLOAT .
+   14 expression: MINUS FLOAT .
 
-    $default  reduce using rule 13 (expression)
+    $default  reduce using rule 14 (expression)
 
 
 State 13
@@ -222,13 +226,15 @@ State 13
     6           | expression . MINUS expression
     7           | expression . MUL expression
     8           | expression . DIV expression
-   11           | LPAREN expression . RPAREN
+    9           | expression . EXPONENT expression
+   12           | LPAREN expression . RPAREN
 
-    PLUS    shift, and go to state 16
-    MINUS   shift, and go to state 17
-    MUL     shift, and go to state 18
-    DIV     shift, and go to state 19
-    RPAREN  shift, and go to state 24
+    PLUS      shift, and go to state 16
+    MINUS     shift, and go to state 17
+    MUL       shift, and go to state 18
+    DIV       shift, and go to state 19
+    RPAREN    shift, and go to state 25
+    EXPONENT  shift, and go to state 20
 
 
 State 14
@@ -255,7 +261,7 @@ State 16
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
 
-    expression  go to state 25
+    expression  go to state 26
 
 
 State 17
@@ -268,7 +274,7 @@ State 17
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
 
-    expression  go to state 26
+    expression  go to state 27
 
 
 State 18
@@ -281,7 +287,7 @@ State 18
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
 
-    expression  go to state 27
+    expression  go to state 28
 
 
 State 19
@@ -294,108 +300,12 @@ State 19
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
 
-    expression  go to state 28
+    expression  go to state 29
 
 
 State 20
 
-   10 expression: VARIABLE LPAREN RPAREN .
-
-    $default  reduce using rule 10 (expression)
-
-
-State 21
-
-    5 expression: expression . PLUS expression
-    6           | expression . MINUS expression
-    7           | expression . MUL expression
-    8           | expression . DIV expression
-   18 arguments: expression . COMMA arguments
-   19 single_argument: expression .
-
-    PLUS   shift, and go to state 16
-    MINUS  shift, and go to state 17
-    MUL    shift, and go to state 18
-    DIV    shift, and go to state 19
-    COMMA  shift, and go to state 29
-
-    $default  reduce using rule 19 (single_argument)
-
-
-State 22
-
-    9 expression: VARIABLE LPAREN arguments . RPAREN
-
-    RPAREN  shift, and go to state 30
-
-
-State 23
-
-   17 arguments: single_argument .
-
-    $default  reduce using rule 17 (arguments)
-
-
-State 24
-
-   11 expression: LPAREN expression RPAREN .
-
-    $default  reduce using rule 11 (expression)
-
-
-State 25
-
-    5 expression: expression . PLUS expression
-    5           | expression PLUS expression .
-    6           | expression . MINUS expression
-    7           | expression . MUL expression
-    8           | expression . DIV expression
-
-    MUL  shift, and go to state 18
-    DIV  shift, and go to state 19
-
-    $default  reduce using rule 5 (expression)
-
-
-State 26
-
-    5 expression: expression . PLUS expression
-    6           | expression . MINUS expression
-    6           | expression MINUS expression .
-    7           | expression . MUL expression
-    8           | expression . DIV expression
-
-    MUL  shift, and go to state 18
-    DIV  shift, and go to state 19
-
-    $default  reduce using rule 6 (expression)
-
-
-State 27
-
-    5 expression: expression . PLUS expression
-    6           | expression . MINUS expression
-    7           | expression . MUL expression
-    7           | expression MUL expression .
-    8           | expression . DIV expression
-
-    $default  reduce using rule 7 (expression)
-
-
-State 28
-
-    5 expression: expression . PLUS expression
-    6           | expression . MINUS expression
-    7           | expression . MUL expression
-    8           | expression . DIV expression
-    8           | expression DIV expression .
-
-    $default  reduce using rule 8 (expression)
-
-
-State 29
-
-   18 arguments: expression COMMA . arguments
+    9 expression: expression EXPONENT . expression
 
     INT       shift, and go to state 1
     FLOAT     shift, and go to state 2
@@ -403,20 +313,155 @@ State 29
     MINUS     shift, and go to state 4
     LPAREN    shift, and go to state 5
 
-    expression       go to state 21
-    arguments        go to state 31
-    single_argument  go to state 23
+    expression  go to state 30
+
+
+State 21
+
+   11 expression: VARIABLE LPAREN RPAREN .
+
+    $default  reduce using rule 11 (expression)
+
+
+State 22
+
+    5 expression: expression . PLUS expression
+    6           | expression . MINUS expression
+    7           | expression . MUL expression
+    8           | expression . DIV expression
+    9           | expression . EXPONENT expression
+   19 arguments: expression . COMMA arguments
+   20 single_argument: expression .
+
+    PLUS      shift, and go to state 16
+    MINUS     shift, and go to state 17
+    MUL       shift, and go to state 18
+    DIV       shift, and go to state 19
+    COMMA     shift, and go to state 31
+    EXPONENT  shift, and go to state 20
+
+    $default  reduce using rule 20 (single_argument)
+
+
+State 23
+
+   10 expression: VARIABLE LPAREN arguments . RPAREN
+
+    RPAREN  shift, and go to state 32
+
+
+State 24
+
+   18 arguments: single_argument .
+
+    $default  reduce using rule 18 (arguments)
+
+
+State 25
+
+   12 expression: LPAREN expression RPAREN .
+
+    $default  reduce using rule 12 (expression)
+
+
+State 26
+
+    5 expression: expression . PLUS expression
+    5           | expression PLUS expression .
+    6           | expression . MINUS expression
+    7           | expression . MUL expression
+    8           | expression . DIV expression
+    9           | expression . EXPONENT expression
+
+    MUL       shift, and go to state 18
+    DIV       shift, and go to state 19
+    EXPONENT  shift, and go to state 20
+
+    $default  reduce using rule 5 (expression)
+
+
+State 27
+
+    5 expression: expression . PLUS expression
+    6           | expression . MINUS expression
+    6           | expression MINUS expression .
+    7           | expression . MUL expression
+    8           | expression . DIV expression
+    9           | expression . EXPONENT expression
+
+    MUL       shift, and go to state 18
+    DIV       shift, and go to state 19
+    EXPONENT  shift, and go to state 20
+
+    $default  reduce using rule 6 (expression)
+
+
+State 28
+
+    5 expression: expression . PLUS expression
+    6           | expression . MINUS expression
+    7           | expression . MUL expression
+    7           | expression MUL expression .
+    8           | expression . DIV expression
+    9           | expression . EXPONENT expression
+
+    EXPONENT  shift, and go to state 20
+
+    $default  reduce using rule 7 (expression)
+
+
+State 29
+
+    5 expression: expression . PLUS expression
+    6           | expression . MINUS expression
+    7           | expression . MUL expression
+    8           | expression . DIV expression
+    8           | expression DIV expression .
+    9           | expression . EXPONENT expression
+
+    EXPONENT  shift, and go to state 20
+
+    $default  reduce using rule 8 (expression)
 
 
 State 30
 
-    9 expression: VARIABLE LPAREN arguments RPAREN .
+    5 expression: expression . PLUS expression
+    6           | expression . MINUS expression
+    7           | expression . MUL expression
+    8           | expression . DIV expression
+    9           | expression . EXPONENT expression
+    9           | expression EXPONENT expression .
+
+    EXPONENT  shift, and go to state 20
 
     $default  reduce using rule 9 (expression)
 
 
 State 31
 
-   18 arguments: expression COMMA arguments .
+   19 arguments: expression COMMA . arguments
 
-    $default  reduce using rule 18 (arguments)
+    INT       shift, and go to state 1
+    FLOAT     shift, and go to state 2
+    VARIABLE  shift, and go to state 3
+    MINUS     shift, and go to state 4
+    LPAREN    shift, and go to state 5
+
+    expression       go to state 22
+    arguments        go to state 33
+    single_argument  go to state 24
+
+
+State 32
+
+   10 expression: VARIABLE LPAREN arguments RPAREN .
+
+    $default  reduce using rule 10 (expression)
+
+
+State 33
+
+   19 arguments: expression COMMA arguments .
+
+    $default  reduce using rule 19 (arguments)

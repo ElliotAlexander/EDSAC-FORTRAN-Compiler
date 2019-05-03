@@ -106,7 +106,7 @@
 # undef YYERROR_VERBOSE
 # define YYERROR_VERBOSE 1
 #else
-# define YYERROR_VERBOSE 0
+# define YYERROR_VERBOSE 1
 #endif
 
 /* In a future release of Bison, this section will be replaced
@@ -463,13 +463,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    64,    64,    66,    67,    69,    74,    79,    84,    89,
-      94,    99,   104,   109,   113,   117,   121,   124,   127,   132,
-     133,   142
+       0,    65,    65,    67,    68,    70,    75,    80,    85,    90,
+      95,   100,   105,   110,   114,   118,   122,   125,   128,   133,
+     134,   143
 };
 #endif
 
-#if YYDEBUG || YYERROR_VERBOSE || 0
+#if YYDEBUG || YYERROR_VERBOSE || 1
 /* YYTNAME[SYMBOL-NUM] -- String name of the symbol SYMBOL-NUM.
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
@@ -1259,7 +1259,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 69 "parse.y" /* yacc.c:1660  */
+#line 70 "parse.y" /* yacc.c:1660  */
     {
         RDParseTreeNode* x = (yyvsp[0].u.toc_T);
         result = x;
@@ -1268,7 +1268,7 @@ yyreduce:
     break;
 
   case 6:
-#line 74 "parse.y" /* yacc.c:1660  */
+#line 75 "parse.y" /* yacc.c:1660  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
@@ -1278,7 +1278,7 @@ yyreduce:
     break;
 
   case 7:
-#line 79 "parse.y" /* yacc.c:1660  */
+#line 80 "parse.y" /* yacc.c:1660  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
@@ -1288,7 +1288,7 @@ yyreduce:
     break;
 
   case 8:
-#line 84 "parse.y" /* yacc.c:1660  */
+#line 85 "parse.y" /* yacc.c:1660  */
     {
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
@@ -1298,7 +1298,7 @@ yyreduce:
     break;
 
   case 9:
-#line 89 "parse.y" /* yacc.c:1660  */
+#line 90 "parse.y" /* yacc.c:1660  */
     { 
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
@@ -1308,7 +1308,7 @@ yyreduce:
     break;
 
   case 10:
-#line 94 "parse.y" /* yacc.c:1660  */
+#line 95 "parse.y" /* yacc.c:1660  */
     {
         RDParseTreeNode *a1 = (yyvsp[-2].u.toc_T);
         RDParseTreeNode *a2 = (yyvsp[0].u.toc_T);
@@ -1318,7 +1318,7 @@ yyreduce:
     break;
 
   case 11:
-#line 99 "parse.y" /* yacc.c:1660  */
+#line 100 "parse.y" /* yacc.c:1660  */
     {
         char* function_name  = (yyvsp[-3].u.vval);
         std::vector<RDParseTreeNode*> args = (yyvsp[-1].toc_args);
@@ -1328,7 +1328,7 @@ yyreduce:
     break;
 
   case 12:
-#line 104 "parse.y" /* yacc.c:1660  */
+#line 105 "parse.y" /* yacc.c:1660  */
     {
         char* function_name = (yyvsp[-2].u.vval);
         std::vector<RDParseTreeNode*> args = {};
@@ -1338,7 +1338,7 @@ yyreduce:
     break;
 
   case 13:
-#line 109 "parse.y" /* yacc.c:1660  */
+#line 110 "parse.y" /* yacc.c:1660  */
     { 
         RDParseTreeNode *t = (yyvsp[-1].u.toc_T); 
         (yyval.u.toc_T) =  t;
@@ -1347,7 +1347,7 @@ yyreduce:
     break;
 
   case 14:
-#line 113 "parse.y" /* yacc.c:1660  */
+#line 114 "parse.y" /* yacc.c:1660  */
     {
         int x = (yyvsp[0].u.ival);
         (yyval.u.toc_T) = new Value<int>(0-x);
@@ -1356,7 +1356,7 @@ yyreduce:
     break;
 
   case 15:
-#line 117 "parse.y" /* yacc.c:1660  */
+#line 118 "parse.y" /* yacc.c:1660  */
     {
         float x = (yyvsp[0].u.fval);
         (yyval.u.toc_T) = new Value<float>(0-x);
@@ -1365,7 +1365,7 @@ yyreduce:
     break;
 
   case 16:
-#line 121 "parse.y" /* yacc.c:1660  */
+#line 122 "parse.y" /* yacc.c:1660  */
     { 
         (yyval.u.toc_T) =  new Value<int>((yyvsp[0].u.ival));
     }
@@ -1373,7 +1373,7 @@ yyreduce:
     break;
 
   case 17:
-#line 124 "parse.y" /* yacc.c:1660  */
+#line 125 "parse.y" /* yacc.c:1660  */
     { 
         (yyval.u.toc_T) = new Value<float>((yyvsp[0].u.fval));
     }
@@ -1381,7 +1381,7 @@ yyreduce:
     break;
 
   case 18:
-#line 127 "parse.y" /* yacc.c:1660  */
+#line 128 "parse.y" /* yacc.c:1660  */
     {
         char* name = (yyvsp[0].u.vval);
         (yyval.u.toc_T) = new Variable(name);
@@ -1390,7 +1390,7 @@ yyreduce:
     break;
 
   case 20:
-#line 133 "parse.y" /* yacc.c:1660  */
+#line 134 "parse.y" /* yacc.c:1660  */
     {
         RDParseTreeNode* arg1 = (yyvsp[-2].u.toc_T);
         std::vector<RDParseTreeNode*> return_arr;
@@ -1403,7 +1403,7 @@ yyreduce:
     break;
 
   case 21:
-#line 142 "parse.y" /* yacc.c:1660  */
+#line 143 "parse.y" /* yacc.c:1660  */
     {
         RDParseTreeNode* arg1 = (yyvsp[0].u.toc_T);
         std::vector<RDParseTreeNode*> return_arr;
@@ -1641,10 +1641,9 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 148 "parse.y" /* yacc.c:1903  */
+#line 149 "parse.y" /* yacc.c:1903  */
 
 
 void yyerror(RDParseTreeNode *&result, const char *s) {
-    cout << "Parser Error:  Message: " << s << endl;
-    exit(-1);
+    cout << "[ERROR] Arithmetic Parser Error. Message: " << s << endl;
 }

@@ -464,9 +464,10 @@ char *yytext;
 #include <io.h>
 #endif
 
+// This class forms the tokenizer of the arithmetic parser referenced in ArithmeticRDParser.cpp
 
-#line 468 "lex.flex.cc"
 #line 469 "lex.flex.cc"
+#line 470 "lex.flex.cc"
 
 #define INITIAL 0
 
@@ -683,9 +684,9 @@ YY_DECL
 		}
 
 	{
-#line 17 "lex.l"
+#line 18 "lex.l"
 
-#line 688 "lex.flex.cc"
+#line 689 "lex.flex.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -745,22 +746,22 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 18 "lex.l"
+#line 19 "lex.l"
 ; // consume line by line TODO
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "lex.l"
-{ yylval.u.fval = atof(yytext); return FLOAT; }
+#line 20 "lex.l"
+{ yylval.u.fval = atof(yytext); return FLOAT; }   
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 20 "lex.l"
+#line 21 "lex.l"
 { yylval.u.ival = atoi(yytext); return INT; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "lex.l"
+#line 22 "lex.l"
 {
     yylval.u.vval = yytext;
     return VARIABLE;
@@ -768,50 +769,50 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "lex.l"
+#line 26 "lex.l"
 { return PLUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 26 "lex.l"
+#line 27 "lex.l"
 { return MINUS; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 27 "lex.l"
+#line 28 "lex.l"
 { return MUL; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 28 "lex.l"
+#line 29 "lex.l"
 { return DIV; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 29 "lex.l"
+#line 30 "lex.l"
 { return EXPONENT; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 30 "lex.l"
+#line 31 "lex.l"
 { return LPAREN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 31 "lex.l"
+#line 32 "lex.l"
 { return RPAREN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 32 "lex.l"
+#line 33 "lex.l"
 { return COMMA; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 33 "lex.l"
+#line 34 "lex.l"
 ECHO;
 	YY_BREAK
-#line 814 "lex.flex.cc"
+#line 815 "lex.flex.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1816,4 +1817,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 33 "lex.l"
+#line 34 "lex.l"
