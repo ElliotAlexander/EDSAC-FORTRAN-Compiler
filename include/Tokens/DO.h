@@ -21,6 +21,10 @@
 #include <vector>
 #include <string>
 
+#define DO_LOOP_DEFAULT_ITERATION_AMOUNT 1
+#define DO_LOOP_MINIMUM_SIZE 2
+#define DO_LOOP_MAXIMUM_SIZE 3
+
 class DO : public Token {
     public:
         bool isValid(std::string input);
