@@ -1,1 +1,0 @@
-./out/edsac.out --file tests/Assorted/ST_Testing.f -l -t -p -s -y -m  -d -b 56 -o DO_tests.edsac  -c -i 2 -e P6
