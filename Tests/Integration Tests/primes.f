@@ -11,6 +11,7 @@ C Not prime - exit the loop
 30    Y = 5
       GOTO 40
 40    RETURN Y
+C Program start
       DO 50 INDEX = 1, 15
       K = ISPRIME(INDEX)
       IF(K) 50, 45, 50
