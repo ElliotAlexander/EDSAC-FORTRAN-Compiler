@@ -383,6 +383,7 @@
     <ClCompile Include="src\tokens\CALL.cpp" />
     <ClCompile Include="src\tokens\COMMON.cpp" />
     <ClCompile Include="src\Tokens\COMPUTED_GOTO.cpp" />
+    <ClCompile Include="src\Tokens\CONTINUE.cpp" />
     <ClCompile Include="src\tokens\DIMENSION.cpp" />
     <ClCompile Include="src\tokens\DO.cpp" />
     <ClCompile Include="src\tokens\END.cpp" />

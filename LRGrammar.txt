@@ -1,9 +1,0 @@
-start -> expressions
-
-expressions -> expressions top_level_expressions | top_level_expressions
-
-expression -> expression + expression | expression - expression | expression * expression | expression / expression | VARIABLE ( arguments ) | VARIABLE ( ) | ( expression ) | - INT | - FLOAT | INT | FLOAT | VARIABLE
-
-arguments -> single_argument | expression , arguments
-
-single_argument -> expression 

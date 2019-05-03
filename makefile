@@ -26,9 +26,9 @@ CC_LINUX=g++
 
 BASE_FLAGS_LINUX = -std=c++14 -static
 
-LDFLAGS_LINUX = -Iboost_1_69_0/installation/include -I include/ -L /usr/lib
+LDFLAGS_LINUX =  -I include/ -I /usr/lib 
 
-LLIBFLAGS_LINUX = -Lboost_1_69_0/installation/lib 
+LLIBFLAGS_LINUX = -L/usr/lib 
 
 LINKFLAGS_LINUX = -lboost_system  -lboost_thread -lboost_filesystem -lboost_regex -lpthread -ll -lm 
 
