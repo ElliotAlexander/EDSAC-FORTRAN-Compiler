@@ -1,5 +1,11 @@
 #include "Tokens/ASSIGN.h"
 
+/**
+ * 
+ * 
+ * These Helper functions
+ * 
+ **/ 
 inline bool isFloat( std::string myString ) {
     std::istringstream iss(myString);
     float f;

@@ -3,13 +3,20 @@
 bool GOTO::initaliseToken(std::string input){
     if(input.substr(0,4) == "GOTO"){
 
+
+        // remove the keyword
         input = input.erase(0, 4);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded GOTO String: " + input);
+
+
+        // Everything else in the string should be an integer argument.
+        // Regex should have ensured that only integers reach this stage, so we can call stoi safely.
         GOTO::goto_single_arg = stoi(input);
         return true;
+
+    // Defensive prgrammming - this shouldn't happen
     } else {
-        Logging::logErrorMessage("Syntax Error - Failed to parse GOTO Statement. ");
-        Logging::logErrorMessage("Full statement: { " + input + "}. ");
+        Logging::logErrorMessage("Assertion Error - Failed to parse GOTO Statement. ");
         return false;  
     }
 }

@@ -1,15 +1,36 @@
 #include "Tokens/END.h"
 
 bool END::initaliseToken(std::string input){
+    // ENDFILE is not implemeented on EDSAC.
     if(input.substr(0,7) == "ENDFILE"){
-        // TODO - Not imiplemented
         Logging::logInfoMessage("Not implemented.");
     } else if(input.substr(0, 3) == "END"){
+        // Defensive pro
         if(input.length() == 3){
+
+            // END without a statement - no internal representation is needed. 
             return true;
+
+            // Check fi the syntax matches.
         } else if(input.front() == '(' && input.back() == ')'){
+
+            // Logging - note that this is NOT SUPPORTED.
             Logging::logErrorMessage("END arguments are not supported!");
 
+
+            /**
+             *  This loads a value into an internal repesenttion
+             *  END (x,y,z,a,b) is a legacy feature which sets the output switches on the IBM 704 
+             *  This is NOT implemented on EDASC.
+             * 
+             *  Parameterised STOP statements already set the ending vlaue of the accumualtor, so we have no where else to implement this.
+             * 
+             * We still parse the value though, for clarity
+             * 
+             * 
+             * */
+
+    
             argument_list_set = true;
             input.erase(0,1);
             input.pop_back();
@@ -26,9 +47,10 @@ bool END::initaliseToken(std::string input){
         } else { 
             Logging::logErrorMessage("Failed to parse END Statement.");
         }
+
+    // Defensive programming, this should never happen.
     } else {
-        // TODO - tidy all these messages up
-        Logging::logErrorMessage("Failed to parse END Statement. ");
+        Logging::logErrorMessage("Assertation error - Failed to parse END Statement. ");
     }
     return false;
 }

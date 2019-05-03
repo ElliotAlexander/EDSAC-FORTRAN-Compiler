@@ -37,11 +37,18 @@ bool COMMON::initaliseToken(std::string input){
         return true;
     } else {
         // This should never happen.
+        // Defensive programming.
         Logging::logErrorMessage("Assertation error - failed to parse COMMON statement.");
         return false;
     }
 }
 
+
+
+/**
+ *  std::vector<std::shared_ptr<ThreeOpCode>> COMMON::generatetoc(int starting_address)
+ *  This function is called, however common blocks are not implemented.
+ **/ 
 std::vector<std::shared_ptr<ThreeOpCode>> COMMON::generatetoc(int starting_address){
     Logging::logErrorMessage("Common blocks are not implenented!");
     return {};

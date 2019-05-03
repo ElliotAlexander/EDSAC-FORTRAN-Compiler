@@ -1,14 +1,23 @@
 #include "Tokens/IF.h"
 // TODO save the full string to a class member, improve output.
 bool IF::initaliseToken(std::string input){
+    // This should never happen
     if(!(input.substr(0,2) == "IF")){
         Logging::logErrorMessage("Syntax Error - Failed to parse IF Statement. ");
         Logging::logErrorMessage("Full statement: { " + input + "}. ");
     } else {
+        // Defensive programming 
         input.erase(input.find("IF"), 2);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded IF String: " + input);
     }
     
+
+    /**
+     * 
+     * 
+     * For each of the right and left hand side arguments, parse them and check the output.
+     * 
+     * */
     if(!parseConditionalArgument(input)){
         return false;
     }
