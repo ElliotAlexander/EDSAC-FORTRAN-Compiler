@@ -1,5 +1,21 @@
 #include "SymbolTable/SymbolTable.h"
 
+
+
+
+/**
+ * SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) 
+ * 
+ * This method initialises the symbol table, definining its type from a constructor argument.
+ * 
+ * 
+ * This method also intiialsies a buffer flush value on the symbol table, in the instance that the type of symbol table 
+ * is set to declared var. 
+ * 
+ * This buffer flush variable is used as a bin value for the scope of all values within it.
+ * 
+ * 
+ **/ 
 SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {  
     Logging::logConditionalInfoMessage(Globals::output_symbol_table_operations, std::string("Initialising " + std::to_string(st) + " Symbol Table. "));
 	if (st == SYMBOL_TABLE_TYPE::DECLARED_VAR) {
@@ -15,6 +31,18 @@ SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {
 }
 
 
+
+/**
+ * 
+ * bool SymbolTable::remove(std::string name)
+ * 
+ * 
+ * This function removes an entry from the symbol table.
+ * Entries are referenced by name.
+ * The return value indicates whether the value was successfully removed - if tno value exists, then the return val is false.
+ * 
+ * 
+ **/ 
 bool SymbolTable::remove(std::string name){
     std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it = SymbolTable::st_map.find(name);
     std::shared_ptr<ST_ENTRY> ptr;
@@ -30,6 +58,13 @@ bool SymbolTable::remove(std::string name){
 
 
 // We can't use polymorphic values, so a string will have to do.
+/**
+ * 
+ *  This function is used for adding variables to the symbol table.
+ *  the function takes the name, value and type of an entry, and returns a pointer to the entry.
+ *  
+ * 
+ **/ 
 std::shared_ptr<ST_ENTRY> SymbolTable::add(std::string name, std::string value, ST_ENTRY_TYPE type){
     bool assigned = value.empty();
     int variable_index;
@@ -55,6 +90,18 @@ std::shared_ptr<ST_ENTRY> SymbolTable::add(std::string name, std::string value, 
     return p;
 }
 
+
+/**
+ * 
+ * 
+ * 
+ * This fucntion is used for retrieveing values from the symbol table.
+ * 
+ * Functions are referenced by name, and a pointer to the value of the symbol table entry is returned.
+ * 
+ * 
+ * 
+ **/ 
 ST_QUERY_RESULT SymbolTable::get(std::string name){
     std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it = SymbolTable::st_map.find(name);
     if(it != SymbolTable::st_map.end()) {
