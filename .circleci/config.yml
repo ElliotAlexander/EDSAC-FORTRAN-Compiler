@@ -6,14 +6,14 @@ jobs:
     steps:
       - run: 
           name: Install dependencies
-          command: apk -U add g++ boost boost-dev cmake flex bison
+          command: apk -U add git ssh g++ boost boost-dev cmake flex bison
       - checkout
       - run:
           name: Install caching certs
           command:  apk add ca-certificates
       - run:
           name: Run tests
-          command: ls bin/
+          command: ./bin/test
       - run:
           name: Build project
           command: ./bin/build
