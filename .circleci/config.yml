@@ -1,8 +1,28 @@
 version: 2
 jobs:
-  build:
+  build-linux:
     docker:
       - image: alpine
+    steps:
+      - run: 
+          name: Install dependencies
+          command: apk -U add g++ boost boost-dev cmake flex bison
+      - checkout
+      - run:
+          name: Install caching certs
+          command:  apk add ca-certificates
+      - run:
+          name: Run tests
+          command: ls
+      - run:
+          name: Build project
+          command: ./bin/build
+      - store_artifacts:
+          path: /bin/Linux/EDSAC
+          destination: artifact-file
+  build-macos:
+    macos:  
+      xcode: "10.0.0"
     steps:
       - run: 
           name: Install dependencies
@@ -24,4 +44,5 @@ workflows:
   version: 2
   build:
     jobs:
-      - build
+      - build-linux
+      - build-macos
