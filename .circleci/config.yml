@@ -6,7 +6,7 @@ jobs:
     steps:
       - run: 
           name: Install dependencies
-          command: apk -U add g++ libboost-all-dev cmake flex bison
+          command: apk -U add g++ boost boost-dev cmake flex bison
       - checkout
       - run:
           name: Install caching certs
