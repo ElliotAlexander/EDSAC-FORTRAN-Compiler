@@ -6,7 +6,7 @@ jobs:
     steps:
       - run: 
           name: Install dependencies
-          command: apk -U add git openssh g++ boost boost-dev cmake flex bison
+          command: apk -U add git openssh g++ boost boost-dev cmake flex bison bash
       - checkout
       - run:
           name: Install caching certs
