@@ -4,15 +4,45 @@ namespace SymbolTableController{
 
     bool in_function_scope;
     std::string function_scope_name;
+
+
+    /**
+     * 
+     * These are the Main program block symbol tables. 
+     * They're used for all variables outside of Function or Subroutine blocks. 
+     * 
+     **/ 
     std::unique_ptr<SymbolTable> symbol_tables[4] = {
         std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::DECLARED_VAR)),
         std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::UNDECLARED_VAR)),
-        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)),
-        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON_VAR))
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::TEMP_VAR)),         // Temp vars are declared as only ever passed or access by reference .
+        std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON_VAR))        // Common isn't implemented, so isn't used.
     };
 
+
+    // each object is initialised with another set of four unique symbol tables
+    // Each fucntion or subroutine scope is mapped to a set of symbol tables.
+    // Once entering or leaving function scope, we switch to this set of symbol tables.
+    // They are *NOT* cleared between scope instances.
     std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
 
+
+    /**
+     *  bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name)
+     *  
+     *  Input:
+     *      value -> Variable value, passed as a reference to another variable in the symbol table.
+     *      name -> the name to map the existing value onto. 
+     * 
+     * 
+     *  Output -> Success or failure of the link. 
+     *      
+     * 
+     * This function takes an input variable as a reference to an existing variable, and adds a new mapping. 
+     * For example - if a variable was declared as X = 10, where Xs is a pointer to the symbol table entry for X
+     * The variable Y could then also be mapped to the same value as X, via addLinkedVariable(xs, "Y")
+     * 
+     **/ 
     bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name){
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
@@ -21,6 +51,40 @@ namespace SymbolTableController{
         return symbol_tables[0]->addLinkedVariable(value, name);
     }
 
+
+    /**
+     * =========================
+     * 
+     *      Add Variablbe Getters
+     * 
+     * =========================
+     * 
+     * 
+     * 
+     * This block of 'put' methods largely encapsulates functionality for adding a varible.
+     * The type of the varitable is determined by the function type.
+     * The value of ST_ENTRY_TYPE is ignored. 
+     * 
+     **/ 
+
+
+
+    /**
+     * std::shared_ptr<ST_ENTRY> addCommon(std::string common_block_label, std::string name, std::string value, ST_ENTRY_TYPE type)
+     * 
+     * Input:
+     *      common_block_label -> Not implemented, planned support for named common blocks. However, common blocks are not implemented.
+     *                            If common blocks were implemetned, this value should represent the label of the common block.
+     * 
+     *      name -> The name of the variable to add. 
+     * 
+     *      type -> Unused. 
+     * 
+     * 
+     * Output:
+     *      A reference to the symbol table entry for the finished variable. 
+     * 
+     **/
     std::shared_ptr<ST_ENTRY> addCommon(std::string common_block_label, std::string name, std::string value, ST_ENTRY_TYPE type) {
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
@@ -29,6 +93,22 @@ namespace SymbolTableController{
         return symbol_tables[3]->add(name, value, type);
     }
 
+
+    /**
+     * std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type)
+     * 
+     * Input:
+     *      std::string value -> The value of the variable. 
+     *      ST_ENTRY_TYPE type -> Unused. This represents the type of the variable at conception,
+     * 
+     * Output:
+     *      A reference to the symbol table entry for the finished variable. 
+     * 
+     * 
+     * 
+     * Temporary variables are declared in the code with no further use - i.e. They are declared when a specific operation requires them, and accessed only by reference.
+     * A temporary variable can be disgarded immediately after the completion of the intiialising operation. 
+     **/
     std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type) {
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
@@ -37,6 +117,23 @@ namespace SymbolTableController{
         return symbol_tables[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
     }
 
+
+
+    /**
+     * std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type)
+     * 
+     * Input:
+     *      std::string value -> The value of the variable. 
+     *      ST_ENTRY_TYPE type -> Unused. This represents the type of the variable at conception,
+     * 
+     * Output:
+     *      A reference to the symbol table entry for the finished variable. 
+     * 
+     * 
+     * 
+     * Temporary variables are declared in the code with no further use - i.e. They are declared when a specific operation requires them, and accessed only by reference.
+     * A temporary variable can be disgarded immediately after the completion of the intiialising operation. 
+     **/
     std::shared_ptr<ST_ENTRY> addDeclaredVariable(std::string name, std::string value, ST_ENTRY_TYPE type){
         if(in_function_scope){
             Logging::logConditionalErrorMessage(function_scope_name.empty(), "Error - entered function scope symbol table without a symbol table being assigned.");
