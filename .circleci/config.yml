@@ -12,6 +12,9 @@ jobs:
           name: Install caching certs
           command:  apt-get install -y ca-certificates
       - run:
+          name: Check permissions
+          command: chmod +x bin/test && chmod +x bin/build
+      - run:
           name: Run tests
           command: ./bin/test
       - run:
