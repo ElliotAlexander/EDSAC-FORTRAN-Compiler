@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: alpine
+    steps:
+      - run: 
+          name: Install dependencies
+          command: apk -U add g++ libboost-all-dev cmake flex bison
+      - checkout
+      - run:
+          name: Install caching certs
+          command:  apk add ca-certificates
+      - run:
+          name: Run tests
+          command: ./bin/test
+      - run:
+          name: Build project
+          command: ./bin/build
+      - store_artifacts:
+          path: /bin/Linux/EDSAC
+          destination: artifact-file
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
