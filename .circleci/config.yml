@@ -6,7 +6,7 @@ jobs:
     steps:
       - run: 
           name: Install dependencies
-          command: apt-get update && apt-get install git g++ libboost-all-dev cmake flex bison bash
+          command: apt-get update && apt-get install -y git g++ libboost-all-dev cmake flex bison bash
       - checkout
       - run:
           name: Install caching certs
