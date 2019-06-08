@@ -13,7 +13,7 @@ jobs:
           command:  apk add ca-certificates
       - run:
           name: Run tests
-          command: ls
+          command: ls bin/
       - run:
           name: Build project
           command: ./bin/build
