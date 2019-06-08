@@ -3,10 +3,9 @@
 
 #include <string>
 #include <boost/filesystem.hpp>
-#include <boost/algorithm/string.hpp>
 #include <iostream>
 #include <fstream>
-#include <Constants.h>
+#include "Constants.h"
 #include "CommandArgs.h"
 #include "Globals.h"
 #include "Logging.h"

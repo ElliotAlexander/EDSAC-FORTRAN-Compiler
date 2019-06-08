@@ -1,6 +1,6 @@
-#line 1 "lex.flex.cc"
+#line 2 "lex.flex.cc"
 
-#line 3 "lex.flex.cc"
+#line 4 "lex.flex.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -466,8 +466,8 @@ char *yytext;
 
 // This class forms the tokenizer of the arithmetic parser referenced in ArithmeticRDParser.cpp
 
-#line 469 "lex.flex.cc"
 #line 470 "lex.flex.cc"
+#line 471 "lex.flex.cc"
 
 #define INITIAL 0
 
@@ -686,7 +686,7 @@ YY_DECL
 	{
 #line 18 "lex.l"
 
-#line 689 "lex.flex.cc"
+#line 690 "lex.flex.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -812,7 +812,7 @@ YY_RULE_SETUP
 #line 34 "lex.l"
 ECHO;
 	YY_BREAK
-#line 815 "lex.flex.cc"
+#line 816 "lex.flex.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

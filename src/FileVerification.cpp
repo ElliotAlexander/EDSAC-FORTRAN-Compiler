@@ -70,7 +70,7 @@ bool FileVerification::verify_extension(std::string file_input){
         std::string x = file_input.substr(i+1, file_input.length() - i);    // Build up a string of the file extension, not including the dot. 
         auto b = MiscConstants::FILE_TYPE_WHITELIST;                        // 
         for(int j = 0; j < b->length(); j++){                               // Iterate through the allowed file extensions, and return true if we get a match. 
-            if(boost::iequals(x, b[j])) {                                   // If we don't find a matching file extension, return false. Note that
+            if(x == b[j]) {                                   // If we don't find a matching file extension, return false. Note that
                 return true; 
             };
         }
