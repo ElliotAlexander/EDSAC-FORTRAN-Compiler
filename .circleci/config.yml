@@ -16,10 +16,10 @@ jobs:
           command: ls && ls bin/ && chmod +x bin/test.sh && chmod +x bin/build.sh
       - run:
           name: Run tests
-          command: ./bin/test
+          command: ./bin/test.sh
       - run:
           name: Build project
-          command: ./bin/build
+          command: ./bin/build.sh
       - store_artifacts:
           path: /bin/Linux/EDSAC
           destination: artifact-file
