@@ -20,8 +20,13 @@ jobs:
       - run:
           name: Build project
           command: ./bin/build.sh
+      - run:
+          name: Copy artifcats
+          command: |
+            mkdir /tmp/artifacts;
+            cp ./bin/Linux/EDSAC /tmp/artifacts/EDSAC;
       - store_artifacts:
-          path: /bin/Linux/EDSAC
+          path: /tmp/artifacts
           destination: artifact-file
   build-macos:
     macos:  
@@ -41,7 +46,7 @@ jobs:
           name: Build project
           command: ./bin/build
       - run:
-          name: Copy artifcatz
+          name: Copy artifcats
           command: |
             mkdir /tmp/artifacts;
             cp ./bin/Linux/EDSAC /tmp/artifacts/EDSAC;
