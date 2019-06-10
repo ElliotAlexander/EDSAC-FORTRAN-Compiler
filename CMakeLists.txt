@@ -24,7 +24,7 @@ add_definitions(-BOOST_SYSTEM_NO_DEPRECATED)
 
 file(GLOB_RECURSE Foo_SOURCES "src/*.cpp" "src/*.cc")
 
-find_package(Boost 1.60.0 REQUIRED COMPONENTS  thread filesystem regex system)
+find_package(Boost 1.50.0 REQUIRED COMPONENTS  thread filesystem regex system)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   add_executable(EDSAC ${Foo_SOURCES})
