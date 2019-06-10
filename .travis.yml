@@ -9,8 +9,14 @@ os:
 before_install:
 - echo $LANG
 - echo $LC_ALL
-- sudo apt-get install -y git g++ libboost-all-dev cmake flex bison bash
+- sudo apt-get install -y git g++ cmake flex bison bash
 apt:
   update: true
+  sources:
+    - sourceline: 'ppa:mhier/libboost-latest'
+    - ubuntu-toolchain-r-test
+  packages:
+    - g++
+    - boost1.67
 script:
 - ./bin/build.sh
