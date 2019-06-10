@@ -1,0 +1,14 @@
+language: cpp
+sudo: required
+dist: trusty
+compiler:
+- clang
+- gcc
+os:
+- linux
+before_install:
+- echo $LANG
+- echo $LC_ALL
+- if [ $TRAVIS_OS_NAME == linux ]; then apt-get update && apt-get install -y git g++ libboost-all-dev cmake flex bison bash; fi
+script:
+- ./bin/build.sh
