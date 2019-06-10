@@ -40,8 +40,14 @@ jobs:
       - run:
           name: Build project
           command: ./bin/build
+      - run:
+          name: Copy artifcatz
+          command: |
+            mkdir /tmp/artifacts;
+            cp ./bin/Linux/EDSAC /tmp/artifacts/EDSAC;
+          
       - store_artifacts:
-          path: /bin/Linux/EDSAC
+          path: /tmp/artifacts
           destination: artifact-file
 workflows:
   version: 2
