@@ -1,6 +1,6 @@
 language: cpp
 sudo: required
-dist: trusty
+dist: xenial
 compiler:
 - clang
 - gcc
@@ -12,11 +12,7 @@ before_install:
 - sudo apt-get install -y git g++ cmake flex bison bash
 apt:
   update: true
-  sources:
-    - sourceline: 'ppa:mhier/libboost-latest'
-    - ubuntu-toolchain-r-test
   packages:
-    - g++
-    - boost1.67
+    - libboost-all-dev
 script:
 - ./bin/build.sh
