@@ -9,6 +9,6 @@ os:
 before_install:
 - echo $LANG
 - echo $LC_ALL
-- apt-get update && apt-get install -y git g++ libboost-all-dev cmake flex bison bash
+- sudo apt-get update && apt-get install -y git g++ libboost-all-dev cmake flex bison bash
 script:
 - ./bin/build.sh
