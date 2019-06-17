@@ -7,10 +7,18 @@ compiler:
 os:
 - linux
 - osx
+osx_image: xcode10.2
+addons:
+  homebrew:
+    packages:
+    - flex
+    - bison
+    - cmake
+    - boost
+    update: true
 before_install:
 - echo $LANG
 - echo $LC_ALL
 - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update && sudo apt-get install -y git libboost-all-dev g++ cmake flex bison bash; fi
-- if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install boost g++ cmake flex bison; fi
 script:
 - ./bin/build.sh
