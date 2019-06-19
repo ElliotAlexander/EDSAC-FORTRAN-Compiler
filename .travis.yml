@@ -15,6 +15,7 @@ addons:
     - bison
     - cmake
     - boost
+    - boost-python
     update: true
 before_install:
 - echo $LANG
