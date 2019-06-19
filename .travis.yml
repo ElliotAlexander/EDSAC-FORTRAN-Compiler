@@ -14,8 +14,8 @@ addons:
     - flex
     - bison
     - cmake
-    - boost
-    - boost-pythonx
+    - boost --with-python
+    - boost-python
     update: true
 before_install:
 - echo $LANG
