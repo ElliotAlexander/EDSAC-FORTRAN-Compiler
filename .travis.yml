@@ -14,7 +14,7 @@ addons:
     - flex
     - bison
     - cmake
-    - boost --with-python
+    - boost
     - boost-python
     update: true
 before_install:
