@@ -18,6 +18,7 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 
 if(APPLE)
   add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+  set(BOOST_LIBRARYDIR, /usr/local/Cellar/boost)
 endif()
 
 add_definitions(-BOOST_SYSTEM_NO_DEPRECATED)
