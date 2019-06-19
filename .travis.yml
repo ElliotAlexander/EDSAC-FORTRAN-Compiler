@@ -15,13 +15,13 @@ addons:
     - bison
     - cmake
     - boost
-    - boost-python
+    - boost-pythonx
     update: true
 before_install:
 - echo $LANG
 - echo $LC_ALL
 - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update && sudo apt-get install -y git libboost-all-dev g++ cmake flex bison bash; fi
 - if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo 'export PATH="/usr/local/opt/flex/bin:$PATH"' >> ~/.bash_profile &&
-  echo 'export PATH="/usr/local/opt/bison/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile; fi
+  echo 'export PATH="/usr/local/opt/bison/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile && brew link boost; fi
 script:
 - ./bin/build.sh
