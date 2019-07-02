@@ -6,7 +6,7 @@ set (EDASC_Compiler_Version_Minor 1)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/bin/${CMAKE_SYSTEM_NAME})
 set(Boost_USE_STATIC_LIBS OFF) 
-set(Boost_USE_MULTITHREADED OFF)  
+set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 
 set(CMAKE_CXX_STANDARD 14)
@@ -18,13 +18,14 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 
 if(APPLE)
   add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY)
+  set(BOOST_LIBRARYDIR, /usr/local/Cellar/boost)
 endif()
 
 add_definitions(-BOOST_SYSTEM_NO_DEPRECATED)
 
 file(GLOB_RECURSE Foo_SOURCES "src/*.cpp" "src/*.cc")
 
-find_package(Boost 1.60.0 REQUIRED COMPONENTS  thread filesystem regex system)
+find_package(Boost 1.50.0 REQUIRED COMPONENTS  thread filesystem regex system)
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   add_executable(EDSAC ${Foo_SOURCES})

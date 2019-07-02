@@ -8,6 +8,10 @@ cd src
 bison -d parse.y -o parse.tab.cc --debug -t
 flex -o lex.flex.cc lex.l
 
+export CMAKE_INCLUDE_PATH="/usr/local/opt/flex/include"
+export CMAKE_LIBRARY_PATH="/usr/local/opt/flex/lib;/usr/local/opt/bison/lib"
+export PATH="/usr/local/opt/flex/bin:/usr/local/opt/bison/bin:$PATH"
+
 cd ../
 
 # Clean cache

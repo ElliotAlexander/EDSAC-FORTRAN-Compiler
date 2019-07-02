@@ -1,0 +1,48 @@
+language: cpp
+sudo: required
+dist: xenial
+matrix:
+    include:
+        - os: linux
+          dist: xenial
+          compiler: gcc
+        - os: linux
+          dist: xenial
+          compiler: clang
+        - os: osx
+          osx_image: xcode10.2
+          compiler: clang
+        - os: osx
+          osx_image: xcode10.2
+          compiler: gcc
+cache:
+  directories:
+    - $HOME/Library/Caches/Homebrew
+addons:
+  homebrew:
+    packages:
+    - flex
+    - bison
+    - cmake
+    - boost
+    - boost-python
+    update: true
+  apt:
+    packages:
+    - git
+    - libboost-all-dev
+    - g++
+    - cmake
+    - flex
+    - bison
+    - bash
+    update: true
+before_install:
+- echo $LANG
+- echo $LC_ALL
+- if [ "$TRAVIS_OS_NAME" = "osx" ]; then echo 'export PATH="/usr/local/opt/flex/bin:$PATH"' >> ~/.bash_profile &&
+  echo 'export PATH="/usr/local/opt/bison/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile && brew link boost; fi
+before_cache:
+- if [ "$TRAVIS_OS_NAME" = "osx" ];brew cleanup; fi
+script:
+- ./bin/build.sh
