@@ -86,8 +86,7 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
 
     /**
      * 
-     * 
-     *  The right hand side of the functionn should all be one big arithmetic expression
+     *  The right hand side of the function should all be one big arithmetic expression
      *  we can rely on the arithmetic parser to handle this. 
      *  Set a member variable to the string that is the right hand side. We'll process trhe right hand side as an arithmetic in GenerateTOC. 
      * */
