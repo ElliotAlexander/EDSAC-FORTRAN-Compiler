@@ -1,0 +1,62 @@
+version: 2
+jobs:
+  build-linux:
+    docker:
+      - image: ubuntu
+    steps:
+      - run: 
+          name: Install dependencies
+          command: apt-get update && apt-get install -y git g++ libboost-all-dev cmake flex bison bash
+      - checkout
+      - run:
+          name: Install caching certs
+          command:  apt-get install -y ca-certificates
+      - run:
+          name: Check permissions
+          command: ls && ls bin/ && chmod +x bin/test.sh && chmod +x bin/build.sh
+      - run:
+          name: Run tests
+          command: ./bin/test.sh
+      - run:
+          name: Build project
+          command: ./bin/build.sh
+      - run:
+          name: Copy artifcats
+          command: |
+            mkdir /tmp/artifacts;
+            cp ./bin/Linux/EDSAC /tmp/artifacts/EDSAC;
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifact-file
+  build-macos:
+    macos:  
+      xcode: "10.0.0"
+    steps:
+      - run: 
+          name: Install dependencies
+          command: apk -U add g++ boost boost-dev cmake flex bison
+      - checkout
+      - run:
+          name: Install caching certs
+          command:  apk add ca-certificates
+      - run:
+          name: Run tests
+          command: ./bin/test
+      - run:
+          name: Build project
+          command: ./bin/build
+      - run:
+          name: Copy artifcats
+          command: |
+            mkdir /tmp/artifacts;
+            cp ./bin/Linux/EDSAC /tmp/artifacts/EDSAC;
+          
+      - store_artifacts:
+          path: /tmp/artifacts
+          destination: artifact-file
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-linux
+      - build-macos

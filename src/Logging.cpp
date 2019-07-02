@@ -82,3 +82,8 @@ namespace Logging {
         std::cout << StringConstants::WARN_TAG << input << std::endl;
     }
 }
+
+
+void testMethod(){
+    std::cout << "Test" << std::endl;
+}

@@ -19,4 +19,7 @@ namespace Logging {
     void logNewLine();
 }
 
+
+void testMethod();
+
 #endif
