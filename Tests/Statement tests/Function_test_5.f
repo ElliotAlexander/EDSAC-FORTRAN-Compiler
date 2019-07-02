@@ -1,4 +1,0 @@
-      FUNCTION POWERS(X,N)
-      RETURN X
-      PRINT POWERS(3,5)
-      END

@@ -1,4 +1,0 @@
-     &PRI
-     &NT
-     &X
-      END 
