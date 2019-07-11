@@ -26,6 +26,7 @@ class Operation : public RDParseTreeNode{
         RDParseTreeNode* arg2;
         Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation);
         std::string toOPType(OPS e);
+        std::string toString() override;
         TOC_RETURN_VALUE generateThreeOPCode(int &starting_address);
         virtual ~Operation() {};
 };

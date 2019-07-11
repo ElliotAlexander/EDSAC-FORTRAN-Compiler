@@ -70,7 +70,7 @@ int main(int argc, char* argv[]){
         std::vector<Statement*> stmts = segment_list.at(segment_index).buildStatements();           // Break each segment of the program down into a series of 'Statement' objects.
 
         if(segment_list.at(segment_index).getSegmentType() == SEGMENT_TYPE::PROGRAM){
-            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("KZF"))));
+            program_body_toc.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("", THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, std::string("KZF"))));  // GKZF - start of main routine
         }
 
         for(int statement_index = 0; statement_index < stmts.size(); statement_index++){    // Iterate through each statement, from first to last. stmts represents a FILO queue. 

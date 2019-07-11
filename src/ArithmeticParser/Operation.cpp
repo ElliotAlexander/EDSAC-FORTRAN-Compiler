@@ -212,3 +212,7 @@ std::string Operation::toOPType(OPS e)
     }
 }
 
+std::string Operation::toString() {
+    return "(" + arg1->toString() + toOPType(op) + arg2->toString() + ")";
+}
+

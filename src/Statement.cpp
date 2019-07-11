@@ -111,7 +111,7 @@ IDENTIFY_STATEMENT_RESULT_T Statement::identifyStatement(){
 
     if(Globals::output_regex_matching_strings ){        // Enabled via command line.
         for(std::vector<std::string>::size_type i = 0; i != tokens.size(); i++){ 
-            Logging::logInfoMessage("[REGEX] " + tokens[i]->getRegex());
+            Logging::logInfoMessage("[REGEX] " + tokens[i]->getTokenName() + ":  " + tokens[i]->getRegex());
         }
         Globals::output_regex_matching_strings = false; // we only need to do this once. Disable the flag after.
     }

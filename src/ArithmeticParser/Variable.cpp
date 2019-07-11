@@ -82,3 +82,7 @@ TOC_RETURN_VALUE Variable::generateThreeOPCode(int &starting_address){
         };
     }
 }
+
+std::string Variable::toString() {
+    return "(" + name + ")";
+}

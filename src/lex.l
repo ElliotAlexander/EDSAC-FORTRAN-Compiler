@@ -14,12 +14,22 @@
 // This class forms the tokenizer of the arithmetic parser referenced in ArithmeticRDParser.cpp
 
 %}
+
 %option noyywrap
+
+dot \.
+digit [0-9]
+digits {digit}+
+nonzerodigit [1-9]
+letter [A-Z]
+number {digit}|{nonzerodigit}{digits}
+decimalnumber {number}{dot}?{digits}?
+
 %%
 [ \t\n]           ; // consume line by line TODO
-[0-9]+\.[0-9]+    { yylval.u.fval = atof(yytext); return FLOAT; }   
-[0-9]+            { yylval.u.ival = atoi(yytext); return INT; }
-[A-Z]([A-Z0-9]+)? {
+{decimalnumber}(E\-?{decimalnumber})?    { yylval.u.fval = atof(yytext); return FLOAT; }
+{number}            { yylval.u.ival = atoi(yytext); return INT; }
+{letter}([A-Z0-9]+)? {
     yylval.u.vval = yytext;
     return VARIABLE;
 }
@@ -31,3 +41,4 @@
 \(                { return LPAREN; }
 \)                { return RPAREN; }
 \,                { return COMMA; }
+%%

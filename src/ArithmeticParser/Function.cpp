@@ -56,3 +56,12 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
         return {};
     }
 }
+
+std::string Function::toString() {
+    std::string arg_str;
+    for(auto & function_argument : function_arguments)
+    {
+        arg_str += function_argument->toString() + ",";
+    }
+    return function_name + "(" + arg_str + ")";
+}
