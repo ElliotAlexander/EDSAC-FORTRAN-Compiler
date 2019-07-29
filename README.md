@@ -1,4 +1,7 @@
 # EDSAC-FORTRAN-Compiler
+
+[![Build Status](https://travis-ci.com/ElliotAlexander/EDSAC-FORTRAN-Compiler.svg?token=j8JEQQabqLSg3UrAnJoU&branch=master)](https://travis-ci.com/ElliotAlexander/EDSAC-FORTRAN-Compiler)
+
 A FORTRAN II Compiler for the EDSAC machine reconstruction project. 
 
 
