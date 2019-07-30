@@ -17,17 +17,16 @@ Variable::Variable(std::string name_in)
 {
 
 	// This is a hotfix for some weird behaviour on MSVC + flex + bison 
-	// When pulling variable names, the next cahracter (the op) is included
+	// When pulling variable names, the next character (the op) is included
 	// Op still processes fine
 
     // This block of code allivietes this issue by ensuring that no operation characters are pulled into the variable name.
-    // Variable names are always Alphanumeric, so this fix should never be detrimental. 
-	char symbols[] = { '+', '/', '-', '*', '^', '(', ')' };
-	int symbols_size = sizeof(name_in) / sizeof(char);
+    // Variable names are always Alphanumeric, so this fix should never be detrimental.
+    std::string symbols = "+/-*^()";
 
-	for (int j = 0; j < symbols_size; j++)
-		std::replace(name_in.begin(), name_in.end(), symbols[j], ' ');
-	
+    for (char &symbol: symbols)
+        name_in.erase(std::remove(name_in.begin(), name_in.end(), symbol), name_in.end());
+
     // See above issue - weird characters being pulled in from flex
     name_in = ::stripWhitespaceString(name_in);
 	
