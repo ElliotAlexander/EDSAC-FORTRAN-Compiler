@@ -64,19 +64,18 @@ namespace Libs {
 		std::vector<std::string> output_string;
 		int output_offset = 0;
 
-		std::map<std::string, Library*>::iterator it = library_mappings.begin();
+		for(auto & library_mapping : library_mappings){
+			if(library_mapping.second->getEnabled() && library_mapping.second->getType() == LIBRARY_TYPE::CLOSED_LIBRARY){
 
-		for(; it != library_mappings.end(); ++it){
-			if((*it).second->getEnabled() && (*it).second->getType() == LIBRARY_TYPE::CLOSED_LIBRARY){
+				Logging::logInfoMessage("Offsetting " + library_mapping.second->getName() + " by " + std::to_string(offset + output_offset));
+				library_mapping.second->applyOffset(offset + output_offset);
 
-				Logging::logInfoMessage("Offsetting " + (*it).second->getName() + " by " + std::to_string(offset));
-				(*it).second->applyOffset(offset);
+				Logging::logInfoMessage("Adding subroutine " + library_mapping.second->getName() + "[" + std::to_string(library_mapping.second->getLength()) + "].");
+				output_string.push_back(library_mapping.second->getRoutine());
+				output_offset += library_mapping.second->getLength();
 
-				Logging::logInfoMessage("Adding subroutine " + (*it).second->getName() + "[" + std::to_string((*it).second->getLength()) + "].");
-				output_string.push_back((*it).second->getRoutine());
-				output_offset += (*it).second->getLength();
-			} else {
-				Logging::logInfoMessage("Skipping " + (*it).second->getName() + ", remains disabled");
+            } else {
+				Logging::logInfoMessage("Skipping " + library_mapping.second->getName() + ", remains disabled");
 			}
 		}
 
