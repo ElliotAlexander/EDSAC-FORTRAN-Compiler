@@ -23,12 +23,13 @@ digits {digit}+
 nonzerodigit [1-9]
 letter [A-Z]
 number {digit}|{nonzerodigit}{digits}
-decimalnumber {number}{dot}?{digits}?
+decimalnumber {number}{dot}{digits}?
+exponent E\-?{number}
 
 %%
 [ \t\n]           ; // consume line by line TODO
-{decimalnumber}(E\-?{decimalnumber})?    { yylval.u.fval = atof(yytext); return FLOAT; }
 {number}            { yylval.u.ival = atoi(yytext); return INT; }
+{decimalnumber}{exponent}?    { yylval.u.fval = atof(yytext); return FLOAT; }
 {letter}([A-Z0-9]+)? {
     yylval.u.vval = yytext;
     return VARIABLE;
