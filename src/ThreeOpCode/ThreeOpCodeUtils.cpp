@@ -47,6 +47,8 @@ std::string TOCOperationToString(int toc_op){
             return std::string("STOP PROGRAM");
         case 18:
             return std::string("DATA SET");
+        case 19:
+            return std::string("DATA SET FLOAT");
         default:
             return std::string("UNIDENTIFIED INSTRUCTION");
     }

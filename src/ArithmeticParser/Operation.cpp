@@ -22,17 +22,120 @@ Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS ope
     arg2(arg2_in), 
     op(operation)
 {   
-    Operation::st_entry = SymbolTableController::addTemp("", ST_ENTRY_TYPE::FLOAT_T);
+    Operation::st_entry = SymbolTableController::addTemp("", getType());
     // Set the type of parse tree node
     tt = TOC_TYPES::OPERATION_E;
 };
 
 
+ST_ENTRY_TYPE Operation::getType() {
+    return arg1->getType() == INT_T && arg2->getType() == INT_T ? INT_T : FLOAT_T;
+}
+
+
+TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address) {
+    if (getType() == INT_T) {
+        return generateThreeOPCodeForIntegerOperation(starting_address);
+    } else {
+        return generateThreeOPCodeForFloatingPointOperation(starting_address);
+    }
+}
+
+TOC_RETURN_VALUE Operation::generateThreeOPCodeForFloatingPointOperation(int &starting_address) {
+
+    std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
+
+    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);
+    TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
+
+    // Construct a complete output
+    pre_string.insert(pre_string.begin(), arg2_ret.pre_string.begin(), arg2_ret.pre_string.end());
+    pre_string.insert(pre_string.begin(), arg1_ret.pre_string.begin(), arg1_ret.pre_string.end());
+
+    // The start_address has already been incremented when the child nodes are processed, don't count them.
+    int argument_offset_size = arg1_ret.pre_string.size() + arg2_ret.pre_string.size();
+
+    // load a buffer flush variable, check it's initialised properly.
+    // This variable is used to clear the accumulator into when we're done with values in it.
+    ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
+    Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
+    // it is important that all of these operations leave the accumulator in an empty state - we don't know  which operation might be following it.
+    switch (Operation::op) {
+        case SUBTRACT_OPERATION:
+        {
+            Libs::enableRoutine("A99");
+            std::shared_ptr<int> A99_mapping = Libs::getLibraryLineMapping("A99");
+            std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 7);
+
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 1
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("1", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 2
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("3", THREE_OP_CODE_OPERATIONS::SUBTRACT_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("4", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set subtraction flag to negative
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A99_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+            break;
+        }
+        case ADD_OPERATION:
+        {
+            Libs::enableRoutine("A99");
+            std::shared_ptr<int> A99_mapping = Libs::getLibraryLineMapping("A99");
+            std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 6);
+
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 1
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("1", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 2
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("4", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set subtraction flag to positive
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A99_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+            break;
+        }
+        case MULTIPLY_OPERATION:
+        {
+            Libs::enableRoutine("A98");
+            std::shared_ptr<int> A98_mapping = Libs::getLibraryLineMapping("A98");
+            std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 5);
+
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 1
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("1", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 2
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A98_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+            break;
+        }
+        default:
+            Logging::logErrorMessage("Floating-point Division and Exponent operations are not supported yet.");
+            exit(1);
+    }
+
+
+    // Iterate the starting address. Note that this is passed down by reference through all the parse trees, so that each node of the tree knows its relative position.
+    starting_address += pre_string.size() - argument_offset_size;
+
+    // Return the three op code string requried to build the computed valuee
+    // as well as a refer4ence to the computed value.
+    //
+    return {pre_string, st_entry};
+}
+
 
 // This function is the brains of all the arithmetic
 // This is effectively a big macro stackint the correct series of operations ot manipulate both arguments.
 // Depending on the operation, we buiild a big list of the three op code required toi compute the final value.
-TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
+TOC_RETURN_VALUE Operation::generateThreeOPCodeForIntegerOperation(int &starting_address) {
 
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
@@ -58,7 +161,7 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
 
-    // The three op code we generate is dependent on the argument. 
+    // The three op code we generate is dependent on the argument.
     // For all possible operations, we have two arguments and one op.
     // arg1 == LHS
     // arg2 == RHS

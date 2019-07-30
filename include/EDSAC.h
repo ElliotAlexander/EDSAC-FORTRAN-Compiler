@@ -1,6 +1,7 @@
 #ifndef __EDSAC_H_
 #define __EDSAC_H_
 
+#include <bitset>
 #include <vector>
 #include <string>
 #include "ThreeOpCode/ThreeOpCode.h"
@@ -29,14 +30,18 @@ namespace EDSAC
     #define EDSAC_READ_NEXT_CHAR_INSTRUCTION "I"
     #define EDSAC_PRINT_SYMMBOL_INSTRUCTION "O"
     #define EDSAC_READ_LAST_CHAR_INSTRUCTION "F"
-    #define EDSAC_NO_OPERATION_INSTRUCTION ""
-    #define EDSAC_ROUND_ACCUMULATOR_INSTRUCTION "X"
+    #define EDSAC_NO_OPERATION_INSTRUCTION "X"
+    #define EDSAC_ROUND_ACCUMULATOR_INSTRUCTION "Y"
     #define EDSAC_STOP_PROGRAM_INSTRUCTION "Z"
+
     #define EDSAC_DATA_ORDER_INSTRUCTION "P"
+    #define EDSAC_DATA_FLOAT_INSTRUCTION "Q"
 
 
     std::string convertOperationEnumToString(THREE_OP_CODE_OPERATIONS op);
 	std::string convert_int_to_edsac_op(int x);
+	std::bitset<17> convert_float_to_edsac_bitset17 (float f);
+    std::string convert_edsac_bitset17_to_edsac_op(std::bitset<17> bits);
     std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries);
 } // EDSAC
 

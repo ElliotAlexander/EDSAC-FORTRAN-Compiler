@@ -49,6 +49,11 @@ Variable::Variable(std::string name_in)
     }    
 }
 
+ST_ENTRY_TYPE Variable::getType() {
+    char initChar = std::toupper(name[0]);
+    return initChar >= 'I' && initChar <= 'N' ? INT_T : FLOAT_T;
+}
+
 TOC_RETURN_VALUE Variable::generateThreeOPCode(int &starting_address){
     ALL_ST_SEARCH_RESULT x = SymbolTableController::getVariable(name);
 

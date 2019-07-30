@@ -7,6 +7,8 @@
 
 #include "P6.h"
 #include "M20.h"
+#include "A99.h"
+#include "A98.h"
 #include "Logging.h"
 #include "Library.h"
 #include "Globals.h"

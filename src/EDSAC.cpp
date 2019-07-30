@@ -46,6 +46,8 @@ namespace EDSAC {
                 return EDSAC_STOP_PROGRAM_INSTRUCTION;
             case DATA_SET:
                 return EDSAC_DATA_ORDER_INSTRUCTION;
+            case DATA_SET_FLOAT:
+                return EDSAC_DATA_FLOAT_INSTRUCTION;
             default:
                 // Defensive programming - this shouldn't happen.
                 Logging::logErrorMessage("Something went wrong - failed to generate EDSAC character codes.");
@@ -70,6 +72,62 @@ namespace EDSAC {
 		}
 	}
 
+    // Assumes IEEE 754 binary32 floating-point format is used.
+    std::bitset<17> convert_float_to_edsac_bitset17(float f) {
+        const int float32_exp_bias = 127;
+        const int float17_exp_bias = 15;
+
+        const int float17_sign_bits = 1;
+        const int float17_exp_bits = 5;
+        const int float17_sig_bits = 11;
+
+        const int float32_sign_bits = 1;
+        const int float32_exp_bits = 8;
+        const int float32_sig_bits = 23;
+
+        // float to bit string
+        std::bitset<32> float32_bits(*(unsigned int *) (&f));
+        std::string float32_bits_str = float32_bits.to_string();
+
+        // extract sign
+        std::string float17_bits_sign_str = float32_bits_str.substr(0, float32_sign_bits);
+
+        // extract and calculate new exp
+        std::string float32_bits_exp_str = float32_bits_str.substr(float32_sign_bits, float32_exp_bits);
+        int float32_bits_exp_biased = std::stoi(float32_bits_exp_str, nullptr, 2);
+        int float32_bits_exp_unbiased = float32_bits_exp_biased - float32_exp_bias;
+        int float17_bits_exp_biased = float32_bits_exp_unbiased + float17_exp_bias;
+        if (float32_bits_exp_biased == 0) {  // exception: when biased exp is zero, it means zero.
+            float17_bits_exp_biased = 0;
+        }
+        std::string float17_bits_exp_str = std::bitset<float17_exp_bits>(float17_bits_exp_biased).to_string();
+
+        // extract and process significand
+        std::string float32_bits_sig_str = float32_bits_str.substr(float32_sign_bits + float32_exp_bits, float32_sig_bits);
+        std::string float17_bits_sig_str = float32_bits_sig_str.substr(0, float17_sig_bits);
+
+        // concat result
+        std::string float17_str = float17_bits_sign_str + float17_bits_exp_str + float17_bits_sig_str;
+        return std::bitset<17>(float17_str);
+    }
+
+    std::string convert_edsac_bitset17_to_edsac_op(std::bitset<17> bits) {
+        const std::string perforator_letters = "PQWERTYUIOJ#SZK*.F@D!HNM&LXGABCV";
+
+        std::string bits_str = bits.to_string();
+        std::string bits_opcode = bits_str.substr(0, 5);
+        std::string bits_address = bits_str.substr(5, 11);
+        std::string bits_length = bits_str.substr(16, 1);
+
+        int bits_opcode_int = std::stoi(bits_opcode, nullptr, 2);
+        int bits_address_int = std::stoi(bits_address, nullptr, 2);
+        int bits_length_int = std::stoi(bits_length, nullptr, 2);
+
+        return perforator_letters.substr(bits_opcode_int, 1) +
+               std::to_string(bits_address_int) +
+               (bits_length_int ? EDSAC_LONG_VALUE : EDSAC_SHORT_VALUE);
+    }
+
     //  std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries) 
     //  This function takes an input of ThreeOpCode, and a string of pre_built libraries.
     //  The functionality of this function is to build ThreeOpCode into a string value for final EDSAC instructions.
@@ -78,20 +136,24 @@ namespace EDSAC {
     std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries) {
         std::vector<std::string> output = libraries;                                        // initialise final output data value to libraries.  Libraries are appended to the start of all programs.
         output.insert(output.begin(), EDSAC_PROGRAM_ENTRY_POINT_DEFINITION);                // Insert the T<entry point>K instruction required to set the Initial Orders 2 entry point.
-        for(std::vector<std::shared_ptr<ThreeOpCode> >::iterator it = input.begin(); it != input.end(); ++it){      // Iterate through Program body.
+        for(auto & it : input){      // Iterate through Program body.
             std::string build_string;                                                       // Build string is the final output value of each loop. It represents the 'EDSAC' instruction string.
-            build_string.append(convertOperationEnumToString((*it)->getOperation()));       // Begin constructing the instruction string with the instruction value - i.e. the T in T56K. Recall that EDSAC instructions are formatted:
-                                                                                            //      <instruction> <address> <short / long>
-			std::string address = (*it)->getAddress();                                      // Set the address ot a variable, for readability.  
-			if ((*it)->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET &&              // If the instruction is a data value, we need to covnert the address to a 'pseudo-order'
-				!address.empty()) {                                                     
+			std::string address = it->getAddress();                                      // Set the address ot a variable, for readability.
+            std::string opcode = convertOperationEnumToString(it->getOperation());
+
+			if (it->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET && !address.empty()) {  // If the instruction is a data value, we need to convert the address to a 'pseudo-order'
+                build_string.append(opcode);
 				build_string.append(convert_int_to_edsac_op(std::stoi(address)));           // Convert address to a 'pseudo-order' so it's set properly as data.
-			} else {
-				build_string.append(address);                                               // If the instruction type isn't a data value, we can treat the address as normal.
-				if ((*it)->containsCustomBit() == true) {                                   // Some control codes specify a unique end bit, handled by initial orders. Handle this if required
-					build_string.append((*it)->getCustomBit());                            
+			} else if (it->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET_FLOAT && !address.empty()) {
+                build_string.append(convert_edsac_bitset17_to_edsac_op(convert_float_to_edsac_bitset17(std::stof(address))));
+            } else {
+                build_string.append(opcode);       // Begin constructing the instruction string with the instruction value - i.e. the T in T56K. Recall that EDSAC instructions are formatted:
+                                                                                             //      <instruction> <address> <short / long>
+                build_string.append(address);                                               // If the instruction type isn't a data value, we can treat the address as normal.
+				if (it->containsCustomBit()) {                                   // Some control codes specify a unique end bit, handled by initial orders. Handle this if required
+					build_string.append(it->getCustomBit());
 				} else {
-                    build_string.append((*it)->getLongAddress() ? EDSAC_LONG_VALUE : EDSAC_SHORT_VALUE);               // Else - set the appropriate value for the final bit.
+                    build_string.append(it->getLongAddress() ? EDSAC_LONG_VALUE : EDSAC_SHORT_VALUE);               // Else - set the appropriate value for the final bit.
 				}
 			}
             output.push_back(build_string);                                                 // Construct a final output list of all instructions.

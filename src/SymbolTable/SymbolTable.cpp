@@ -146,12 +146,18 @@ std::vector<std::shared_ptr<ThreeOpCode> > SymbolTable::buildSymbolTableOutput()
 
         std::set<std::pair<std::string, std::shared_ptr<ST_ENTRY> >, Comparator> sorted_symbol_table(st_map.begin(), st_map.end(), compFunctor);
         for (std::pair<std::string, std::shared_ptr<ST_ENTRY> > element : sorted_symbol_table) {
-            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::string(element.second->value), THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(
+                    std::string(element.second->value),
+                    element.second->type == INT_T ? THREE_OP_CODE_OPERATIONS::DATA_SET : THREE_OP_CODE_OPERATIONS::DATA_SET_FLOAT,
+                    false)));
         }
     } else {
         std::map<std::string, std::shared_ptr<ST_ENTRY> >::iterator it;
         for ( it = st_map.begin(); it != st_map.end(); it++ ){
-            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(std::string(it->second->value), THREE_OP_CODE_OPERATIONS::DATA_SET, false)));
+            output_str.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(
+                    std::string(it->second->value),
+                    it->second->type == INT_T ? THREE_OP_CODE_OPERATIONS::DATA_SET : THREE_OP_CODE_OPERATIONS::DATA_SET_FLOAT,
+                    false)));
         }
     }
     return output_str;

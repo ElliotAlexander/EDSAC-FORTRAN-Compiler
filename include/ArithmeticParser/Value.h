@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <type_traits>
 #include "RDParseTreeNode.h"
 #include <math.h>
 #include "SymbolTable/STController.h"
@@ -16,15 +17,14 @@ template <class T> class Value : public RDParseTreeNode {
         Value(T arg) {
             tt = TOC_TYPES::VALUE_E;
             argument = arg;
-            bool is_int;
-            if (ceil(arg) == arg){
-                st_entry = SymbolTableController::addTemp(std::to_string(arg), ST_ENTRY_TYPE::INT_T);
-            } else {
-                st_entry = SymbolTableController::addTemp(std::to_string(arg), ST_ENTRY_TYPE::FLOAT_T);
-            }
+            st_entry = SymbolTableController::addTemp(std::to_string(arg), getType());
         }
 
-        TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) {
+        ST_ENTRY_TYPE getType() override {
+            return std::is_floating_point<T>::value ? ST_ENTRY_TYPE::FLOAT_T : ST_ENTRY_TYPE::INT_T;
+        }
+
+        TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) override {
             return {{}, st_entry};   
         }
 

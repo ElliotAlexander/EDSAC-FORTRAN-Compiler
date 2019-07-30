@@ -14,6 +14,7 @@
             std::string function_name;
             
             Function(std::vector<RDParseTreeNode*> args_in, std::string function_name_in);
+            ST_ENTRY_TYPE getType() override;
             TOC_RETURN_VALUE generateThreeOPCode(int &starting_address);
             std::string toString() override;
             virtual ~Function() {};

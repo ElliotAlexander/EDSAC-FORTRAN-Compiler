@@ -26,6 +26,7 @@ enum THREE_OP_CODE_OPERATIONS {
     ROUND_ACCUMULATOR_TO_34_BITS = 16,
     STOP_PROGRAM = 17,
     DATA_SET = 18,
+    DATA_SET_FLOAT = 19,
 };
 
 // This is entire encapsulated within the constructors.

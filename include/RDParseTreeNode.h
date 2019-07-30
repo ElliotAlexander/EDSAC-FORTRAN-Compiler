@@ -26,7 +26,8 @@
     class RDParseTreeNode{
         public:
             std::shared_ptr<ST_ENTRY> st_entry;
-            TOC_TYPES tt;   
+            TOC_TYPES tt;
+            virtual ST_ENTRY_TYPE getType() = 0;
             virtual TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) = 0;
             virtual std::string toString() = 0;
             virtual ~RDParseTreeNode() {};

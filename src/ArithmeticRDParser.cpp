@@ -30,7 +30,7 @@ std::unique_ptr<RDParseTreeNode> parseADString(std::string input_string)
     }
     std::unique_ptr<RDParseTreeNode> ptr(x);   // x is then converted to a unique ptr,
     yy_delete_buffer(buffer);                  // the token buffer is cleared
-    Logging::logInfoMessage(ptr->toString());
+    Logging::logInfoMessage("Parsed: " + ptr->toString());
     return ptr;                                // responsibility for x is then passed to the calling class, which is responsible for it's management.
 }
 

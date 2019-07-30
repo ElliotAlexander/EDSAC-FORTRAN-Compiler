@@ -19,7 +19,8 @@
         public:
             std::string name;
             Variable(std::string name_in);
-            TOC_RETURN_VALUE generateThreeOPCode(int &starting_address);
+            ST_ENTRY_TYPE getType() override;
+            TOC_RETURN_VALUE generateThreeOPCode(int &starting_address) override;
             std::string toString() override;
             virtual ~Variable() {}
     };

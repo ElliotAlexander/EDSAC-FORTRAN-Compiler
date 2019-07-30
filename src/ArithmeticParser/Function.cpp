@@ -25,6 +25,10 @@ Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_
 }
 
 
+ST_ENTRY_TYPE Function::getType() {
+    char initChar = std::toupper(function_name[0]);
+    return initChar == 'X' ? INT_T : FLOAT_T;
+}
 
 
 TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
