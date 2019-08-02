@@ -55,23 +55,6 @@ namespace EDSAC {
         }
     }
 
-    // 	std::string convert_int_to_edsac_op(int x); 
-    // This function converts a typical EDSAC 'address' into the correct bit pattern for a data value of the same number.
-    // i.e. for positive ints, a data value = 2n, and 2n + 1 for negative ints. 
-    // The two exceptions to this process are 0  and 1, which are repsented as OF and D / OD respectively. 
-    // 
-	std::string convert_int_to_edsac_op(int address_value){
-		if (address_value == 0) {
-			return EDSAC_DATA_VAL_0_REPRESENTATION;
-		} else if (address_value == 1) {
-			return EDSAC_DATA_VAL_1_REPRESENTATION;
-		} else if (address_value % 2 == 0) {
-			return std::string(std::to_string(address_value / 2) + EDSAC_SHORT_VALUE);
-		} else {
-			return std::string(std::to_string((address_value - 1)  / 2) + EDSAC_LONG_VALUE);
-		}
-	}
-
     // Assumes IEEE 754 binary32 floating-point format is used.
     std::bitset<17> convert_float_to_edsac_bitset17(float f) {
         const int float32_exp_bias = 127;
@@ -141,9 +124,8 @@ namespace EDSAC {
 			std::string address = it->getAddress();                                      // Set the address ot a variable, for readability.
             std::string opcode = convertOperationEnumToString(it->getOperation());
 
-			if (it->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET && !address.empty()) {  // If the instruction is a data value, we need to convert the address to a 'pseudo-order'
-                build_string.append(opcode);
-				build_string.append(convert_int_to_edsac_op(std::stoi(address)));           // Convert address to a 'pseudo-order' so it's set properly as data.
+			if (it->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET && !address.empty()) {  // If the instruction is a data value, we need to convert the value to a 'order'
+                build_string.append(convert_edsac_bitset17_to_edsac_op(std::bitset<17>(std::stol(address))));  // Convert integer to an EDSAC order so it's set properly as data.
 			} else if (it->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET_FLOAT && !address.empty()) {
                 build_string.append(convert_edsac_bitset17_to_edsac_op(convert_float_to_edsac_bitset17(std::stof(address))));
             } else {

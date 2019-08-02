@@ -39,8 +39,8 @@ namespace EDSAC
 
 
     std::string convertOperationEnumToString(THREE_OP_CODE_OPERATIONS op);
-	std::string convert_int_to_edsac_op(int x);
-	std::bitset<17> convert_float_to_edsac_bitset17 (float f);
+
+    std::bitset<17> convert_float_to_edsac_bitset17 (float f);
     std::string convert_edsac_bitset17_to_edsac_op(std::bitset<17> bits);
     std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries);
 } // EDSAC
