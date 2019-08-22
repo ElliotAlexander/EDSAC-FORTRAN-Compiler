@@ -1,19 +1,21 @@
-#ifndef EDSAC_A99_H
-#define EDSAC_A99_H
+#ifndef EDSAC_A96_H
+#define EDSAC_A96_H
 
 #include <string>
+#include <regex>
 #include "Library.h"
 #include "LibraryBuilder.h"
 #include "Logging.h"
 
 /**
- * A99: EDSAC Subroutine for floating-point addition and subtraction
+ * A96: EDSAC Subroutine for printing 17-bit floating-point number. Calls to P6 and P14.
  */
-class A99 : public Library {
+class A96 : public Library {
 public:
-    A99();
+    A96();
     bool getEnabled();
     std::string getRawRoutine();
+    std::string getRoutineWithOutwardLibraryCalls(std::map<std::string, int> enabled_libraries) override;
     int getLength();
     std::string getName();
     void setEnabled();
@@ -30,4 +32,5 @@ private:
 
 };
 
-#endif //EDSAC_A99_H
+
+#endif //EDSAC_A96_H

@@ -10,7 +10,7 @@ class M20 : public Library {
 	public:
 		M20();
 		bool getEnabled();
-		std::string getRoutine();
+		std::string getRawRoutine() override;
 		int getLength();
 		std::string getName();
 		void setEnabled();

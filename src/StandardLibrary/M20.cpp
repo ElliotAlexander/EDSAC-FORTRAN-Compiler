@@ -11,7 +11,7 @@ M20::M20(){
 }
 
 
-std::string M20::getRoutine() {
+std::string M20::getRawRoutine() {
 	return M20::subroutine_text;
 }
 

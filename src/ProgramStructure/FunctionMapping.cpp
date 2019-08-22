@@ -237,7 +237,7 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
     if( it != function_mappings.end()){
         FUNCTION_MAPPING_ENTRY entry = it->second;
         if(entry.arguments.size() != arguments.size()){
-            Logging::logErrorMessage("Warning - Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + ". Found " + std::to_string(arguments.size()));
+            Logging::logWarnMessage("Warning - Function " + function_name + " takes " + std::to_string(entry.arguments.size())  + "arguments. Found " + std::to_string(arguments.size()) + ". Ignore if native function is overloaded with a different signature. ");
             return {false, {}, {}};
         } else {
 
@@ -264,7 +264,7 @@ FUNCTION_MAPPING_RETURN getFunctionMapping(std::string function_name, std::vecto
             return {true, return_toc, entry.return_val};
         }
     } else {
-        Logging::logErrorMessage("Failed to find function " + function_name);
+        Logging::logWarnMessage("Failed to find function " + function_name + ". Ignore for native functions. ");
         return {
             false, 
             {},

@@ -1,5 +1,5 @@
-#ifndef EDSAC_A99_H
-#define EDSAC_A99_H
+#ifndef EDSAC_D6_H
+#define EDSAC_D6_H
 
 #include <string>
 #include "Library.h"
@@ -7,11 +7,11 @@
 #include "Logging.h"
 
 /**
- * A99: EDSAC Subroutine for floating-point addition and subtraction
+ * D6: EDSAC Subroutine for division
  */
-class A99 : public Library {
+class D6 : public Library {
 public:
-    A99();
+    D6();
     bool getEnabled();
     std::string getRawRoutine();
     int getLength();
@@ -30,4 +30,4 @@ private:
 
 };
 
-#endif //EDSAC_A99_H
+#endif //EDSAC_D6_H

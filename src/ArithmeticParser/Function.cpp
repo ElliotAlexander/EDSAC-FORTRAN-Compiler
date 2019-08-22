@@ -27,7 +27,8 @@ Function::Function(std::vector<RDParseTreeNode *> args_in, std::string function_
 
 ST_ENTRY_TYPE Function::getType() {
     char initChar = std::toupper(function_name[0]);
-    return initChar == 'X' ? INT_T : FLOAT_T;
+    char lastChar = std::toupper(function_name[function_name.size() - 1]);
+    return (initChar == 'X' || (initChar >= 'I' && initChar <= 'N' && lastChar != 'F')) ? INT_T : FLOAT_T;
 }
 
 
@@ -54,6 +55,25 @@ TOC_RETURN_VALUE Function::generateThreeOPCode(int &starting_address){
         return_string.insert(return_string.end(), function_mapping.toc_inject.begin(), function_mapping.toc_inject.end());
         starting_address += return_string.size() - offset;
         return {return_string, function_mapping.return_val };
+    } else if (function_name == "INT" && arguments.size() == 1) {  // INT native function: conversion from floating-point to integer
+        Libs::enableRoutine("A95");
+        std::shared_ptr<int> A95_mapping = Libs::getLibraryLineMapping("A95");
+        std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
+
+        ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
+        Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
+        std::shared_ptr<ST_ENTRY> result_int = SymbolTableController::addTemp("", ST_ENTRY_TYPE::INT_T);
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arguments[0], THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A95_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        return_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(result_int, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+
+        starting_address += return_string.size() - offset;
+        return {return_string, result_int};
     } else {
         Logging::logErrorMessage("Function " + function_name + " not found. Exiting Arithmetic Parser unsuccessfully.");
         exit(-1);

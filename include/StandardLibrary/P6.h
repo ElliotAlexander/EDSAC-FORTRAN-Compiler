@@ -10,7 +10,7 @@ class P6 : public Library {
 	public:
 		P6();
 		bool getEnabled();
-		std::string getRoutine();
+		std::string getRawRoutine() override;
 		int getLength();
 		std::string getName();
 		void setEnabled();

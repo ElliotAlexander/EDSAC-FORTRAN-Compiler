@@ -11,7 +11,7 @@ A99::A99(){
 }
 
 
-std::string A99::getRoutine() {
+std::string A99::getRawRoutine() {
     return A99::subroutine_text;
 }
 

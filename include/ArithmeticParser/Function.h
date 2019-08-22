@@ -6,6 +6,7 @@
 #include <iostream>
 #include "RDParseTreeNode.h"
 #include "ProgramStructure/FunctionMapping.h"
+#include <StandardLibrary/LibraryBuilder.h>
 
 
     class Function : public RDParseTreeNode {

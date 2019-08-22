@@ -13,7 +13,7 @@ class A98 : public Library {
 public:
     A98();
     bool getEnabled();
-    std::string getRoutine();
+    std::string getRawRoutine();
     int getLength();
     std::string getName();
     void setEnabled();

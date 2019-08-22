@@ -1,5 +1,5 @@
-#ifndef EDSAC_A99_H
-#define EDSAC_A99_H
+#ifndef EDSAC_A94_H
+#define EDSAC_A94_H
 
 #include <string>
 #include "Library.h"
@@ -7,11 +7,11 @@
 #include "Logging.h"
 
 /**
- * A99: EDSAC Subroutine for floating-point addition and subtraction
+ * A94: EDSAC Subroutine for 17-bit floating-point division
  */
-class A99 : public Library {
+class A94 : public Library {
 public:
-    A99();
+    A94();
     bool getEnabled();
     std::string getRawRoutine();
     int getLength();
@@ -27,7 +27,7 @@ private:
     std::string name;
     std::shared_ptr<int> calling_value;
     LIBRARY_TYPE type;
-
+    std::string getRoutineWithOutwardLibraryCalls(std::map<std::string, int> enabled_libraries) override;
 };
 
-#endif //EDSAC_A99_H
+#endif //EDSAC_A94_H

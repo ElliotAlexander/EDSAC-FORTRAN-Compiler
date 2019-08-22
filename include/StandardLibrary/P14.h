@@ -1,5 +1,5 @@
-#ifndef EDSAC_A99_H
-#define EDSAC_A99_H
+#ifndef EDSAC_P14_H
+#define EDSAC_P14_H
 
 #include <string>
 #include "Library.h"
@@ -7,11 +7,11 @@
 #include "Logging.h"
 
 /**
- * A99: EDSAC Subroutine for floating-point addition and subtraction
+ * P14: EDSAC Subroutine for printing decimal
  */
-class A99 : public Library {
+class P14 : public Library {
 public:
-    A99();
+    P14();
     bool getEnabled();
     std::string getRawRoutine();
     int getLength();
@@ -30,4 +30,5 @@ private:
 
 };
 
-#endif //EDSAC_A99_H
+
+#endif //EDSAC_P14_H

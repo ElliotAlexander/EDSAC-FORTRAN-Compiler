@@ -29,12 +29,12 @@ Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS ope
 
 
 ST_ENTRY_TYPE Operation::getType() {
-    return arg1->getType() == INT_T && arg2->getType() == INT_T ? INT_T : FLOAT_T;
+    return arg1->getType() == ST_ENTRY_TYPE::INT_T && arg2->getType() == ST_ENTRY_TYPE::INT_T ? ST_ENTRY_TYPE::INT_T : ST_ENTRY_TYPE::FLOAT_T;
 }
 
 
 TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address) {
-    if (getType() == INT_T) {
+    if (getType() == ST_ENTRY_TYPE::INT_T) {
         return generateThreeOPCodeForIntegerOperation(starting_address);
     } else {
         return generateThreeOPCodeForFloatingPointOperation(starting_address);
@@ -59,6 +59,44 @@ TOC_RETURN_VALUE Operation::generateThreeOPCodeForFloatingPointOperation(int &st
     // This variable is used to clear the accumulator into when we're done with values in it.
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
     Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
+
+
+    // implicit conversion from integer to float
+    if (arg1->getType() == ST_ENTRY_TYPE::INT_T) {
+        Libs::enableRoutine("A97");
+        std::shared_ptr<int> A97_mapping = Libs::getLibraryLineMapping("A97");
+        std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
+
+        std::shared_ptr<ST_ENTRY> temp_arg_one = SymbolTableController::addTemp("", ST_ENTRY_TYPE::FLOAT_T);
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A97_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_arg_one, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+        arg1_ret.call_value = temp_arg_one;
+        starting_address += pre_string.size() - argument_offset_size;
+        argument_offset_size += pre_string.size() - argument_offset_size;
+    }
+    if (arg2->getType() == ST_ENTRY_TYPE::INT_T) {
+        Libs::enableRoutine("A97");
+        std::shared_ptr<int> A97_mapping = Libs::getLibraryLineMapping("A97");
+        std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 3);
+
+        std::shared_ptr<ST_ENTRY> temp_arg_two = SymbolTableController::addTemp("", ST_ENTRY_TYPE::FLOAT_T);
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A97_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+        pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(temp_arg_two, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+        arg2_ret.call_value = temp_arg_two;
+        starting_address += pre_string.size() - argument_offset_size;
+        argument_offset_size += pre_string.size() - argument_offset_size;
+    }
+
 
     // it is important that all of these operations leave the accumulator in an empty state - we don't know  which operation might be following it.
     switch (Operation::op) {
@@ -112,6 +150,23 @@ TOC_RETURN_VALUE Operation::generateThreeOPCodeForFloatingPointOperation(int &st
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("1", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 2
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A98_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
+            break;
+        }
+        case DIVIDE_OPERATION:
+        {
+            Libs::enableRoutine("A94");
+            std::shared_ptr<int> A94_mapping = Libs::getLibraryLineMapping("A94");
+            std::shared_ptr<int> mapping = LineMapping::addTemporaryLineMapping(starting_address + 5);
+
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(flush_to.result, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg1_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 1
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(arg2_ret.call_value, THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("1", THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // set arg 2
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(mapping , THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
+            pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(A94_mapping, THREE_OP_CODE_OPERATIONS::ACCUMULATOR_IF_NEGATIVE, false)));  // jump
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode("0", THREE_OP_CODE_OPERATIONS::ADD_TO_ACCUMULATOR, false)));
             pre_string.push_back(std::shared_ptr<ThreeOpCode>(new ThreeOpCode(st_entry, THREE_OP_CODE_OPERATIONS::TRANSFER_FROM_ACUMULATOR, false)));  // retrieve result
             break;

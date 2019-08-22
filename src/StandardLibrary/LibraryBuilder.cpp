@@ -2,40 +2,53 @@
 
 
 namespace Libs {
+    std::vector<Library*> libraries = createVector();
 
-	std::map<std::string, Library*> library_mappings = createMap();
+    std::vector<Library*> createVector() {
+        std::vector<Library*> vec;
 
-	std::map<std::string, Library*> createMap() {
-		std::map<std::string, Library*> map;
-
-		// P6
-		map.insert(std::map<std::string, Library*>::value_type("P6", new P6()));
-        map.insert(std::map<std::string, Library*>::value_type("M20", new M20()));
-        map.insert(std::map<std::string, Library*>::value_type("A99", new A99()));
-        map.insert(std::map<std::string, Library*>::value_type("A98", new A98()));
-		return map;
+        vec.push_back(new D6());
+        vec.push_back(new P6());
+        vec.push_back(new P14());
+        vec.push_back(new M20());
+        vec.push_back(new A99());
+        vec.push_back(new A98());
+        vec.push_back(new A97());
+        vec.push_back(new A96());
+        vec.push_back(new A95());
+        vec.push_back(new A94());
+		return vec;
 	}
 
+    Library* getLibrary(std::string name) {
+        for (Library* lib: libraries) {
+            if (lib->getName() == name) {
+                return lib;
+            }
+        }
+        return nullptr;
+    }
+
 	std::shared_ptr<int> getLibraryLineMapping(std::string name){
-		std::map<std::string, Library*>::iterator it = library_mappings.find(name);
-		if(it != library_mappings.end()){
-			return (*it).second->getCallingValue();
+		Library* lib = getLibrary(name);
+		if (lib) {
+		    return lib->getCallingValue();
 		} else {
-			Logging::logWarnMessage("Failed to find library " + name + " when accessing calling value. Is the library initialised?");
-			return {};
+            Logging::logWarnMessage("Failed to find library " + name + " when accessing calling value. Is the library initialised?");
+            return {};
 		}
 	}
 
 	void enableRoutine(std::string name){
-		std::map<std::string, Library*>::iterator it = library_mappings.find(name);
-		if(it != library_mappings.end()){
-			if(!(*it).second->getEnabled()){
-				(*it).second->setEnabled();
-				Logging::logInfoMessage("Enabled library " + name);
-			}
-		} else {
-			Logging::logWarnMessage("Failed to find library " + name);
-		}
+        Library* lib = getLibrary(name);
+        if (lib) {
+            if (!lib->getEnabled()) {
+                lib->setEnabled();
+                Logging::logInfoMessage("Enabled library " + name);
+            }
+        } else {
+            Logging::logWarnMessage("Failed to find library " + name);
+        }
 	}
 
 	void enableCommandLineActivatedRoutines(){
@@ -45,39 +58,37 @@ namespace Libs {
 	}
 
 	std::string getLibraryContent(std::string name){
-		std::map<std::string, Library*>::iterator it = library_mappings.find(name);
-		if(it != library_mappings.end()){
-			if(!(*it).second->getEnabled()){
-				Logging::logInfoMessage("Library " + name + " is disabled!");
-			} else {
-				return (*it).second->getRoutine();
-			}
-		} else {
-			Logging::logWarnMessage("Failed to find library " + name);
-			return "";
-		}
+        Library* lib = getLibrary(name);
+        if (lib) {
+            if (!lib->getEnabled()) {
+                Logging::logInfoMessage("Library " + name + " is disabled!");
+            }
+        } else {
+            Logging::logWarnMessage("Failed to find library " + name);
+            return "";
+        }
 		return "";
 	}
 
 
 	LibraryReturnContainer buildLibraries(int offset) {
 		Logging::logInfoMessage("Building bundled libraries.");
-
-		std::vector<std::string> output_string;
 		int output_offset = 0;
+        std::map<std::string, int> enabled_library_offsets;
+        std::vector<std::string> output_string;
 
-		for(auto & library_mapping : library_mappings){
-			if(library_mapping.second->getEnabled() && library_mapping.second->getType() == LIBRARY_TYPE::CLOSED_LIBRARY){
+		for(auto & library_mapping : libraries){
+			if(library_mapping->getEnabled() && library_mapping->getType() == LIBRARY_TYPE::CLOSED_LIBRARY){
+			    int library_offset = offset + output_offset;
+                library_mapping->applyOffset(library_offset);
+				Logging::logInfoMessage("Adding subroutine " + library_mapping->getName() + "[" + std::to_string(library_mapping->getLength()) + "] at " + std::to_string(library_offset) + ". ");
 
-				Logging::logInfoMessage("Offsetting " + library_mapping.second->getName() + " by " + std::to_string(offset + output_offset));
-				library_mapping.second->applyOffset(offset + output_offset);
+				output_string.push_back(library_mapping->getRoutineWithOutwardLibraryCalls(enabled_library_offsets));
 
-				Logging::logInfoMessage("Adding subroutine " + library_mapping.second->getName() + "[" + std::to_string(library_mapping.second->getLength()) + "].");
-				output_string.push_back(library_mapping.second->getRoutine());
-				output_offset += library_mapping.second->getLength();
-
+                enabled_library_offsets.insert(std::map<std::string, int>::value_type(library_mapping->getName(), library_offset));
+                output_offset += library_mapping->getLength();
             } else {
-				Logging::logInfoMessage("Skipping " + library_mapping.second->getName() + ", remains disabled");
+				Logging::logInfoMessage("Skipping " + library_mapping->getName() + ", remains disabled");
 			}
 		}
 

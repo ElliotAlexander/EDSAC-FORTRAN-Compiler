@@ -11,7 +11,7 @@ P6::P6(){
 }
 
 
-std::string P6::getRoutine() {
+std::string P6::getRawRoutine() {
 	return P6::subroutine_text;
 }
 

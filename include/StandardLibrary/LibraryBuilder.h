@@ -5,10 +5,16 @@
 #include <map>
 #include <vector>
 
+#include "D6.h"
 #include "P6.h"
+#include "P14.h"
 #include "M20.h"
 #include "A99.h"
 #include "A98.h"
+#include "A97.h"
+#include "A96.h"
+#include "A95.h"
+#include "A94.h"
 #include "Logging.h"
 #include "Library.h"
 #include "Globals.h"
@@ -20,10 +26,8 @@ struct LibraryReturnContainer {
 };
 
 namespace Libs {
-
-		extern std::map<std::string, Library*> library_mappings;
-
-		std::map<std::string, Library*> createMap();
+        std::vector<Library*> createVector();
+        Library* getLibrary(std::string name);
 		void enableRoutine(std::string name);
 		std::string getLibraryContent(std::string name);
 		void enableCommandLineActivatedRoutines();

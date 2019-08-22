@@ -10,7 +10,7 @@ A98::A98(){
 }
 
 
-std::string A98::getRoutine() {
+std::string A98::getRawRoutine() {
     return A98::subroutine_text;
 }
 
