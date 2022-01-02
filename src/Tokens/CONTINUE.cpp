@@ -10,10 +10,8 @@ bool CONTINUE::initaliseToken(std::string input){
     return true;
 }
 
-
 /**
  * Continue is implemented, but it's only functionality is as a line refernce. Hence, there is no three op code to be printed.
- * 
  **/ 
 std::vector<std::shared_ptr<ThreeOpCode>> CONTINUE::generatetoc(int starting_address){
     return {};

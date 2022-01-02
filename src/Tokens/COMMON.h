@@ -24,5 +24,4 @@ class COMMON : public Token {
         std::vector<std::string> common_variable_names;
 };
 
-
 #endif

@@ -23,8 +23,7 @@
  *				bool LONG_ADDRESS -> this flag is set if a long address is provided.
  * 				bool CUSTOM_FINAL_BIT_SET -> This flag is set if a custom long bit is provided. Note that this flag overrides LONG_ADDRESS
  * 				std::string CUSTOM_FINAL_BIT -> If a custom final bit is set - it's value is stored here.
- **/ 			
-
+**/ 			
 
 /** This constructor allows control codes to be set using the string valuee as the final bit **/
 /** Control codes are invisible to EDSAC, so appending them to the end of one instruction allows us to treat them as one address while including them **/
@@ -47,7 +46,6 @@ ThreeOpCode::ThreeOpCode(std::shared_ptr<ST_ENTRY> arg1_in_st_entry, THREE_OP_CO
     input_arg_type(ARG_TYPE::ARG_IS_ST_ENTRY) 
 {};
 
-
 ThreeOpCode::ThreeOpCode(std::shared_ptr<int> arg1_in_line_mapping, THREE_OP_CODE_OPERATIONS op_in, bool long_addr_in) : 
     ARGUMENT_LINE_MAPPING(arg1_in_line_mapping), 
     OPERATION(op_in), 
@@ -63,10 +61,6 @@ ThreeOpCode::ThreeOpCode(std::string arg_in, THREE_OP_CODE_OPERATIONS op_in, boo
 	CUSTOM_FINAL_BIT_SET(false),
     input_arg_type(ARG_TYPE::ARG_IS_STRING) 
 {};
-
-
-
-
 
 std::string ThreeOpCode::printToString(){
 	std::string final_bit;
@@ -85,7 +79,6 @@ std::string ThreeOpCode::printToString(){
 			return std::string("ERROR - ThreeOpCode generation failed");
 	}
 }
-
 
 THREE_OP_CODE_OPERATIONS ThreeOpCode::getOperation(){
     return ThreeOpCode::OPERATION;

@@ -7,5 +7,4 @@
 
 std::string TOCOperationToString(int toc_op);
 
-
 #endif

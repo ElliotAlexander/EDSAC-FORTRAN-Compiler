@@ -10,7 +10,6 @@
 
 namespace LineMapping {
 
-
     struct LineMappingReturn{
         bool result;
         std::shared_ptr<int> value;

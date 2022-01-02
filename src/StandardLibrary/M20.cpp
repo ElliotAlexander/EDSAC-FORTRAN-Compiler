@@ -1,6 +1,5 @@
 #include "StandardLibrary/M20.h"
 
-
 M20::M20(){
 	M20::subroutine_text  = "[M20]\nPZZKM2037FGKP10KPZT43KP@\nZKM2037FGKP10KPZT43KP#0@\nZKM2037FGKP10KPZT45KP#0@I43KB2FQEF";
 	M20::is_enabled = false;
@@ -9,7 +8,6 @@ M20::M20(){
 	M20::name = "M20";
 	M20::type = LIBRARY_TYPE::SPECIAL_LIBRARY;
 }
-
 
 std::string M20::getRoutine() {
 	return M20::subroutine_text;
@@ -34,7 +32,6 @@ void M20::setEnabled() {
 std::shared_ptr<int> M20::getCallingValue(){
 	return M20::calling_value;
 }
-
 
 bool M20::applyOffset(int offset) {
 	int new_val = *calling_value + offset;

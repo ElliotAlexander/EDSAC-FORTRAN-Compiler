@@ -38,12 +38,15 @@ Segment::Segment(SEGMENT_TYPE input_seg_type, int start_line, int end_line, std:
 // This function also serves as the only accessor to Segment::statement_arr, so it cannot be accessed before being
 // initialised by external actors. 
 std::vector<Statement*>  Segment::buildStatements(){
-    for(std::vector<std::string>::size_type i = 0; i != segment_body.size(); i++){  // For each statement
-        if(!::lineIsComment(segment_body[i])){                                      // There is no provision in the internal representation for comments.
-            std::string label = segment_body[i].substr(0,5);                        // Disect label and statement body. Ignore Continuation character.
+    for(std::vector<std::string>::size_type i = 0; i != segment_body.size(); i++){ 
+        // There is no provision in the internal representation for comments.
+        if(!::lineIsComment(segment_body[i])){            
+            // Disect label and statement body. Ignore Continuation character.                         
+            std::string label = segment_body[i].substr(0,5);                        
             std::string statement_body = segment_body[i].substr(6, segment_body[i].length());
-            Statement* stmt = new Statement(statement_body, label, i + start_line); // Initialise internal representation
-            statement_arr.push_back(stmt);                                          // Build return value
+            // Initialise internal representation
+            Statement* stmt = new Statement(statement_body, label, i + start_line); 
+            statement_arr.push_back(stmt);                                          
         }
     }
     return statement_arr;
@@ -56,7 +59,8 @@ std::vector<Statement*>  Segment::buildStatements(){
 // Note that this function has no interaction with statement_arr.
 // 
 void Segment::dumpSegment(){
-    Logging::logMessage("Begin Segment Dump(Type=" + ::getEnumString(seg_type) + ")");      // Get enum string convets the segment type enum to a string.
+    // Get enum string convets the segment type enum to a string.
+    Logging::logMessage("Begin Segment Dump(Type=" + ::getEnumString(seg_type) + ")");      
     for(std::vector<std::string>::size_type i = 0; i != segment_body.size(); i++){ 
         Logging::logMessage(segment_body[i]);
     }

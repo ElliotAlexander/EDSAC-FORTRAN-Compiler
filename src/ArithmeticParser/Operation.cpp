@@ -1,22 +1,5 @@
 #include "ArithmeticParser/Operation.h"
 
-/**
- *  Class Operation
- *      
- * 
- *  This class is solely responsible for building instructions for all simple arithmetic operations inside the compiler.    
- *  This class takes two values (or arguments), which are both references to the top of another parse tree. 
- *  This class also takes an operation type. Depending on the operation type, three op code is generated which computes the value of the operation.
- *
- * 
- *      Member Variables:
- *           arg1: The first argument for the operation (LHS)
- *           ar2: The second argument for the operattion (RHS)
- *           op: The operation type
- *
- * 
- **/
-
 Operation::Operation(RDParseTreeNode* arg1_in, RDParseTreeNode* arg2_in, OPS operation) : 
     arg1(arg1_in), 
     arg2(arg2_in), 
@@ -40,7 +23,7 @@ TOC_RETURN_VALUE Operation::generateThreeOPCode(int &starting_address){
     // We need ot generate the three op code required for both arguments to have a consistent state.
     // This class might represent X + Y, where X = 1+1 and Y = functioncall(5)
     // Compute both these arguments first, and append their three op code to the final output.
-    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address);        // Recall that arguments are also Parse tree nodes. 
+    TOC_RETURN_VALUE arg1_ret = arg1->generateThreeOPCode(starting_address); 
     TOC_RETURN_VALUE arg2_ret = arg2->generateThreeOPCode(starting_address);
 
     // Cnonstruct a complete output

@@ -36,5 +36,4 @@ class ASSIGN : public Token {
         std::unique_ptr<RDParseTreeNode> assignment_value;
 };
 
-
 #endif

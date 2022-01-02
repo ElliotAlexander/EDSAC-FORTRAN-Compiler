@@ -10,6 +10,7 @@ bool READ::initaliseToken(std::string input){
     }
     return true;
 }
+
 std::vector<std::shared_ptr<ThreeOpCode>> READ::generatetoc(int starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     ALL_ST_SEARCH_RESULT entry = SymbolTableController::getVariable(READ::variable_name);

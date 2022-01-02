@@ -1,33 +1,10 @@
 #include "ProgramStructure/DoLoopMapping.h"
 
-/**
- * 
- * 	This namespace encapsulates the methods required for DO loops
- * 	It exists to keep the global namespace clean.
- * 	This namespace also encapsulates do_mappings, keeping it out of the global space.
- * 
- * 
- * 	These functions are referenced from across the program, so using a class isn't an option.
- * 
- **/ 
-
 namespace DoLoopMapping {
 
 	// This Represents the complete list of DOO loop's in the program.
 	std::vector <DO_LOOP_ENTRY> do_mappings;
 
-
-	/**
-	 * 
-	 * 	std::shared_ptr<int> addDoLoopMapping(int line_label, std::shared_ptr<int> line_mapping)
-	 * 
-	 * Inputs:
-	 * 		line_label -> the integer line label that the DO loop terminates on.
-	 * 		line_mapping -> The starting line, i.e. the point the DO loop should jump back to when it loops. (The top of the loop)
-	 * 
-	 * 	This method constructs an entry for the do loop, and is called when the prgoram sees a DO token. 
-	 * 	This entry is later used to check each line for a do loop mapping. 
-	 * */
 	std::shared_ptr<int> addDoLoopMapping(int line_label, std::shared_ptr<int> line_mapping) {
 
 		// Note that DO Loop entries are not final - once the exit line is seen, the value of exit_line_mapping will be modified.
@@ -35,9 +12,11 @@ namespace DoLoopMapping {
 		DO_LOOP_ENTRY x{
 			line_label,
 			line_mapping,
-			// we need a temporary reference to a line mapping. We'll modify the *content* of this pointer later, while allowing it to still be managed by LineMapping.
-			// This way, we can generate the correct offset without knowing the value required.
-			LineMapping::addTemporaryLineMapping(0)				// This mapping will be changed later - this is the exit line mapping.
+			/** we need a temporary reference to a line mapping. We'll modify the *content* 
+			* of this pointer later, while allowing it to still be managed by LineMapping.
+			* This way, we can generate the correct offset without knowing the value required.
+			*//
+			LineMapping::addTemporaryLineMapping(0)	
 		};
 
 

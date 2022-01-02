@@ -33,13 +33,12 @@ bool CALL::initaliseToken(std::string input){
              * 
              * Having extracted the function name, the arguments string is placed in the next value.
              * This block of code breaks each argument down.
-             **/
-            //  For clarity.
+            **/
             std::string subroutine_arguments_string = char_matches[3];
-            if(subroutine_arguments_string.back() == ')' && subroutine_arguments_string.front() == '('){        // Ensure that nothing else is attatched. This shouldn't trigger, and is a safety check
-                subroutine_arguments_string.erase(0,1);         // Remove the opening bracket
-                subroutine_arguments_string.pop_back();         // Remove the final bracket
-                if(subroutine_arguments_string.length() == 0){      // if there are no arguments, we are finished.
+            if(subroutine_arguments_string.back() == ')' && subroutine_arguments_string.front() == '('){
+                subroutine_arguments_string.erase(0,1);
+                subroutine_arguments_string.pop_back();
+                if(subroutine_arguments_string.length() == 0){    
                     return true;
                 } 
                 /**
@@ -52,9 +51,8 @@ bool CALL::initaliseToken(std::string input){
                  * 
                  * Iterate through each arugment - passing it's value to the arithmetic parser and building up a member variable list.
                  * This is the list we'll used to generate symbol table entries later.
-                 * 
-                 **/
-                int index = 0;      // Index is tracked for the user's sake - we can give an accurage picutre of which argument we are loading and in which order.s
+                **/
+                int index = 0;
                 for(std::vector<std::string>::iterator it = comma_split_arguments.begin(); it != comma_split_arguments.end(); ++it){
                     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded function argument [" + std::to_string(index) + "] " + *it);
                     subroutine_arguments.push_back(::parseADString(*it));
@@ -63,20 +61,11 @@ bool CALL::initaliseToken(std::string input){
 
                 return true;
             } else {
-
-                /**
-                 * 
-                 * Assertation error - this shouldn't happen.
-                 * 
-                 **/
                 Logging::logErrorMessage("Error parsing arguments for function " + subroutine_name);
                 Logging::logErrorMessage("Function Argument String: " + subroutine_arguments_string);
                 ::printErrorLocation(4+subroutine_name.size(), input_original);
             }
         } else {
-            /**
-             * This should never happen - if this triggers then the regex checks have failed.
-             **/
             Logging::logErrorMessage("Assertation error - failed to parse CALL token.");
             ::printErrorLocation(0, input_original);
         }
@@ -87,13 +76,8 @@ bool CALL::initaliseToken(std::string input){
 }
 
 std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address){
-
-
-    // declare our return variable
     std::vector<std::shared_ptr<ThreeOpCode> > toc_return;
-    // This vector contains symbol table entries to each argument
     std::vector<std::shared_ptr<ST_ENTRY> > args;
-    
 
     /**
      * We need to load each argument, construct their three op code string (an argument could be an arithmetic operation, i.e. HelloWORLD(5+5))
@@ -105,17 +89,9 @@ std::vector<std::shared_ptr<ThreeOpCode>> CALL::generatetoc(int starting_address
         toc_return.insert(toc_return.end(), ret_val.pre_string.begin(), ret_val.pre_string.end());
     }
 
-    /**
-     * once all arguments are mapped, call the symbol table.
-     * **/
     SUBROUTINE_MAPPING_RETURN sub_return = ::getSubroutineMapping(subroutine_name, starting_address, args);
     Logging::logConditionalErrorMessage(!sub_return.result, "Error - failed to load Subroutine " + subroutine_name);
 
-    /**
-     * 
-     * The symbol table injects return value code into our main program. include that here
-     * This is mostly for moving values in and out of the function scope symbol table.
-     **/
     toc_return.insert(toc_return.end(), sub_return.toc_inject.begin(), sub_return.toc_inject.end());
 
     SymbolTableController::exitFunctionScope();

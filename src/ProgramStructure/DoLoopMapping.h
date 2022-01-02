@@ -29,10 +29,6 @@ namespace DoLoopMapping {
 
 
 	extern std::vector <DO_LOOP_ENTRY> do_mappings;
-
-
 };
-
-
 
 #endif

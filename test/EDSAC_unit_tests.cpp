@@ -22,7 +22,6 @@ private:
     std::streambuf * old;
 };
 
-
 BOOST_AUTO_TEST_CASE( LoggingOutputTest )
 {
     boost::test_tools::output_test_stream output;

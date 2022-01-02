@@ -1,6 +1,5 @@
 #include "StandardLibrary/P6.h"
 
-
 P6::P6(){
 	P6::subroutine_text  = "[P6]\nGKA3FT25@H29@VFT4DA3@TFH30@S6@T1FV4DU4DAFG26@TFTFO5FA4DF4FS4FL4FT4DA1FS3@G9@EFSFO31@E20@J995FJF!F..PZ";
 	P6::is_enabled = false;
@@ -9,7 +8,6 @@ P6::P6(){
 	P6::name = "P6";
 	P6::type = LIBRARY_TYPE::CLOSED_LIBRARY;
 }
-
 
 std::string P6::getRoutine() {
 	return P6::subroutine_text;
@@ -34,7 +32,6 @@ void P6::setEnabled() {
 std::shared_ptr<int> P6::getCallingValue(){
 	return P6::calling_value;
 }
-
 
 bool P6::applyOffset(int offset) {
 	int new_val = *calling_value + offset;

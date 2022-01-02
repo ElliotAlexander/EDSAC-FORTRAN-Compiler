@@ -1,11 +1,5 @@
 #include "Tokens/ASSIGN.h"
 
-/**
- * 
- * 
- * These Helper functions
- * 
- **/ 
 inline bool isFloat( std::string myString ) {
     std::istringstream iss(myString);
     float f;
@@ -75,11 +69,9 @@ bool ASSIGN::initaliseToken(std::string input){
         // ASSIGNTOTOTO5 would be valid.
 
         /**
-         * 
          * Get the index of the 'TO' part of rthe assign keyword. This allows us to split the statement into two
          **/
         std::size_t found = input.find_last_of("TO");
-
 
         // Load the variable name
         std::string variable_name_temp = input.substr(0, found-1);
@@ -91,7 +83,6 @@ bool ASSIGN::initaliseToken(std::string input){
             return false;
         }        
 
-
         // Load assignment
         std::string assignment_string_temp = std::string((input.substr(found+1, input.length())));
     
@@ -101,8 +92,6 @@ bool ASSIGN::initaliseToken(std::string input){
             ::printErrorLocation(found+1, input_backup);
             return false;
         }
-        
-
 
         // We can't easily check for weird arithmetic if there's a sign in the mix, so remove it. 
         // Only use this removed copy for checking that the assignment string is indeed a number
@@ -111,7 +100,6 @@ bool ASSIGN::initaliseToken(std::string input){
         if(assigminent_string_checking.at(0) == '-'){
             assigminent_string_checking.erase(0,1);
         }
-
 
         if(!(isFloat(assigminent_string_checking) && isInt(assigminent_string_checking))){
             // Due to some flexibilites in the REGEX of assign, we need to double  check the user hasn't done something like:

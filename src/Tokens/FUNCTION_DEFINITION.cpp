@@ -57,9 +57,6 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
             
 
             /**
-             * 
-             * 
-             * 
              * Now we've remove the brackets, break up the string by commas.
              * This gives us a vector of strings for each argument.
              * Iterate through, load each arugment into an internal representation.
@@ -96,9 +93,6 @@ bool FUNCTION_DEFINITION::initaliseToken(std::string input){
 }
 
 
-//std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address)
-// 
-//
 std::vector<std::shared_ptr<ThreeOpCode>> FUNCTION_DEFINITION::generatetoc(int starting_address){
 
     // All function mappiongs are handled here. We only need to jump into the function

@@ -76,27 +76,41 @@ namespace EDSAC {
     //  The return value for this function is the final generated EDSAC instructions, incuding the libraries.
     //  
     std::vector<std::string> generateEDSAC(std::vector<std::shared_ptr<ThreeOpCode> > input, std::vector<std::string> libraries) {
-        std::vector<std::string> output = libraries;                                        // initialise final output data value to libraries.  Libraries are appended to the start of all programs.
-        output.insert(output.begin(), EDSAC_PROGRAM_ENTRY_POINT_DEFINITION);                // Insert the T<entry point>K instruction required to set the Initial Orders 2 entry point.
-        for(std::vector<std::shared_ptr<ThreeOpCode> >::iterator it = input.begin(); it != input.end(); ++it){      // Iterate through Program body.
-            std::string build_string;                                                       // Build string is the final output value of each loop. It represents the 'EDSAC' instruction string.
-            build_string.append(convertOperationEnumToString((*it)->getOperation()));       // Begin constructing the instruction string with the instruction value - i.e. the T in T56K. Recall that EDSAC instructions are formatted:
-                                                                                            //      <instruction> <address> <short / long>
-			std::string address = (*it)->getAddress();                                      // Set the address ot a variable, for readability.  
-			if ((*it)->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET &&              // If the instruction is a data value, we need to covnert the address to a 'pseudo-order'
-				!address.empty()) {                                                     
-				build_string.append(convert_int_to_edsac_op(std::stoi(address)));           // Convert address to a 'pseudo-order' so it's set properly as data.
+        // initialise final output data value to libraries.  Libraries are appended to the start of all programs.
+        std::vector<std::string> output = libraries;                                        
+        // Insert the T<entry point>K instruction required to set the Initial Orders 2 entry point.
+        output.insert(output.begin(), EDSAC_PROGRAM_ENTRY_POINT_DEFINITION);                
+        // Iterate through Program body.
+        for(std::vector<std::shared_ptr<ThreeOpCode> >::iterator it = input.begin(); it != input.end(); ++it){    
+            // Build string is the final output value of each loop. It represents the 'EDSAC' instruction string.  
+            std::string build_string;                                                       
+            // Begin constructing the instruction string with the instruction value - i.e. the T in T56K. Recall that EDSAC instructions are formatted:
+            //      <instruction> <address> <short / long>
+            //      <instruction> <address> <short / long>
+            build_string.append(convertOperationEnumToString((*it)->getOperation()));       
+            // Set the address ot a variable, for readability.                                                
+			std::string address = (*it)->getAddress();                    
+             // If the instruction is a data value, we need to covnert the address to a 'pseudo-order'                 
+			if ((*it)->getOperation() == THREE_OP_CODE_OPERATIONS::DATA_SET &&             
+				!address.empty()) {                                      
+                // Convert address to a 'pseudo-order' so it's set properly as data.               
+				build_string.append(convert_int_to_edsac_op(std::stoi(address)));          
 			} else {
-				build_string.append(address);                                               // If the instruction type isn't a data value, we can treat the address as normal.
-				if ((*it)->containsCustomBit() == true) {                                   // Some control codes specify a unique end bit, handled by initial orders. Handle this if required
+                // If the instruction type isn't a data value, we can treat the address as normal.
+				build_string.append(address);                  
+                // Some control codes specify a unique end bit, handled by initial orders. Handle this if required                             
+				if ((*it)->containsCustomBit() == true) {                                   
 					build_string.append((*it)->getCustomBit());                            
 				} else {
-                    build_string.append((*it)->getLongAddress() ? EDSAC_LONG_VALUE : EDSAC_SHORT_VALUE);               // Else - set the appropriate value for the final bit.
+                    // Else - set the appropriate value for the final bit.
+                    build_string.append((*it)->getLongAddress() ? EDSAC_LONG_VALUE : EDSAC_SHORT_VALUE);              
 				}
 			}
-            output.push_back(build_string);                                                 // Construct a final output list of all instructions.
+            // Construct a final output list of all instructions.
+            output.push_back(build_string);                                                 
         }
-        return output;                                                                      // return a list of strings - our final EDSAC instruction output.
+        // return a list of strings - our final EDSAC instruction output.
+        return output;                                                                      
     }
 
 }

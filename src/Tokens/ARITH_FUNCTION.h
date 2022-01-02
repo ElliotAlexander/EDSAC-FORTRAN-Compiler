@@ -29,7 +29,6 @@ class ARITH_FUNCTION : public Token {
         std::string function_name;
         std::string function_resolution;
         std::vector<std::string> function_arguments; 
-    };
-
+};
 
 #endif

@@ -1,18 +1,10 @@
 #include "Tokens/COMPUTED_GOTO.h"
 
-/**
- * 
- * bool COMPUTED_GOTO::initaliseToken(std::string input)
- * 
- **/
 bool COMPUTED_GOTO::initaliseToken(std::string input){
-
-    // Defensive programming - this is validated in regex.
     if(input.substr(0, 4) == "GOTO"){
         input.erase(0,4);
 
         /**
-         * 
          * This string is handled from the back, given GOTO (10, 15, 20), X
          * Find the variable after the last comma.
          * Once we've got the variable, we can set this to a class member.
@@ -24,8 +16,6 @@ bool COMPUTED_GOTO::initaliseToken(std::string input){
         // Strip the leading bracket
         goto_variable.erase(0, 1);
 
-
-
         // Strip the final control variable - it's already extracted.
         // We now have something in the form: (10, 15, 20)
         input = input.erase(input.find_last_of(','), input.size());
@@ -35,16 +25,10 @@ bool COMPUTED_GOTO::initaliseToken(std::string input){
 
         // Remove the last bracket.
         input.pop_back();
-
         input.erase(0,1);
 
         Logging::logInfoMessage("Loaded argument string " + input);
 
-        /**
-         * 
-         * Now that the string is a comma seperated list, we can split it by a comma and parse each value.
-         * 
-         **/ 
         std::vector<std::string> arguments;
         boost::split(arguments, input, boost::is_any_of(","));
 
@@ -56,12 +40,6 @@ bool COMPUTED_GOTO::initaliseToken(std::string input){
             return false;
         }
 
-
-        /**
-         * 
-         * Parse each arugment in the list, keep a string reference to it for error messsaes.
-         * 
-         **/ 
         int index = 1;
         for(std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); ++it){
             COMPUTED_GOTO::goto_arg_list.push_back(::parseADString((*it)));
@@ -71,8 +49,6 @@ bool COMPUTED_GOTO::initaliseToken(std::string input){
         }
         return true;
     } else {
-
-        // Defensive programming - this should never happen.
         Logging::logErrorMessage( "Failed to load ASSIGNED GOTO token - couldn't parse GOTO keyword.");
         printErrorLocation(0, input);
         return false;
@@ -82,17 +58,10 @@ bool COMPUTED_GOTO::initaliseToken(std::string input){
 std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
-
     // This variable is where each unused accumulator clear will be dumped to
 	ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
 	Logging::logConditionalErrorMessage(!flush_to.found, "Failed to find buffer flush ST_ENTRY!");
 
-
-    /**
-     * 
-     * Check the control varaible exists, output an error and no three op code if it does not. 
-     * The control variable is the X in GOTO (10, 15, 20), X
-     * */
     ALL_ST_SEARCH_RESULT goto_control = SymbolTableController::getVariable(COMPUTED_GOTO::goto_variable);
     Logging::logConditionalErrorMessage(!goto_control.found, "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed.");
     if(!goto_control.found){
@@ -101,8 +70,6 @@ std::vector<std::shared_ptr<ThreeOpCode>> COMPUTED_GOTO::generatetoc(int startin
 
     
     int index = 0;
-    // This is used as a temporary integer add
-    // We need to subteract one in some cases
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
 
     /**

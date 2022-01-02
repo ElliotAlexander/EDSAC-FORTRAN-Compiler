@@ -14,13 +14,12 @@
 #include "ThreeOpCode/ThreeOpCode.h"
 #include "Utils.h"
 
-
-    class Variable : public RDParseTreeNode {
-        public:
-            std::string name;
-            Variable(std::string name_in);
-            TOC_RETURN_VALUE generateThreeOPCode(int &starting_address);
-            virtual ~Variable() {}
-    };
+class Variable : public RDParseTreeNode {
+    public:
+        std::string name;
+        Variable(std::string name_in);
+        TOC_RETURN_VALUE generateThreeOPCode(int &starting_address);
+        virtual ~Variable() {}
+};
 
 #endif

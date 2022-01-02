@@ -23,5 +23,4 @@ class CONTINUE : public Token {
         std::string TO_MATCH = "CONTINUE";
 };
 
-
 #endif

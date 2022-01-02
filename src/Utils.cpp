@@ -1,12 +1,10 @@
 #include "Utils.h"
 
-
 bool lineIsComment(std::string line){
     if(line.length() > 0){
         return (line.at(0) == 'C' || line.at(0) == 'c' || line.at(0) == '!') ? true : false;
     } else { return false; }
 }
-
 
 bool printErrorLocation(int location, std::string input){
     Logging::logErrorMessage("Error location: ");
@@ -14,8 +12,6 @@ bool printErrorLocation(int location, std::string input){
     Logging::logErrorMessage(std::string(location -1, ' ') + "^");
     return true;
 }
-
-
 
 // TODO change the name on this.
 std::string getEnumString(int i){

@@ -5,14 +5,19 @@
  *  Logging:
  *  
  * 
- *  This file offers an interface to a selection of pre_defined logging options. These broadly fall into two simple categories - conditional and unconditional.
- *  ConditionalMessages -> Log the message if the supplied boolean is true. This enablees single line "if this then that" logging.
+ *  This file offers an interface to a selection of pre_defined logging options. 
+ *  These broadly fall into two simple categories - conditional and unconditional.
+ *  ConditionalMessages -> Log the message if the supplied boolean is true. 
+ *  This enablees single line "if this then that" logging.
  *  Unconditional messages only take an input, and format the message as required before outputting to the command line.
- *  Programatiicaly, the intention of this class is to allow easy, single access modification to log formatting, or to enable output to other formats easily, by modifying a single class.
- *  This file also offers a single point of contact with the command line - no messages should be outputted directly. This ensures that if a modification to how logging is implemented is required, it 
- *  can be done in a single point
+ *  Programatiicaly, the intention of this class is to allow easy, single access modification to log formatting, 
+*   or to enable output to other formats easily, by modifying a single class.
+ *  This file also offers a single point of contact with the command line - 
+ *  no messages should be outputted directly. This ensures that if a modification 
+ *  to how logging is implemented is required, it can be done in a single point
  * 
- * This file also tracks the number of outputs in each category - INFO, WARN, and ERROR, and is responsible for generating the one line summary outted at the end of the file.
+ * This file also tracks the number of outputs in each category - 
+ * INFO, WARN, and ERROR, and is responsible for generating the one line summary outted at the end of the file.
  *
  **/ 
 

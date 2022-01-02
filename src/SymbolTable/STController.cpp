@@ -5,7 +5,6 @@ namespace SymbolTableController{
     bool in_function_scope;
     std::string function_scope_name;
 
-
     /**
      * 
      * These are the Main program block symbol tables. 
@@ -19,13 +18,11 @@ namespace SymbolTableController{
         std::unique_ptr<SymbolTable>(new SymbolTable(SYMBOL_TABLE_TYPE::COMMON_VAR))        // Common isn't implemented, so isn't used.
     };
 
-
     // each object is initialised with another set of four unique symbol tables
     // Each fucntion or subroutine scope is mapped to a set of symbol tables.
     // Once entering or leaving function scope, we switch to this set of symbol tables.
     // They are *NOT* cleared between scope instances.
     std::map<std::string, std::vector<std::shared_ptr<SymbolTable> > > function_symbol_tables;
-
 
     /**
      *  bool addLinkedVariable(std::shared_ptr<ST_ENTRY> value, std::string name)
@@ -51,25 +48,12 @@ namespace SymbolTableController{
         return symbol_tables[0]->addLinkedVariable(value, name);
     }
 
-
     /**
-     * =========================
-     * 
-     *      Add Variablbe Getters
-     * 
-     * =========================
-     * 
-     * 
      * 
      * This block of 'put' methods largely encapsulates functionality for adding a varible.
      * The type of the varitable is determined by the function type.
      * The value of ST_ENTRY_TYPE is ignored. 
      * 
-     **/ 
-
-
-
-    /**
      * std::shared_ptr<ST_ENTRY> addCommon(std::string common_block_label, std::string name, std::string value, ST_ENTRY_TYPE type)
      * 
      * Input:
@@ -104,9 +88,8 @@ namespace SymbolTableController{
      * Output:
      *      A reference to the symbol table entry for the finished variable. 
      * 
-     * 
-     * 
-     * Temporary variables are declared in the code with no further use - i.e. They are declared when a specific operation requires them, and accessed only by reference.
+     * Temporary variables are declared in the code with no further use - i.e. 
+     * They are declared when a specific operation requires them, and accessed only by reference.
      * A temporary variable can be disgarded immediately after the completion of the intiialising operation. 
      **/
     std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type) {
@@ -117,8 +100,6 @@ namespace SymbolTableController{
         return symbol_tables[2]->add(std::to_string(symbol_tables[2]->rolling_memory_addr), value, type);
     }
 
-
-
     /**
      * std::shared_ptr<ST_ENTRY> addTemp(std::string value, ST_ENTRY_TYPE type)
      * 
@@ -128,8 +109,6 @@ namespace SymbolTableController{
      * 
      * Output:
      *      A reference to the symbol table entry for the finished variable. 
-     * 
-     * 
      * 
      * Temporary variables are declared in the code with no further use - i.e. They are declared when a specific operation requires them, and accessed only by reference.
      * A temporary variable can be disgarded immediately after the completion of the intiialising operation. 
@@ -287,6 +266,4 @@ namespace SymbolTableController{
         Logging::logConditionalMessage(Globals::output_symbol_table_operations, " \n\n--- End Symbol Table Transformations --- \n\n");
         return true;
     }
-
-
-} // SymbolTableController
+}

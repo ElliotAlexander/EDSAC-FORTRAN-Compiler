@@ -11,10 +11,7 @@ bool IF::initaliseToken(std::string input){
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded IF String: " + input);
     }
     
-
     /**
-     * 
-     * 
      * For each of the right and left hand side arguments, parse them and check the output.
      * 
      * */

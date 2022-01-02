@@ -26,4 +26,5 @@ class M20 : public Library {
 		LIBRARY_TYPE type; 
 
 };
+
 #endif

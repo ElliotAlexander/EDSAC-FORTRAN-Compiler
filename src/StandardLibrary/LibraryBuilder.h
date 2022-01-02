@@ -11,7 +11,6 @@
 #include "Library.h"
 #include "Globals.h"
 
-
 struct LibraryReturnContainer {
 	std::vector<std::string> output;
 	int offset;
@@ -28,7 +27,5 @@ namespace Libs {
 		LibraryReturnContainer buildLibraries(int offset);
 		std::shared_ptr<int> getLibraryLineMapping(std::string name);
 }
-
-
 
 #endif

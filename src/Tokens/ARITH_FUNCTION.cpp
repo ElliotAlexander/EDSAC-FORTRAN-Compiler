@@ -1,6 +1,5 @@
 #include "Tokens/ARITH_FUNCTION.h"
 
-
 // See superclass declaration for function definitions.
 // Abstract function implemetation inherited from Token.h
 std::vector<std::shared_ptr<ThreeOpCode>> ARITH_FUNCTION::generatetoc(int starting_address){
@@ -23,7 +22,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
 
     std::vector<std::string> equals_split;
     std::string variable_list, function_name_temp;
-
 
     /**
      *  Split the string on the equals - this gives us a defined left and right hand side.
@@ -60,7 +58,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
         }
     }    
 
-
     // Set the member  variable for the function name.
     ARITH_FUNCTION::function_name = function_name_temp;
 
@@ -85,7 +82,6 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     }
 
     /**
-     * 
      *  The right hand side of the function should all be one big arithmetic expression
      *  we can rely on the arithmetic parser to handle this. 
      *  Set a member variable to the string that is the right hand side. We'll process trhe right hand side as an arithmetic in GenerateTOC. 
@@ -97,6 +93,4 @@ bool ARITH_FUNCTION::initaliseToken(std::string input){
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Function name: " + ARITH_FUNCTION::function_name);
     Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Right hand side " + equals_split[1]);
     return true;
-    
 }
-

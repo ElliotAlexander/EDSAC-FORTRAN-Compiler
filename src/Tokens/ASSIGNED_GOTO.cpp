@@ -10,16 +10,16 @@ bool ASSIGNED_GOTO::initaliseToken(std::string input){
         /**
          * We already know the format of the statement from the REGEX checks, so we can be confident that this shouldn't fail.
          **/
-        ASSIGNED_GOTO::goto_variable = input.substr(0, input.find(','));            // Strip the first GOTO variable. 
+        ASSIGNED_GOTO::goto_variable = input.substr(0, input.find(',')); 
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded ASSIGNED GOTO Control Variable " + ASSIGNED_GOTO::goto_variable);
         
         /**
          * Having removed the variable value - remove it from the overall string. 
          **/
-        input = input.erase(0, input.find_first_of(','));       // Remove the string upto the first bracket of the ASSIGN statement.
+        input = input.erase(0, input.find_first_of(','));  
         input = input.erase(0, input.find('('));                
 
-        input.pop_back();                 // The previous statement removes upto the bracket - this removes the bracket.
+        input.pop_back(); 
         input.erase(0,1);
 
 
@@ -75,9 +75,10 @@ std::vector<std::shared_ptr<ThreeOpCode>> ASSIGNED_GOTO::generatetoc(int startin
 
     // The main comparison variable. If this ins't declared, we have a problem.
     ALL_ST_SEARCH_RESULT goto_control = SymbolTableController::getVariable(ASSIGNED_GOTO::goto_variable);
-    Logging::logConditionalErrorMessage(!goto_control.found, "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed.");
+    Logging::logConditionalErrorMessage(!goto_control.found, 
+        "Failed to find ASSIGNED GOTO Control Variable. ASSIGNED GOTO Variables need to be assigned before use. This token will *not* be processed."
+    );
     
-    // We can't generate our toc without this
     if(!goto_control.found){
         return {};
     }

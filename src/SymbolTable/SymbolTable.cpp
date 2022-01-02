@@ -1,8 +1,5 @@
 #include "SymbolTable/SymbolTable.h"
 
-
-
-
 /**
  * SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) 
  * 
@@ -30,17 +27,13 @@ SymbolTable::SymbolTable(SYMBOL_TABLE_TYPE st) : ST_TYPE(st) {
 	}
 }
 
-
-
 /**
  * 
  * bool SymbolTable::remove(std::string name)
  * 
- * 
  * This function removes an entry from the symbol table.
  * Entries are referenced by name.
  * The return value indicates whether the value was successfully removed - if tno value exists, then the return val is false.
- * 
  * 
  **/ 
 bool SymbolTable::remove(std::string name){
@@ -56,13 +49,10 @@ bool SymbolTable::remove(std::string name){
     }
 }
 
-
-// We can't use polymorphic values, so a string will have to do.
 /**
  * 
  *  This function is used for adding variables to the symbol table.
  *  the function takes the name, value and type of an entry, and returns a pointer to the entry.
- *  
  * 
  **/ 
 std::shared_ptr<ST_ENTRY> SymbolTable::add(std::string name, std::string value, ST_ENTRY_TYPE type){

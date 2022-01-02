@@ -17,5 +17,4 @@ bool printErrorLocation(int location, std::string);
 void print_header();
 void print_footer();
 
-
 #endif

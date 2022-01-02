@@ -3,11 +3,9 @@
 bool GOTO::initaliseToken(std::string input){
     if(input.substr(0,4) == "GOTO"){
 
-
         // remove the keyword
         input = input.erase(0, 4);
         Logging::logConditionalInfoMessage(Globals::dump_parsed_values, "Loaded GOTO String: " + input);
-
 
         // Everything else in the string should be an integer argument.
         // Regex should have ensured that only integers reach this stage, so we can call stoi safely.
@@ -21,7 +19,6 @@ bool GOTO::initaliseToken(std::string input){
     }
 }
 
-
 std::vector<std::shared_ptr<ThreeOpCode>> GOTO::generatetoc(int starting_address){
     std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
     ALL_ST_SEARCH_RESULT flush_to = SymbolTableController::getVariable(Globals::BUFFER_FLUSH_NAME);
@@ -29,7 +26,6 @@ std::vector<std::shared_ptr<ThreeOpCode>> GOTO::generatetoc(int starting_address
     LineMapping::LineMappingReturn mapping = LineMapping::retrieveLineMapping(GOTO::goto_single_arg); 
     Logging::logConditionalErrorMessage(!mapping.result, "Warning - failed to load line mapping for " + std::to_string(GOTO::goto_single_arg));
     std::shared_ptr<int> goto_mapping = mapping.value;
-
 
     std::shared_ptr<ST_ENTRY> temp_int = SymbolTableController::addTemp(std::string("1"), ST_ENTRY_TYPE::INT_T);
 

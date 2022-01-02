@@ -2,34 +2,26 @@
 
 namespace LineMapping {
 
+    /**
+    *  This namespace is responsible for mapping integer values to line references.
+    *  Line mappings and temporary line mappings are stored in this namespace, this maps an in to a changing line mapping value.
+    *  
+    *  These line mappings may be changed at any point, and the calling fucntion on each method becomes respoknsible for handling a pointer to the entry.
+    **/ 
 
-/**
- * 
- *  This namespace is responsible for mapping integer values to line references.
- *  Line mappings and temporary line mappings are stored in this namespace, this maps an in to a changing line mapping value.
- *  
- *  These line mappings may be changed at any point, and the calling fucntion on each method becomes respoknsible for handling a pointer to the entry.
- * 
- * 
- **/ 
+    std::map<int, std::shared_ptr<int>> line_mappings;
+    std::vector<std::shared_ptr<int>> temporary_line_mappings;  
 
-
-    std::map<int, std::shared_ptr<int>> line_mappings;      // this variable stores the fixed line mappings
-    std::vector<std::shared_ptr<int>> temporary_line_mappings;      // temporary line mappings are functionally identical, however
-    // are only ever returned by reference. The calling function is entirely responsible for handling these references.
-
-
-/**
- * 
- *     bool addLineMapping(std::string line_label, int memory_address)
- * 
- * 
- *  This function is responsible for adding line mappings.
- *  Inputs:
- *      std::string line_label -> the string value of the line label. This is converted to an int within this class.
- *      int memory_address -> The starting address of the line mapping.
- * 
- * */
+    /**
+    * 
+    *     bool addLineMapping(std::string line_label, int memory_address)
+    * 
+    *  This function is responsible for adding line mappings.
+    *  Inputs:
+    *      std::string line_label -> the string value of the line label. This is converted to an int within this class.
+    *      int memory_address -> The starting address of the line mapping.
+    * 
+    * */
     bool addLineMapping(std::string line_label, int memory_address){
         // Remove whitespace so we can accurately compare lengths.
         line_label = ::stripWhitespaceString(line_label);
@@ -110,15 +102,11 @@ namespace LineMapping {
         }
     }
 
-
-/**
- * 
- *     LineMappingReturn retrieveLineMapping(int line) 
- *  
- *      This method is the accessor for line mapping.
- *      
- * 
- **/ 
+    /**
+    * 
+    *    LineMappingReturn retrieveLineMapping(int line) 
+    *    This method is the accessor for line mapping.
+    **/ 
     LineMappingReturn retrieveLineMapping(int line){
         std::map<int, std::shared_ptr<int> >::iterator it = line_mappings.find(line);
         int entry;
@@ -132,19 +120,17 @@ namespace LineMapping {
         }
     }
 
-
-
-/**
- * 
- *     bool offsetLineMapping(int offset)
- * 
- * This function is responsible for offsetting all line mappings.
- * Line mappings are held in three op code as arguments, and once offset are considered final.
- * 
- * This function is responsible for hadling this offset, and for informing the user.
- * The return value is constant, and is able to be disregarded.
- * 
- * */
+    /**
+    * 
+    *     bool offsetLineMapping(int offset)
+    * 
+    * This function is responsible for offsetting all line mappings.
+    * Line mappings are held in three op code as arguments, and once offset are considered final.
+    * 
+    * This function is responsible for hadling this offset, and for informing the user.
+    * The return value is constant, and is able to be disregarded.
+    * 
+    * */
     bool offsetLineMapping(int offset){
         Logging::logConditionalMessage(Globals::output_line_mappings, "\n\n:: Line Mapping Transformations :: \n\n");
         for(std::map<int, std::shared_ptr<int> >::iterator it = line_mappings.begin(); it != line_mappings.end(); ++it){
@@ -165,13 +151,13 @@ namespace LineMapping {
         return true;
     }
 
-/**
- * 
- * This function is responsible for adding temporary line mappings.
- * 
- * Temporary line mappings cannot be retrieved, and can only be accessed by reference.
- * 
- **/ 
+    /**
+    * 
+    * This function is responsible for adding temporary line mappings.
+    * 
+    * Temporary line mappings cannot be retrieved, and can only be accessed by reference.
+    * 
+    **/ 
     std::shared_ptr<int> addTemporaryLineMapping(int input){
         Logging::logConditionalInfoMessage(Globals::output_line_mappings, "Adding temporary line mapping for line " + std::to_string(input));
         std::shared_ptr<int> ptr = std::make_shared<int>(input);

@@ -17,7 +17,6 @@ bool END::initaliseToken(std::string input){
             // Logging - note that this is NOT SUPPORTED.
             Logging::logErrorMessage("END arguments are not supported!");
 
-
             /**
              *  This loads a value into an internal repesenttion
              *  END (x,y,z,a,b) is a legacy feature which sets the output switches on the IBM 704 
@@ -28,9 +27,7 @@ bool END::initaliseToken(std::string input){
              * We still parse the value though, for clarity
              * 
              * 
-             * */
-
-    
+             **/ 
             argument_list_set = true;
             input.erase(0,1);
             input.pop_back();

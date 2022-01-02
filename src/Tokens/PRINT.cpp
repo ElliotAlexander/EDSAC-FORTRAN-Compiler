@@ -13,7 +13,6 @@ bool PRINT::initaliseToken(std::string input){
 }	
 
 std::vector<std::shared_ptr<ThreeOpCode>> PRINT::generatetoc(int starting_address){
-
 	std::vector<std::shared_ptr<ThreeOpCode> > pre_string;
 
 	TOC_RETURN_VALUE toc_ret = PRINT::print_val->generateThreeOPCode(starting_address);

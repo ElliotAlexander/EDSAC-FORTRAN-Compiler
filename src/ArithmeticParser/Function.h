@@ -7,7 +7,6 @@
 #include "RDParseTreeNode.h"
 #include "ProgramStructure/FunctionMapping.h"
 
-
     class Function : public RDParseTreeNode {
         public:
             std::vector<RDParseTreeNode*> function_arguments;
